@@ -1,0 +1,373 @@
+{
+  "checkedAt": "2026-09-17T21:19:36.035733+08:00",
+  "repository": "https://github.com/DxDxDxis/WinIsland-CE",
+  "sourceCommit": "e574e739d01f1c8bc990d3fc20e0ac64045bf499",
+  "sourceFiles": 3595,
+  "releaseCount": 18,
+  "assetCount": 36,
+  "latestStable": "v1.3.0",
+  "errors": [],
+  "releases": [
+    {
+      "version": "1.3.1alpha",
+      "url": "https://github.com/DxDxDxis/WinIsland-CE/releases/tag/v1.3.1alpha",
+      "prerelease": true,
+      "publishedAt": "2026-09-17T13:18:44Z",
+      "assets": [
+        {
+          "name": "WinIsland-1.3.1alpha-Windows-x64.zip",
+          "size": 330394753,
+          "digest": "sha256:18462af36188f90bf0c43e634cd026317aa423c40ef1ab28580e5f88e7bbb896",
+          "browser_download_url": "https://github.com/DxDxDxis/WinIsland-CE/releases/download/v1.3.1alpha/WinIsland-1.3.1alpha-Windows-x64.zip"
+        },
+        {
+          "name": "WinIsland-1.3.1alpha-Windows-x64.zip.sha256",
+          "size": 104,
+          "digest": "sha256:5fc1352af8e8bade32fb2158d9f6d7386a2f90a95e10e1a40670e5e2e5248b99",
+          "browser_download_url": "https://github.com/DxDxDxis/WinIsland-CE/releases/download/v1.3.1alpha/WinIsland-1.3.1alpha-Windows-x64.zip.sha256"
+        }
+      ]
+    },
+    {
+      "version": "1.3.0",
+      "url": "https://github.com/DxDxDxis/WinIsland-CE/releases/tag/v1.3.0",
+      "prerelease": false,
+      "publishedAt": "2026-09-17T13:17:13Z",
+      "assets": [
+        {
+          "name": "WinIsland-1.3.0-community-Windows-x64.zip",
+          "size": 330295494,
+          "digest": "sha256:d8224ca22b1990df8a5ffc4d27a89982ecbf8583a4e95a32344d267b267c12f4",
+          "browser_download_url": "https://github.com/DxDxDxis/WinIsland-CE/releases/download/v1.3.0/WinIsland-1.3.0-community-Windows-x64.zip"
+        },
+        {
+          "name": "WinIsland-1.3.0-community-Windows-x64.zip.sha256",
+          "size": 109,
+          "digest": "sha256:22bd79f5b8184825968be33c7bfcd39be0949b9839eef114bc5787725e10adb9",
+          "browser_download_url": "https://github.com/DxDxDxis/WinIsland-CE/releases/download/v1.3.0/WinIsland-1.3.0-community-Windows-x64.zip.sha256"
+        }
+      ]
+    },
+    {
+      "version": "1.2.7alpha-r1",
+      "url": "https://github.com/DxDxDxis/WinIsland-CE/releases/tag/v1.2.7alpha-r1",
+      "prerelease": true,
+      "publishedAt": "2026-09-17T13:15:48Z",
+      "assets": [
+        {
+          "name": "WinIsland-1.2.7alpha-r1-Windows-x64.zip",
+          "size": 167899784,
+          "digest": "sha256:8928cde904bc12009095817e4abc6e2808181aa4a855ae52e67ea2572081e9e8",
+          "browser_download_url": "https://github.com/DxDxDxis/WinIsland-CE/releases/download/v1.2.7alpha-r1/WinIsland-1.2.7alpha-r1-Windows-x64.zip"
+        },
+        {
+          "name": "WinIsland-1.2.7alpha-r1-Windows-x64.zip.sha256",
+          "size": 107,
+          "digest": "sha256:415779423ec4e0101051f78d3db2a97e2d0a71d49b6953f131e10827a54722b5",
+          "browser_download_url": "https://github.com/DxDxDxis/WinIsland-CE/releases/download/v1.2.7alpha-r1/WinIsland-1.2.7alpha-r1-Windows-x64.zip.sha256"
+        }
+      ]
+    },
+    {
+      "version": "1.2.7alpha",
+      "url": "https://github.com/DxDxDxis/WinIsland-CE/releases/tag/v1.2.7alpha",
+      "prerelease": true,
+      "publishedAt": "2026-09-17T13:14:53Z",
+      "assets": [
+        {
+          "name": "WinIsland-1.2.7alpha-Windows-x64.zip",
+          "size": 167560355,
+          "digest": "sha256:75f0985cd4e79fa1461722002926a70c86f61d3972bd73b27104bfaa08481c1c",
+          "browser_download_url": "https://github.com/DxDxDxis/WinIsland-CE/releases/download/v1.2.7alpha/WinIsland-1.2.7alpha-Windows-x64.zip"
+        },
+        {
+          "name": "WinIsland-1.2.7alpha-Windows-x64.zip.sha256",
+          "size": 104,
+          "digest": "sha256:edf3137fa2a6829ed60852d82f98aea6c5e359ff4a8413c430fe462bb6d778c6",
+          "browser_download_url": "https://github.com/DxDxDxis/WinIsland-CE/releases/download/v1.2.7alpha/WinIsland-1.2.7alpha-Windows-x64.zip.sha256"
+        }
+      ]
+    },
+    {
+      "version": "1.2.6alpha-c2",
+      "url": "https://github.com/DxDxDxis/WinIsland-CE/releases/tag/v1.2.6alpha-c2",
+      "prerelease": true,
+      "publishedAt": "2026-09-17T13:14:00Z",
+      "assets": [
+        {
+          "name": "WinIsland-1.2.6alpha-c2-Windows-x64.zip",
+          "size": 9448964,
+          "digest": "sha256:663e118e6a552fd2f1eb27c1059978b359ee70ca4442ccb94cd7cdb729457781",
+          "browser_download_url": "https://github.com/DxDxDxis/WinIsland-CE/releases/download/v1.2.6alpha-c2/WinIsland-1.2.6alpha-c2-Windows-x64.zip"
+        },
+        {
+          "name": "WinIsland-1.2.6alpha-c2-Windows-x64.zip.sha256",
+          "size": 107,
+          "digest": "sha256:46e0abbc4978d9a31a2cbe40095719eccf7e119420b183effbb8d5b4e6421934",
+          "browser_download_url": "https://github.com/DxDxDxis/WinIsland-CE/releases/download/v1.2.6alpha-c2/WinIsland-1.2.6alpha-c2-Windows-x64.zip.sha256"
+        }
+      ]
+    },
+    {
+      "version": "1.2.6alpha-c1",
+      "url": "https://github.com/DxDxDxis/WinIsland-CE/releases/tag/v1.2.6alpha-c1",
+      "prerelease": true,
+      "publishedAt": "2026-09-17T13:13:40Z",
+      "assets": [
+        {
+          "name": "WinIsland-1.2.6alpha-c1-Windows-x64.zip",
+          "size": 4979214,
+          "digest": "sha256:be41b4c40f95a7254e3b889f307e74231d80b32627eed63ab1e62c5ac53db762",
+          "browser_download_url": "https://github.com/DxDxDxis/WinIsland-CE/releases/download/v1.2.6alpha-c1/WinIsland-1.2.6alpha-c1-Windows-x64.zip"
+        },
+        {
+          "name": "WinIsland-1.2.6alpha-c1-Windows-x64.zip.sha256",
+          "size": 107,
+          "digest": "sha256:ce2d3363a30bddd1215586f2c93b92c7369b3976ad7bb672b1a528d42d47b74b",
+          "browser_download_url": "https://github.com/DxDxDxis/WinIsland-CE/releases/download/v1.2.6alpha-c1/WinIsland-1.2.6alpha-c1-Windows-x64.zip.sha256"
+        }
+      ]
+    },
+    {
+      "version": "1.2.5alpha2",
+      "url": "https://github.com/DxDxDxis/WinIsland-CE/releases/tag/v1.2.5alpha2",
+      "prerelease": true,
+      "publishedAt": "2026-09-17T13:13:24Z",
+      "assets": [
+        {
+          "name": "WinIsland-1.2.5alpha2-Windows-x64.zip",
+          "size": 13204478,
+          "digest": "sha256:af8cc71deaad04b4fd5561451692211e40c3ffe0d1d5ec1ef743cd242b67fa26",
+          "browser_download_url": "https://github.com/DxDxDxis/WinIsland-CE/releases/download/v1.2.5alpha2/WinIsland-1.2.5alpha2-Windows-x64.zip"
+        },
+        {
+          "name": "WinIsland-1.2.5alpha2-Windows-x64.zip.sha256",
+          "size": 105,
+          "digest": "sha256:e8c25d31197d6ec5dcffb70b1e6d5ef360cf41ecff56a0674c247d9676f8c7ba",
+          "browser_download_url": "https://github.com/DxDxDxis/WinIsland-CE/releases/download/v1.2.5alpha2/WinIsland-1.2.5alpha2-Windows-x64.zip.sha256"
+        }
+      ]
+    },
+    {
+      "version": "1.2.5alpha-r1",
+      "url": "https://github.com/DxDxDxis/WinIsland-CE/releases/tag/v1.2.5alpha-r1",
+      "prerelease": true,
+      "publishedAt": "2026-09-17T13:13:07Z",
+      "assets": [
+        {
+          "name": "WinIsland-1.2.5alpha-r1-Windows-x64.zip",
+          "size": 4850702,
+          "digest": "sha256:06c2f4c963ca6c9120c5e735aa451d9f3613f02b9732e64a1f81100b3bdfe861",
+          "browser_download_url": "https://github.com/DxDxDxis/WinIsland-CE/releases/download/v1.2.5alpha-r1/WinIsland-1.2.5alpha-r1-Windows-x64.zip"
+        },
+        {
+          "name": "WinIsland-1.2.5alpha-r1-Windows-x64.zip.sha256",
+          "size": 107,
+          "digest": "sha256:2c01ff8f1ebf9b7ec630db67bb54209432a798510c0cbefad12f62a4fcbae125",
+          "browser_download_url": "https://github.com/DxDxDxis/WinIsland-CE/releases/download/v1.2.5alpha-r1/WinIsland-1.2.5alpha-r1-Windows-x64.zip.sha256"
+        }
+      ]
+    },
+    {
+      "version": "1.2.5alpha",
+      "url": "https://github.com/DxDxDxis/WinIsland-CE/releases/tag/v1.2.5alpha",
+      "prerelease": true,
+      "publishedAt": "2026-09-17T13:12:48Z",
+      "assets": [
+        {
+          "name": "WinIsland-1.2.5alpha-Windows-x64.zip",
+          "size": 4852943,
+          "digest": "sha256:c8b3181d4c301f174e12838fac4314f563e3205a4fda3e281756c5d1e9ac9333",
+          "browser_download_url": "https://github.com/DxDxDxis/WinIsland-CE/releases/download/v1.2.5alpha/WinIsland-1.2.5alpha-Windows-x64.zip"
+        },
+        {
+          "name": "WinIsland-1.2.5alpha-Windows-x64.zip.sha256",
+          "size": 104,
+          "digest": "sha256:63ba4a580ae4abb01e88ddfd65ba15f5c9408ec9659a319765165f6327c6b02e",
+          "browser_download_url": "https://github.com/DxDxDxis/WinIsland-CE/releases/download/v1.2.5alpha/WinIsland-1.2.5alpha-Windows-x64.zip.sha256"
+        }
+      ]
+    },
+    {
+      "version": "1.2.4beta_2",
+      "url": "https://github.com/DxDxDxis/WinIsland-CE/releases/tag/v1.2.4beta_2",
+      "prerelease": true,
+      "publishedAt": "2026-09-17T13:12:31Z",
+      "assets": [
+        {
+          "name": "WinIsland-1.2.4beta_2-Windows-x64.zip",
+          "size": 4841496,
+          "digest": "sha256:68107616b0e4121962c8ab5cb878a33c6d7ad70ef30a26e1a91b068e6437ba0c",
+          "browser_download_url": "https://github.com/DxDxDxis/WinIsland-CE/releases/download/v1.2.4beta_2/WinIsland-1.2.4beta_2-Windows-x64.zip"
+        },
+        {
+          "name": "WinIsland-1.2.4beta_2-Windows-x64.zip.sha256",
+          "size": 105,
+          "digest": "sha256:ee876b5d9ea8cece12c11b4801fa7f02bd12fb31efd28325b50d66b84ac08a1f",
+          "browser_download_url": "https://github.com/DxDxDxis/WinIsland-CE/releases/download/v1.2.4beta_2/WinIsland-1.2.4beta_2-Windows-x64.zip.sha256"
+        }
+      ]
+    },
+    {
+      "version": "1.2.4beta",
+      "url": "https://github.com/DxDxDxis/WinIsland-CE/releases/tag/v1.2.4beta",
+      "prerelease": true,
+      "publishedAt": "2026-09-17T13:12:15Z",
+      "assets": [
+        {
+          "name": "WinIsland-1.2.4beta-Windows-x64.zip",
+          "size": 647002,
+          "digest": "sha256:6051d6bd5899695681e2fef0d106b9e4361b0ffd624b3a39fed4e0b51b4b1704",
+          "browser_download_url": "https://github.com/DxDxDxis/WinIsland-CE/releases/download/v1.2.4beta/WinIsland-1.2.4beta-Windows-x64.zip"
+        },
+        {
+          "name": "WinIsland-1.2.4beta-Windows-x64.zip.sha256",
+          "size": 103,
+          "digest": "sha256:3465d18535f48f2bda06c5f050b1bc388473d480560ca17a53afc72bdb5f7e5d",
+          "browser_download_url": "https://github.com/DxDxDxis/WinIsland-CE/releases/download/v1.2.4beta/WinIsland-1.2.4beta-Windows-x64.zip.sha256"
+        }
+      ]
+    },
+    {
+      "version": "1.2.3beta_2",
+      "url": "https://github.com/DxDxDxis/WinIsland-CE/releases/tag/v1.2.3beta_2",
+      "prerelease": true,
+      "publishedAt": "2026-09-17T13:11:59Z",
+      "assets": [
+        {
+          "name": "WinIsland-1.2.3beta_2-Windows-x64.zip",
+          "size": 486597,
+          "digest": "sha256:627ec87c5e999813d3ea54f88814431e7a2e2a8ccace6249ecfc41f2c38f98da",
+          "browser_download_url": "https://github.com/DxDxDxis/WinIsland-CE/releases/download/v1.2.3beta_2/WinIsland-1.2.3beta_2-Windows-x64.zip"
+        },
+        {
+          "name": "WinIsland-1.2.3beta_2-Windows-x64.zip.sha256",
+          "size": 105,
+          "digest": "sha256:375ddcaaa6f1b2d20994b7c5191e3091924a6ba6ccb985cce996d24b171f5823",
+          "browser_download_url": "https://github.com/DxDxDxis/WinIsland-CE/releases/download/v1.2.3beta_2/WinIsland-1.2.3beta_2-Windows-x64.zip.sha256"
+        }
+      ]
+    },
+    {
+      "version": "1.2.3beta",
+      "url": "https://github.com/DxDxDxis/WinIsland-CE/releases/tag/v1.2.3beta",
+      "prerelease": true,
+      "publishedAt": "2026-09-17T13:11:42Z",
+      "assets": [
+        {
+          "name": "WinIsland-1.2.3beta-Windows-x64.zip",
+          "size": 482073,
+          "digest": "sha256:9e3acfff85f89793cc400ad5db7ffcbfdd31232c2b8e236e489467700a99f263",
+          "browser_download_url": "https://github.com/DxDxDxis/WinIsland-CE/releases/download/v1.2.3beta/WinIsland-1.2.3beta-Windows-x64.zip"
+        },
+        {
+          "name": "WinIsland-1.2.3beta-Windows-x64.zip.sha256",
+          "size": 103,
+          "digest": "sha256:99e572b931d59ad22f3cbe96ca5177544b522fd3f8251cfc695fe49ae22e8a14",
+          "browser_download_url": "https://github.com/DxDxDxis/WinIsland-CE/releases/download/v1.2.3beta/WinIsland-1.2.3beta-Windows-x64.zip.sha256"
+        }
+      ]
+    },
+    {
+      "version": "1.2.2beta",
+      "url": "https://github.com/DxDxDxis/WinIsland-CE/releases/tag/v1.2.2beta",
+      "prerelease": true,
+      "publishedAt": "2026-09-17T13:11:26Z",
+      "assets": [
+        {
+          "name": "WinIsland-1.2.2beta-Windows-x64.zip",
+          "size": 224237,
+          "digest": "sha256:77b3c7cd3a0fcf95e32f3820c20fb4f7d756631b0c7d2587c4dc16a4887d6405",
+          "browser_download_url": "https://github.com/DxDxDxis/WinIsland-CE/releases/download/v1.2.2beta/WinIsland-1.2.2beta-Windows-x64.zip"
+        },
+        {
+          "name": "WinIsland-1.2.2beta-Windows-x64.zip.sha256",
+          "size": 103,
+          "digest": "sha256:5f34738056aacadbdbbaa805c4cd94aed9f72056e3266ddad712e664cb654cef",
+          "browser_download_url": "https://github.com/DxDxDxis/WinIsland-CE/releases/download/v1.2.2beta/WinIsland-1.2.2beta-Windows-x64.zip.sha256"
+        }
+      ]
+    },
+    {
+      "version": "1.2.1beta",
+      "url": "https://github.com/DxDxDxis/WinIsland-CE/releases/tag/v1.2.1beta",
+      "prerelease": true,
+      "publishedAt": "2026-09-17T13:11:12Z",
+      "assets": [
+        {
+          "name": "WinIsland-1.2.1beta-Windows-x64.zip",
+          "size": 230461,
+          "digest": "sha256:27b74d70ce85bda6c1fdba4f62ac03d7b80a4a8820f318eeb4bc52e38018065f",
+          "browser_download_url": "https://github.com/DxDxDxis/WinIsland-CE/releases/download/v1.2.1beta/WinIsland-1.2.1beta-Windows-x64.zip"
+        },
+        {
+          "name": "WinIsland-1.2.1beta-Windows-x64.zip.sha256",
+          "size": 103,
+          "digest": "sha256:04cda128010b27df8be86cc7c326a76ad5ae46fe1406ab381eb17bff74aaf394",
+          "browser_download_url": "https://github.com/DxDxDxis/WinIsland-CE/releases/download/v1.2.1beta/WinIsland-1.2.1beta-Windows-x64.zip.sha256"
+        }
+      ]
+    },
+    {
+      "version": "1.2.0",
+      "url": "https://github.com/DxDxDxis/WinIsland-CE/releases/tag/v1.2.0",
+      "prerelease": false,
+      "publishedAt": "2026-09-17T13:10:55Z",
+      "assets": [
+        {
+          "name": "WinIsland-1.2.0-community-Windows-x64.zip",
+          "size": 230464,
+          "digest": "sha256:e7682429675bf19ac15a7ac4a759acb62d51710162af92ed122da9fa77910f4f",
+          "browser_download_url": "https://github.com/DxDxDxis/WinIsland-CE/releases/download/v1.2.0/WinIsland-1.2.0-community-Windows-x64.zip"
+        },
+        {
+          "name": "WinIsland-1.2.0-community-Windows-x64.zip.sha256",
+          "size": 109,
+          "digest": "sha256:1724cdf8f6a9c216ad582d6a99149d1a61ae5ba00127da16ed8d1592fd15863e",
+          "browser_download_url": "https://github.com/DxDxDxis/WinIsland-CE/releases/download/v1.2.0/WinIsland-1.2.0-community-Windows-x64.zip.sha256"
+        }
+      ]
+    },
+    {
+      "version": "1.1.2",
+      "url": "https://github.com/DxDxDxis/WinIsland-CE/releases/tag/v1.1.2",
+      "prerelease": false,
+      "publishedAt": "2026-09-17T13:10:39Z",
+      "assets": [
+        {
+          "name": "WinIsland-1.1.2-community-Windows-x64.zip",
+          "size": 220909,
+          "digest": "sha256:b6484b63ce339167f9f0bb030679d28677dea626ccadcbdefc8a127306f9eef3",
+          "browser_download_url": "https://github.com/DxDxDxis/WinIsland-CE/releases/download/v1.1.2/WinIsland-1.1.2-community-Windows-x64.zip"
+        },
+        {
+          "name": "WinIsland-1.1.2-community-Windows-x64.zip.sha256",
+          "size": 109,
+          "digest": "sha256:8eda9dfbeb9e72d199c05f863eeac102ddfc077ee6410e7b806cb6b4e56aed33",
+          "browser_download_url": "https://github.com/DxDxDxis/WinIsland-CE/releases/download/v1.1.2/WinIsland-1.1.2-community-Windows-x64.zip.sha256"
+        }
+      ]
+    },
+    {
+      "version": "1.1.1",
+      "url": "https://github.com/DxDxDxis/WinIsland-CE/releases/tag/v1.1.1",
+      "prerelease": false,
+      "publishedAt": "2026-09-17T13:09:36Z",
+      "assets": [
+        {
+          "name": "WinIsland-1.1.1-community-Windows-x64.zip",
+          "size": 183646,
+          "digest": "sha256:062ec92acf4e382afad54ea483c308d5be79e4c13d3271f52e345f85b38d4f58",
+          "browser_download_url": "https://github.com/DxDxDxis/WinIsland-CE/releases/download/v1.1.1/WinIsland-1.1.1-community-Windows-x64.zip"
+        },
+        {
+          "name": "WinIsland-1.1.1-community-Windows-x64.zip.sha256",
+          "size": 109,
+          "digest": "sha256:e6e3b960f385c62e79e5d542183572bc05a74147807d9ffb53acdc28849dd260",
+          "browser_download_url": "https://github.com/DxDxDxis/WinIsland-CE/releases/download/v1.1.1/WinIsland-1.1.1-community-Windows-x64.zip.sha256"
+        }
+      ]
+    }
+  ],
+  "scope": "Verified remote source blob IDs, release flags, tag targets and server SHA-256 attachment digests. Historical programs were not rebuilt or run."
+}

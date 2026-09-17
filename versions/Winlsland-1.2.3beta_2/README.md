@@ -20,13 +20,15 @@
 
 ## 安装与运行
 
+GitHub 用户请从[本版本发行页](https://github.com/DxDxDxis/WinIsland-CE/releases/tag/v1.2.3beta_2)下载运行包。`dist/` 仅保存在本地完整归档，未放入 Git 源码仓库；下方成品表列出 ZIP 内 EXE 的原始哈希。
+
 优先阅读原发布说明。`dist/` 保存该版本成品；多文件发行必须保留歌词服务、DLL、许可证等相对目录，不能只取主 EXE。较新内嵌发行版在首次启动确认数据路径。旧版本可能使用 `%LOCALAPPDATA%/WinIsland`；测试旧版前先备份日常配置，不同时运行多个历史版本。
 
 ## 成品清单
 
 | 文件 | MiB | SHA-256 |
 |---|---:|---|
-| [dist/WinIsland-1.2.3beta_2.exe](dist/WinIsland-1.2.3beta_2.exe) | 0.71 | `0D9F084666198DA4EF09C4D1884F12B61F94E18D763F9DA66A3D9218C23E396E` |
+| [dist/WinIsland-1.2.3beta_2.exe](https://github.com/DxDxDxis/WinIsland-CE/releases/tag/v1.2.3beta_2) | 0.71 | `0D9F084666198DA4EF09C4D1884F12B61F94E18D763F9DA66A3D9218C23E396E` |
 
 ## 身份证据
 

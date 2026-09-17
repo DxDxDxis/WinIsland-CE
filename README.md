@@ -17,7 +17,7 @@ WinIsland 是一个面向 Windows 的桌面交互项目：在屏幕边缘呈现�
 - [安装、运行与配置](docs/INSTALL_AND_CONFIGURE.md)
 - [源码构建与依赖准备](docs/BUILD.md)
 - [架构及功能关系](docs/ARCHITECTURE.md)
-- [文件来源、缺失项与整理规则](docs/ARCHIVE.md)
+- [文件来源、缺失项与整理规则](docs/ARCHIVE.md) · [整理与发布报告](docs/整理与发布报告.md)
 - [上传 GitHub 与发布成品](docs/GITHUB_PUBLISH.md) · [哪些文件要上传](docs/UPLOAD_CHECKLIST.md)
 - [许可证](LICENSE) · [第三方许可](THIRD_PARTY_NOTICES.md) · [联系方式](#联系方式)
 

@@ -35,8 +35,14 @@ def call(*parts, allow_missing=False):
         time.sleep(2)
 
 def api(path):
-    out = call('api', path, allow_missing=True)
+    path += ('&' if '?' in path else '?') + '_publish_check=' + str(time.time_ns())
+    out = call('api', path, '-H', 'Cache-Control: no-cache', allow_missing=True)
     return json.loads(out) if out is not None else None
+
+def release_for_tag(tag):
+    # GitHub's tags endpoint does not return unpublished drafts.
+    releases = api('repos/' + REPO + '/releases?per_page=100')
+    return next((r for r in releases if r['tag_name'] == tag), None)
 
 def sha(p):
     with p.open('rb') as f:
@@ -50,14 +56,20 @@ results = []
 for row in rows:
     tag = row['tag']
     print('Preparing release ' + tag, flush=True)
-    release = api('repos/' + REPO + '/releases/tags/' + tag)
+    release = release_for_tag(tag)
     if release is None:
         command = ['release', 'create', tag, '--repo', REPO, '--target', args.commit,
                    '--draft', '--title', row['title'], '--notes-file', row['notes']]
         if row['prerelease']:
             command.append('--prerelease')
         call(*command)
-        release = api('repos/' + REPO + '/releases/tags/' + tag)
+        for _ in range(8):
+            release = release_for_tag(tag)
+            if release is not None:
+                break
+            time.sleep(2)
+        if release is None:
+            raise RuntimeError('New draft not yet visible; resume later: ' + tag)
     if release['target_commitish'] not in (args.commit, 'main'):
         raise RuntimeError('Existing release has a different target: ' + tag)
     if not release['draft'] and release['name'] != row['title']:
@@ -69,15 +81,21 @@ for row in rows:
         existing = assets.get(p.name)
         if existing is None:
             call('release', 'upload', tag, str(p), '--repo', REPO)
-            release = api('repos/' + REPO + '/releases/tags/' + tag)
-            existing = next(a for a in release['assets'] if a['name'] == p.name)
+            for _ in range(8):
+                release = api('repos/' + REPO + '/releases/' + str(release['id']))
+                existing = next((a for a in release['assets'] if a['name'] == p.name and a.get('digest')), None)
+                if existing is not None:
+                    break
+                time.sleep(2)
+            if existing is None:
+                raise RuntimeError('Uploaded asset verification not yet available: ' + p.name)
         if existing['size'] != p.stat().st_size or existing.get('digest') != 'sha256:' + checksum:
             raise RuntimeError('Server asset digest mismatch or unavailable: ' + tag + '/' + p.name)
     if release['draft']:
         call('release', 'edit', tag, '--repo', REPO, '--draft=false',
              '--prerelease=' + str(row['prerelease']).lower(),
              '--latest=' + str(row['version'] == '1.3.0').lower())
-    release = api('repos/' + REPO + '/releases/tags/' + tag)
+    release = api('repos/' + REPO + '/releases/' + str(release['id']))
     if release['draft'] or release['prerelease'] != row['prerelease']:
         raise RuntimeError('Published status mismatch: ' + tag)
     results.append({'version': row['version'], 'tag': tag, 'url': release['html_url'],

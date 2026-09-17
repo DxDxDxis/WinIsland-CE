@@ -9,7 +9,7 @@
 ```powershell
 git init -b main
 git status --short
-git add README.md LICENSE THIRD_PARTY_NOTICES.md .gitignore docs versions shared extras licenses catalog tools
+git add README.md LICENSE THIRD_PARTY_NOTICES.md .gitignore docs versions shared extras licenses catalog tools 版本导航.html
 git diff --cached --stat
 git commit -m "Archive WinIsland community releases and source"
 ```
@@ -43,4 +43,4 @@ git status --short
 
 检查总 README 图片是否显示、版本表是否新到旧、只留最新构建、EXE SHA 是否符合清单。确认没有遗漏你需要提供的历史源码；当前明确的源码缺失项须继续在 README 保留。
 
-本次整理没有实际推送、上传或新建 GitHub 仓库。联系方式已设置为 `725513212@qq.com`。
+初始整理阶段未上传。后续实际发布记录以 [整理与发布报告](整理与发布报告.md) 及 `catalog/github-publication.json` 为准。联系方式：`725513212@qq.com`。

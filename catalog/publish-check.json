@@ -3,6 +3,8 @@
   "filesAtOrOver100MiB": [],
   "highConfidenceSecretPatternCandidates": [],
   "notAnExhaustiveSecurityAudit": true,
-  "gitRemoteConfigured": false,
-  "uploaded": false
+  "gitRemoteConfigured": true,
+  "uploaded": true,
+  "checkPhase": "Initial pre-publication source scan; final publication is recorded separately.",
+  "publicationReport": "github-publication.json"
 }

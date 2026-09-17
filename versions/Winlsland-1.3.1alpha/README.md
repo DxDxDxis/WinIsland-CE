@@ -20,15 +20,17 @@
 
 ## 安装与运行
 
+GitHub 用户请从[本版本发行页](https://github.com/DxDxDxis/WinIsland-CE/releases/tag/v1.3.1alpha)下载运行包。`dist/` 仅保存在本地完整归档，未放入 Git 源码仓库；下方成品表列出 ZIP 内 EXE 的原始哈希。
+
 优先阅读原发布说明。`dist/` 保存该版本成品；多文件发行必须保留歌词服务、DLL、许可证等相对目录，不能只取主 EXE。较新内嵌发行版在首次启动确认数据路径。旧版本可能使用 `%LOCALAPPDATA%/WinIsland`；测试旧版前先备份日常配置，不同时运行多个历史版本。
 
 ## 成品清单
 
 | 文件 | MiB | SHA-256 |
 |---|---:|---|
-| [dist/WinIsland-1.3.1alpha.exe](dist/WinIsland-1.3.1alpha.exe) | 162.08 | `3851B77D4EBB8AA27E144B2E7EB5000D8902D2DC0571E4333698F4BCD6F550B2` |
-| [dist/settings/WinIslandSettings.exe](dist/settings/WinIslandSettings.exe) | 234.67 | `51E07D597D8094B1C0E834560D42398FAB55D92BF9280AA27E326E07CC8F5235` |
-| [dist/lyric-provider/WinIsland-LyricHelper.exe](dist/lyric-provider/WinIsland-LyricHelper.exe) | 0.85 | `7F40754409BD23EFE17EA30330A8A3713C6E4BC5E7D05AF417D6CB80281A4F03` |
+| [dist/WinIsland-1.3.1alpha.exe](https://github.com/DxDxDxis/WinIsland-CE/releases/tag/v1.3.1alpha) | 162.08 | `3851B77D4EBB8AA27E144B2E7EB5000D8902D2DC0571E4333698F4BCD6F550B2` |
+| [dist/settings/WinIslandSettings.exe](https://github.com/DxDxDxis/WinIsland-CE/releases/tag/v1.3.1alpha) | 234.67 | `51E07D597D8094B1C0E834560D42398FAB55D92BF9280AA27E326E07CC8F5235` |
+| [dist/lyric-provider/WinIsland-LyricHelper.exe](https://github.com/DxDxDxis/WinIsland-CE/releases/tag/v1.3.1alpha) | 0.85 | `7F40754409BD23EFE17EA30330A8A3713C6E4BC5E7D05AF417D6CB80281A4F03` |
 
 ## 身份证据
 
