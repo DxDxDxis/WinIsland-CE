@@ -1,0 +1,15 @@
+{
+  "settingsExecutable": "release/settings/WinIslandSettings.exe",
+  "pluginLifecycleAbi": "0x00010002",
+  "executable": "release/WinIsland-1.2.7alpha.exe",
+  "status": "implemented-and-verified-on-current-host",
+  "report": "docs/设置迁移交付报告.md",
+  "buildScript": "build-release.ps1",
+  "electronSource": "settings-electron",
+  "buildId": "1.2.7alpha-electron-settings-20260914",
+  "version": "1.2.7alpha",
+  "source": "source",
+  "sceneAbi": 1,
+  "sha256": "7A1DEF4F87E7FF0880826D70F547AEC9D80767256A12B282C46F6C543E9AA1EF",
+  "acceptanceLimit": "Physical multi-monitor DPI and complete external media/notification environments remain unverified"
+}

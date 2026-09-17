@@ -1,0 +1,191 @@
+[
+  {
+    "folder": "1.2.4beta_2",
+    "path": "WinIsland-社区版-大更新/release/1.2.4beta_2/WinIsland-1.2.4beta_2.exe",
+    "peBuilt": "2026-09-07T18:16:04+08:00",
+    "timestamp": 1788776164,
+    "fileModified": "2026-09-07T18:16:04.659901+08:00"
+  },
+  {
+    "folder": "1.2.5alpha",
+    "path": "WinIsland-社区版-大更新/release/1.2.5alpha/WinIsland-1.2.4beta_2.exe",
+    "peBuilt": "2026-09-12T05:36:15+08:00",
+    "timestamp": 1789162575,
+    "fileModified": "2026-09-12T05:36:15.118709+08:00"
+  },
+  {
+    "folder": "1.2.5alpha",
+    "path": "WinIsland-社区版-大更新/release/1.2.5alpha/WinIsland-1.2.5alpha.exe",
+    "peBuilt": "2026-09-12T05:56:47+08:00",
+    "timestamp": 1789163807,
+    "fileModified": "2026-09-12T05:56:47.494292+08:00"
+  },
+  {
+    "folder": "1.2.5alpha-final",
+    "path": "WinIsland-社区版-大更新/release/1.2.5alpha-final/WinIsland-1.2.5alpha.exe",
+    "peBuilt": "2026-09-12T06:25:44+08:00",
+    "timestamp": 1789165544,
+    "fileModified": "2026-09-12T06:25:44.553935+08:00"
+  },
+  {
+    "folder": "1.2.5alpha-large",
+    "path": "WinIsland-社区版-大更新/release/1.2.5alpha-large/WinIsland-1.2.5alpha.exe",
+    "peBuilt": "2026-09-12T06:09:56+08:00",
+    "timestamp": 1789164596,
+    "fileModified": "2026-09-12T06:09:56.338837+08:00"
+  },
+  {
+    "folder": "1.2.5alpha-r1",
+    "path": "WinIsland-社区版-大更新/release/1.2.5alpha-r1/WinIsland-1.2.5alpha-r1.exe",
+    "peBuilt": "2026-09-12T15:56:59+08:00",
+    "timestamp": 1789199819,
+    "fileModified": "2026-09-12T15:56:59.928286+08:00"
+  },
+  {
+    "folder": "1.2.5alpha-r1-fixed",
+    "path": "WinIsland-社区版-大更新/release/1.2.5alpha-r1-fixed/WinIsland-1.2.5alpha-r1.exe",
+    "peBuilt": "2026-09-12T16:03:44+08:00",
+    "timestamp": 1789200224,
+    "fileModified": "2026-09-12T16:03:44.254497+08:00"
+  },
+  {
+    "folder": "1.2.5alpha-r1-fixed2",
+    "path": "WinIsland-社区版-大更新/release/1.2.5alpha-r1-fixed2/WinIsland-1.2.5alpha-r1.exe",
+    "peBuilt": "2026-09-12T16:07:53+08:00",
+    "timestamp": 1789200473,
+    "fileModified": "2026-09-12T16:07:53.439819+08:00"
+  },
+  {
+    "folder": "1.2.5alpha-r1-outward",
+    "path": "WinIsland-社区版-大更新/release/1.2.5alpha-r1-outward/WinIsland-1.2.5alpha-r1.exe",
+    "peBuilt": "2026-09-12T16:16:23+08:00",
+    "timestamp": 1789200983,
+    "fileModified": "2026-09-12T16:16:23.428788+08:00"
+  },
+  {
+    "folder": "1.2.5alpha-r1-outward-adjustable",
+    "path": "WinIsland-社区版-大更新/release/1.2.5alpha-r1-outward-adjustable/WinIsland-1.2.5alpha-r1.exe",
+    "peBuilt": "2026-09-12T16:40:12+08:00",
+    "timestamp": 1789202412,
+    "fileModified": "2026-09-12T16:40:12.807589+08:00"
+  },
+  {
+    "folder": "1.2.5alpha-top",
+    "path": "WinIsland-社区版-大更新/release/1.2.5alpha-top/WinIsland-1.2.5alpha.exe",
+    "peBuilt": "2026-09-12T06:14:01+08:00",
+    "timestamp": 1789164841,
+    "fileModified": "2026-09-12T06:14:01.444576+08:00"
+  },
+  {
+    "folder": "1.2.5alpha-top-docked",
+    "path": "WinIsland-社区版-大更新/release/1.2.5alpha-top-docked/WinIsland-1.2.5alpha.exe",
+    "peBuilt": "2026-09-12T06:35:39+08:00",
+    "timestamp": 1789166139,
+    "fileModified": "2026-09-12T06:35:39.174738+08:00"
+  },
+  {
+    "folder": "1.2.6alpha-c1",
+    "path": "WinIsland-社区版-大更新/release/1.2.6alpha-c1/WinIsland-1.2.6alpha-c1.exe",
+    "peBuilt": "2026-09-12T19:48:43+08:00",
+    "timestamp": 1789213723,
+    "fileModified": "2026-09-12T19:48:43.775355+08:00"
+  },
+  {
+    "folder": "1.2.6alpha-c1-plugin-manager",
+    "path": "WinIsland-社区版-大更新/release/1.2.6alpha-c1-plugin-manager/WinIsland-1.2.6alpha-c1.exe",
+    "peBuilt": "2026-09-12T20:45:01+08:00",
+    "timestamp": 1789217101,
+    "fileModified": "2026-09-12T20:45:01.097382+08:00"
+  },
+  {
+    "folder": "1.2.6alpha-c1-wimod",
+    "path": "WinIsland-社区版-大更新/release/1.2.6alpha-c1-wimod/WinIsland-1.2.6alpha-c1.exe",
+    "peBuilt": "2026-09-12T23:25:29+08:00",
+    "timestamp": 1789226729,
+    "fileModified": "2026-09-12T23:25:29.434332+08:00"
+  },
+  {
+    "folder": "1.2.6alpha-c2-js-settings",
+    "path": "WinIsland-社区版-大更新/release/1.2.6alpha-c2-js-settings/WinIsland-1.2.6alpha-c2.exe",
+    "peBuilt": "2026-09-13T09:28:43+08:00",
+    "timestamp": 1789262923,
+    "fileModified": "2026-09-13T09:28:43.999556+08:00"
+  },
+  {
+    "folder": "1.2.6alpha-c2-no-motion",
+    "path": "WinIsland-社区版-大更新/release/1.2.6alpha-c2-no-motion/WinIsland-1.2.6alpha-c2.exe",
+    "peBuilt": "2026-09-13T11:18:27+08:00",
+    "timestamp": 1789269507,
+    "fileModified": "2026-09-13T11:18:27.237469+08:00"
+  },
+  {
+    "folder": "1.2.6alpha-c2-open-scene",
+    "path": "WinIsland-社区版-大更新/release/1.2.6alpha-c2-open-scene/WinIsland-1.2.6alpha-c2.exe",
+    "peBuilt": "2026-09-13T15:16:22+08:00",
+    "timestamp": 1789283782,
+    "fileModified": "2026-09-13T15:16:22.678007+08:00"
+  },
+  {
+    "folder": "1.2.6alpha-c2-theme-installer",
+    "path": "WinIsland-社区版-大更新/release/1.2.6alpha-c2-theme-installer/WinIsland-1.2.6alpha-c2.exe",
+    "peBuilt": "2026-09-13T11:18:27+08:00",
+    "timestamp": 1789269507,
+    "fileModified": "2026-09-13T11:18:27.237469+08:00"
+  },
+  {
+    "folder": "1.2.6alpha-c2-ui-fix",
+    "path": "WinIsland-社区版-大更新/release/1.2.6alpha-c2-ui-fix/WinIsland-1.2.6alpha-c2.exe",
+    "peBuilt": "2026-09-13T10:25:23+08:00",
+    "timestamp": 1789266323,
+    "fileModified": "2026-09-13T10:25:23.991138+08:00"
+  },
+  {
+    "folder": "1.2.7alpha-r1-after-20260914-202902",
+    "path": "WinIsland-社区版-大更新/release/1.2.7alpha-r1-after-20260914-202902/WinIsland-1.2.7alpha-r1.exe",
+    "peBuilt": "2026-09-14T19:59:57+08:00",
+    "timestamp": 1789387197,
+    "fileModified": "2026-09-14T19:59:57.300175+08:00"
+  },
+  {
+    "folder": "1.2.7alpha-r1-before-20260914-193730",
+    "path": "WinIsland-社区版-大更新/release/1.2.7alpha-r1-before-20260914-193730/WinIsland-1.2.7alpha-r1.exe",
+    "peBuilt": "2026-09-14T14:25:33+08:00",
+    "timestamp": 1789367133,
+    "fileModified": "2026-09-14T14:25:33.338619+08:00"
+  },
+  {
+    "folder": "1.2.7alpha-r1-dynamic-final-snapshot-20260914-214403",
+    "path": "WinIsland-社区版-大更新/release/1.2.7alpha-r1-dynamic-final-snapshot-20260914-214403/WinIsland-1.2.7alpha-r1.exe",
+    "peBuilt": "2026-09-14T21:15:47+08:00",
+    "timestamp": 1789391747,
+    "fileModified": "2026-09-14T21:15:47.152515+08:00"
+  },
+  {
+    "folder": "1.2.7alpha-r1-dynamic-final-snapshot-20260914-214403",
+    "path": "WinIsland-社区版-大更新/release/1.2.7alpha-r1-dynamic-final-snapshot-20260914-214403/release/WinIsland-1.2.7alpha-r1.exe",
+    "peBuilt": "2026-09-14T21:15:47+08:00",
+    "timestamp": 1789391747,
+    "fileModified": "2026-09-14T21:15:47.152515+08:00"
+  },
+  {
+    "folder": "1.3.0",
+    "path": "WinIsland-社区版-大更新/release/1.3.0/release/WinIsland-1.3.0.exe",
+    "peBuilt": "2026-09-16T12:38:59+08:00",
+    "timestamp": 1789533539,
+    "fileModified": "2026-09-16T12:38:59.136877+08:00"
+  },
+  {
+    "folder": "1.3.0-path-state-fix",
+    "path": "WinIsland-社区版-大更新/release/1.3.0-path-state-fix/release/WinIsland-1.3.0.exe",
+    "peBuilt": "2026-09-16T14:08:19+08:00",
+    "timestamp": 1789538899,
+    "fileModified": "2026-09-16T14:08:19.937386+08:00"
+  },
+  {
+    "folder": "1.3.1alpha",
+    "path": "WinIsland-社区版-大更新/release/1.3.1alpha/release/WinIsland-1.3.1alpha.exe",
+    "peBuilt": "2026-09-17T16:02:22+08:00",
+    "timestamp": 1789632142,
+    "fileModified": "2026-09-17T16:02:22.752373+08:00"
+  }
+]

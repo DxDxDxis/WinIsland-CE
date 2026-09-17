@@ -1,0 +1,8 @@
+{
+  "gitCandidateFiles": 3584,
+  "filesAtOrOver100MiB": [],
+  "highConfidenceSecretPatternCandidates": [],
+  "notAnExhaustiveSecurityAudit": true,
+  "gitRemoteConfigured": false,
+  "uploaded": false
+}

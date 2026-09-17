@@ -1,0 +1,65 @@
+Microsoft (R) COFF/PE Dumper Version 14.44.35228.0
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+
+Dump of file .\发布包\WinIsland-1.2.3beta.exe
+
+File Type: EXECUTABLE IMAGE
+
+  Image has the following dependencies:
+
+    USER32.dll
+    GDI32.dll
+    SHELL32.dll
+    SHLWAPI.dll
+    ole32.dll
+    OLEAUT32.dll
+    api-ms-win-core-handle-l1-1-0.dll
+    api-ms-win-core-processthreads-l1-1-0.dll
+    api-ms-win-core-libraryloader-l1-2-0.dll
+    api-ms-win-core-file-l2-1-0.dll
+    api-ms-win-core-string-l1-1-0.dll
+    bcrypt.dll
+    DWrite.dll
+    XmlLite.dll
+    api-ms-win-core-psapi-l1-1-0.dll
+    api-ms-win-core-toolhelp-l1-1-0.dll
+    api-ms-win-core-file-l1-1-0.dll
+    api-ms-win-core-errorhandling-l1-1-0.dll
+    api-ms-win-core-processthreads-l1-1-1.dll
+    api-ms-win-core-sysinfo-l1-1-0.dll
+    api-ms-win-core-sysinfo-l1-2-0.dll
+    api-ms-win-core-kernel32-legacy-l1-1-0.dll
+    api-ms-win-core-registry-l1-1-0.dll
+    dxgi.dll
+    api-ms-win-core-synch-l1-1-0.dll
+    MMDevAPI.DLL
+    api-ms-win-core-synch-l1-2-1.dll
+    d2d1.dll
+    d3d11.dll
+    api-ms-win-core-processenvironment-l1-1-0.dll
+    api-ms-win-core-heap-l2-1-0.dll
+    dcomp.dll
+    dwmapi.dll
+    api-ms-win-shcore-scaling-l1-1-1.dll
+    WTSAPI32.dll
+    COMCTL32.dll
+    OLEACC.dll
+    gdiplus.dll
+    KERNEL32.dll
+    api-ms-win-core-rtlsupport-l1-1-0.dll
+    api-ms-win-core-interlocked-l1-1-0.dll
+    api-ms-win-core-heap-l1-1-0.dll
+    api-ms-win-core-fibers-l1-1-0.dll
+    api-ms-win-core-localization-l1-2-0.dll
+    api-ms-win-core-console-l1-1-0.dll
+    api-ms-win-core-libraryloader-l1-2-1.dll
+
+  Summary
+
+       1D000 .data
+        6000 .pdata
+       27000 .rdata
+        1000 .reloc
+        4000 .rsrc
+       7E000 .text

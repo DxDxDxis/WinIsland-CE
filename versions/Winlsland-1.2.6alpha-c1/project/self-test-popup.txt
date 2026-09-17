@@ -1,0 +1,68 @@
+PASS: Symmetric outward contour and continuous zero-radius boundary across states and DPI
+PASS: Legacy config uses new fixed arc baseline
+PASS: Invalid and nonfinite arc multipliers rejected
+PASS: Arc endpoints persist and reset without cumulative scaling
+PASS: Performance export names every metric including accessibility without out-of-bounds reads
+PASS: Visible verified lyric is accepted
+PASS: Minimization cannot refresh a frozen foreground snapshot
+PASS: Actual background line changes are accepted without restoring the player
+PASS: Frozen background line expires instead of claiming continuous sync
+PASS: New song cannot inherit old background current line
+PASS: Background line recovery requires real new evidence
+PASS: Restored window reacquires current line
+PASS: Timeline uses 100ns UTC timestamp and seconds position
+PASS: Pause freezes previous running clock without a new timeline timestamp
+PASS: Paused wall-clock time never advances lyric progress
+PASS: Resume rebases instead of including the pause interval
+PASS: Seek reanchors immediately from new SMTC timeline
+PASS: Reported timestamped position can sync without an end time
+PASS: All-zero SMTC timeline is unavailable, never synthesized
+PASS: Timeline recovery uses new actual position
+PASS: Track change rejects stale timeline from previous track
+PASS: Old unchanged timeline stays unavailable after track change
+PASS: New track timeline event restores synchronized start
+PASS: Sparse SMTC updates use a bounded monotonic projection
+PASS: Polling identical stale reports never renews progress validity
+PASS: Pausing after a stale report cannot revive an old playback cursor
+PASS: Fresh timeline after expiry reanchors to actual playback position
+PASS: Legacy SHA256 lyric file identity
+PASS: LRC timestamp, offset, repeated tags and empty intervals
+PASS: Settings preserve resident, duration and manual FPS
+PASS: Independent layout settings survive XML reload
+PASS: Restore layout defaults preserves unrelated user settings
+PASS: Invalid nonfinite and oversized layout values preserve valid defaults
+PASS: Legacy settings use default system cadence
+PASS: easing is continuous, bounded and monotonic
+PASS: Fresh real player current line displays without inventing a seconds timeline
+PASS: Expired player line never remains synchronized
+PASS: Disabling lyrics suppresses player-line fallback
+PASS: New defaults use SMTC-first automatic metadata and cache-first lyrics
+PASS: Data source, telemetry switches and target survive reload
+PASS: Ping accepts IPv4/IPv6 literals, scoped link-local and gateway mode
+PASS: Lyric endpoints require HTTPS and exclude credentials/query fragments
+PASS: Real audio history has twelve bars
+PASS: Window title strips only known player decorations
+PASS: Three platform title formats
+PASS: Invalid or ambiguous player captions are rejected
+PASS: LRC translation lines and signed offset remain synchronized
+PASS: API validates metadata and parses actual timed lyrics
+PASS: Matching recording duration tolerates different compilation album
+PASS: Missing duration requires matching album
+PASS: API rejects a different artist
+PASS: API rejects a different recording duration
+PASS: Malformed/empty API responses cannot leave lyrics
+PASS: YRC empty LRC fallback strips every word tag and preserves millisecond line times
+PASS: Plain lyrics have no invented timeline
+PASS: Search rejects wrong first recording and preserves 64-bit song ID
+PASS: Cross-catalog live or cover recording cannot match original
+PASS: Missing candidate duration cannot pass a known timeline
+PASS: Duplicate matching recordings are rejected rather than choosing first
+PASS: Missing player album/duration permits only unique exact candidate and reports limited evidence
+PASS: Unknown player duration cannot choose between two exact recordings
+PASS: Supported players exclude QQ chat
+PASS: Paused timeline is stable
+PASS: Playing timeline clamps at track duration
+PASS: Toast XML decoding excludes actions and attribution
+PASS: Legacy UTF16 notification payload with trailing NUL
+PASS: External entities are prohibited
+PASS: ToastGeneric chosen once among alternate bindings

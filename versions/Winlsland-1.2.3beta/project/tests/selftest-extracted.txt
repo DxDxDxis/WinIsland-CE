@@ -1,0 +1,12 @@
+PASS: Legacy SHA256 lyric file identity
+PASS: LRC timestamp, offset, repeated tags and empty intervals
+PASS: Settings preserve resident, duration and manual FPS
+PASS: Legacy settings use default system cadence
+PASS: easing is continuous, bounded and monotonic
+PASS: Supported players exclude QQ chat
+PASS: Paused timeline is stable
+PASS: Playing timeline clamps at track duration
+PASS: Toast XML decoding excludes actions and attribution
+PASS: Legacy UTF16 notification payload with trailing NUL
+PASS: External entities are prohibited
+PASS: ToastGeneric chosen once among alternate bindings

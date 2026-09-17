@@ -1,0 +1,3 @@
+#include "../src/core.h"
+#include <iostream>
+int main(){CoInitializeEx(nullptr,COINIT_MULTITHREADED);std::wstring xml=L"\xFEFF<toast><visual><binding template='ToastGeneric'><text>hello</text><text>world</text></binding></visual></toast>";wi::ComPtr<IStream>s;s.Attach(SHCreateMemStream((BYTE*)xml.data(),(UINT)xml.size()*2));wi::ComPtr<IXmlReader>r;CreateXmlReader(__uuidof(IXmlReader),&r,nullptr);r->SetInput(s.Get());XmlNodeType t;HRESULT hr;while((hr=r->Read(&t))==S_OK){UINT d=0,n=0;const wchar_t*p;r->GetDepth(&d);r->GetLocalName(&p,&n);std::wcout<<L"type="<<t<<L" depth="<<d<<L" name="<<std::wstring(p?p:L"",n)<<L"\n";}std::cout<<"hr="<<std::hex<<hr<<"\n";}

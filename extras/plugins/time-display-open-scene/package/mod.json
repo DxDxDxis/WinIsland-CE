@@ -1,0 +1,1 @@
+{"id":"time-display","name":"时间显示","version":"1.1.0","author":"daxian","description":"居中显示年、月、日、时、分，支持分项配色、统一颜色、自定义多色循环和彩虹循环。","entry":"bin/time-display.dll","apiVersion":1,"dependencies":[]}

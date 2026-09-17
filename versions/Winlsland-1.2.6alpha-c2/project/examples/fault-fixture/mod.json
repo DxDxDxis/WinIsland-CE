@@ -1,0 +1,9 @@
+{
+  "dependencies": [],
+  "id": "fault-fixture",
+  "name": "异常测试专用（不要安装）",
+  "apiVersion": 1,
+  "description": "仅供自测，onEnable 主动抛出异常。",
+  "entry": "example.dll",
+  "version": "1.0.0"
+}

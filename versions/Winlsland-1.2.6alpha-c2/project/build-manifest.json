@@ -1,0 +1,12 @@
+{
+  "base": "1.2.6alpha-c2-no-motion/source",
+  "testEvidence": "verification",
+  "settingsAbi": 1,
+  "buildScript": "source/build.ps1",
+  "sceneAbi": 1,
+  "buildId": "1.2.6alpha-c2-open-scene-20260913",
+  "executable": "WinIsland-1.2.6alpha-c2.exe",
+  "version": "1.2.6alpha-c2",
+  "sha256": "87EA965AF1DA7CB8E2DE0E6CA6A9B44D9A0855E893517D00705A5C62CADDB861",
+  "pluginLifecycleAbi": "0x00010002"
+}

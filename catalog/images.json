@@ -1,0 +1,22 @@
+[
+  {
+    "file": "settings.png",
+    "source": "settings-adjust-1789631962052/final-settings.png",
+    "sha256": "F2D8AFC1FD5F47612F809F67F13F9B37B1C48F88CCEB25532F7283037FCE270D"
+  },
+  {
+    "file": "plugins.png",
+    "source": "settings-adjust-1789631962052/plugins-full.png",
+    "sha256": "1597228646ACFE7AA85834240AA55524DD1E7872E5CBC430D807527BA58941CD"
+  },
+  {
+    "file": "file-transfer.png",
+    "source": "transfer-fix-ui-1789631649574/details.png",
+    "sha256": "0C0E27A74AF5E222FEC39DD483469FB2BBCADAD4137CE7B41875110DED4104C0"
+  },
+  {
+    "file": "manual-motion.png",
+    "source": "settings-adjust-1789632040739/manual-reduced-motion.png",
+    "sha256": "3509B76953A864E4E52D762B6702F583CD9A177320705CA7D9BD57DEF51F7730"
+  }
+]

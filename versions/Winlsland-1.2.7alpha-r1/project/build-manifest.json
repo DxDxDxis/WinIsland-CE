@@ -1,0 +1,16 @@
+{
+  "version": "1.2.7alpha-r1",
+  "buildId": "1.2.7alpha-r1-dynamic-media-20260914",
+  "source": "source",
+  "buildScript": "source/build.ps1",
+  "releaseScript": "build-release.ps1",
+  "executable": "WinIsland-1.2.7alpha-r1.exe",
+  "distribution": "release",
+  "settingsExecutable": "settings/WinIslandSettings.exe",
+  "pluginLifecycleAbi": "0x00010002",
+  "sceneAbi": 1,
+  "mediaAbi": 1,
+  "sha256": "C989EA32C2413428C09713D84511AC0DC964129010CA83E8FC84101EF1904BEC",
+  "status": "dynamic-media-implemented; tested-scenarios-pass; environmental-gaps-listed",
+  "report": "docs/1.2.7alpha-r1-实现与验证.md"
+}

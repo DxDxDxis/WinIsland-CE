@@ -1,0 +1,10 @@
+{
+  "id": "time-display",
+  "name": "时间显示",
+  "version": "1.0.0",
+  "author": "daxian",
+  "description": "一个能让 WinIsland 在待机状态显示实时时间的插件。",
+  "entry": "bin/time-display.dll",
+  "apiVersion": 1,
+  "dependencies": []
+}

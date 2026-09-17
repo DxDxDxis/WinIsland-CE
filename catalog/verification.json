@@ -1,0 +1,13 @@
+{
+  "checkedAt": "2026-09-17T20:41:39.621808+08:00",
+  "copiedFiles": 4732,
+  "copiedBytes": 3867132302,
+  "versionCount": 18,
+  "newest": "1.3.1alpha",
+  "oldest": "1.1.1",
+  "originalsUnchangedForCopiedFiles": true,
+  "errors": [],
+  "brokenCuratedLinks": [],
+  "knownSensitiveFiles": [],
+  "scope": "Checks copied originals, not all excluded caches or running files. No historical rebuild or GitHub upload."
+}

@@ -1,0 +1,3 @@
+权威工程：E:\aaAAx项目\WinIsland-社区版-大更新\release\1.2.7alpha-r1
+文档：docs/插件系统开发者文档.md；docs/媒体资源与皮肤扩展.md；sdk为实际头文件。独立构建使用权威工程中的完整plugins/media-fixture目录。
+构建：1.2.7alpha-r1-dynamic-media-20260914

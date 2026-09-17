@@ -1,0 +1,15 @@
+{
+  "author": "WinIsland 示例",
+  "id": "example-overlay",
+  "name": "外观替换示例",
+  "version": "1.0.0",
+  "entry": "bin/example.dll",
+  "dependencies": [
+    {
+      "id": "example-button",
+      "version": ">=1.0.0"
+    }
+  ],
+  "description": "演示同一目标的替换链，依赖按钮与问候示例。",
+  "apiVersion": 1
+}

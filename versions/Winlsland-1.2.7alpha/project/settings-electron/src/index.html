@@ -1,0 +1,11 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; base-uri 'none'; form-action 'none'">
+<title>WinIsland 设置 · 1.2.7alpha</title><link rel="stylesheet" href="style.css"></head>
+<body><header><div><h1>WinIsland <span>1.2.7alpha</span></h1><p>设置由主程序校验、立即应用并保存</p></div><button id="close">关闭设置</button></header>
+<div id="connection" role="status">正在读取主程序设置…</div><div id="error" role="alert" hidden></div>
+<div class="toolbar"><button id="refresh">重新读取状态</button><button id="cancel" hidden>取消等待</button><span id="status" role="status"></span></div>
+<nav id="tabs" role="tablist" aria-label="设置分类"></nav><main id="content" tabindex="-1"></main>
+<dialog id="confirm"><h2>确认影响范围</h2><p id="confirm-text"></p><form method="dialog"><button value="cancel">取消</button><button value="confirm" class="primary">确认操作</button></form></dialog>
+<footer>设置过渡自动遵循系统减少动态效果偏好 · 关闭设置后灵动岛继续运行</footer>
+<script type="module" src="renderer.js"></script></body></html>

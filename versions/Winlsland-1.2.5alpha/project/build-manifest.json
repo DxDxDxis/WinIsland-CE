@@ -1,0 +1,131 @@
+{
+  "runtime": [
+    {
+      "sha256": "6DB206F22F310BB5F3A17C4514A4D3C7074F26D21EA0DE0B90E918DB1DBF1FAD",
+      "bytes": 1137664,
+      "path": "WinIsland-1.2.5alpha.exe"
+    },
+    {
+      "sha256": "BFAD5AEF4C63A669E3C140655CDFDF395B6C979B400A447BD5DCB65ED8826C3D",
+      "bytes": 35952,
+      "path": "lyric-provider\\msvcp140_1.dll"
+    },
+    {
+      "sha256": "0F885B509A685D2BBFA652FED26B5FB31D88FBDAB0A978C641D1C7B8AA460AA9",
+      "bytes": 557728,
+      "path": "lyric-provider\\msvcp140.dll"
+    },
+    {
+      "sha256": "8EBDB9A03994986CFFC0E62C2CE9AF73547BAC0E5DDC2B7535216627797D03E5",
+      "bytes": 19,
+      "path": "lyric-provider\\qt.conf"
+    },
+    {
+      "sha256": "0CC62E841959FB8F6D366EA116C6F6BBC273E30F0EF90D8AA2E4ADEB81FD63F8",
+      "bytes": 6159496,
+      "path": "lyric-provider\\Qt6Core.dll"
+    },
+    {
+      "sha256": "2C2F65C70989646F06D668883C031F06FAC3F8DE1F459278C94CC50DFE89988D",
+      "bytes": 1755784,
+      "path": "lyric-provider\\Qt6Network.dll"
+    },
+    {
+      "sha256": "1F2D41C4AA5DB0BC33EBF7B66D72943A817D7CE6CBE880502A9403823633093F",
+      "bytes": 49792,
+      "path": "lyric-provider\\vcruntime140_1.dll"
+    },
+    {
+      "sha256": "D5E4D9A3E835FA679450145D6A7D94E36573A509317111904D9B3712C30D9066",
+      "bytes": 124544,
+      "path": "lyric-provider\\vcruntime140.dll"
+    },
+    {
+      "sha256": "7F40754409BD23EFE17EA30330A8A3713C6E4BC5E7D05AF417D6CB80281A4F03",
+      "bytes": 887296,
+      "path": "lyric-provider\\WinIsland-LyricHelper.exe"
+    },
+    {
+      "sha256": "C58AB3C5873D3D5187FF1E6703662810F555EBE60C532E025250C47BBAC2E50C",
+      "bytes": 254600,
+      "path": "lyric-provider\\tls\\qschannelbackend.dll"
+    }
+  ],
+  "version": "1.2.5alpha",
+  "created": "2026-09-12T06:39:05.5792102+08:00",
+  "sources": [
+    {
+      "sha256": "9273497C56F36604696FBA114436C32C1BCC9489609FA871093778720AB46DDD",
+      "path": "src/accessibility.cpp"
+    },
+    {
+      "sha256": "911E77E1A307C36D3BB48DC166AE0B8E31A6E53025D9FF66FF58FBBF384067BE",
+      "path": "src/app.cpp"
+    },
+    {
+      "sha256": "F34AB4F56B9BF4205FC8D2961D26851636CDA9B41EADBA97804EF59CDFDD40C3",
+      "path": "src/app.manifest"
+    },
+    {
+      "sha256": "7A4D7DE2C47FFFA10AE495B5B73F6CD88A4BDD294A01DDAFA73B5222986F527E",
+      "path": "src/app.rc"
+    },
+    {
+      "sha256": "9EA492EF7CC46505964185180BC59C1A6A7E2C303E142942649B08B2D311A31C",
+      "path": "src/audio.cpp"
+    },
+    {
+      "sha256": "F5976F679D7B4F14CEB1825737D534432C8FB5DF99E2CBBFB3BF88DC9CF2BA4F",
+      "path": "src/browser_access.h"
+    },
+    {
+      "sha256": "BBC57BC4A6B5344DB559B10ED9D3A5C8EED4AB08FF00C0F638A27520BED3E7E3",
+      "path": "src/core.cpp"
+    },
+    {
+      "sha256": "116398F2CD71D683416D2B54D30F4984D834412C4B755961EAE23258CE2A2666",
+      "path": "src/core.h"
+    },
+    {
+      "sha256": "3F005D5141C50372702393330F519F7D4BF601BEC48422EE9BA711729ADAFD8F",
+      "path": "src/media.cpp"
+    },
+    {
+      "sha256": "BE701D0D2298F9B4B9CF8E85F844A4EE7471096D20227434BC61142EAE074650",
+      "path": "src/monitor.cpp"
+    },
+    {
+      "sha256": "4E78A93A2242659D9E02C4F43BB595A3BECDF0CBE6ED26E98BB420DF025BA7CA",
+      "path": "src/music_sources.cpp"
+    },
+    {
+      "sha256": "705E8C520247C1A7DD40821269215B199F2EAAABB9D37350AD482D49D7CC769D",
+      "path": "src/notifications.cpp"
+    },
+    {
+      "sha256": "741ECD373E501E8F2E64B7A64B9568538D45A8690293D0DAAD68B9B12990C478",
+      "path": "src/qq_notifications.cpp"
+    },
+    {
+      "sha256": "942DF86835963C440076BAA8A69C05CE8A4DA40365133566C87B6515B7CEC1A8",
+      "path": "src/render.cpp"
+    },
+    {
+      "sha256": "B2D076B24CBE33AFE4ADE1FE9F27F7FB6B2C254EF2D5A023DB8C9F1CF6568F53",
+      "path": "src/render.h"
+    },
+    {
+      "sha256": "07A59397E58159E9DC8639742582D95577E564C04E3212B81CF1FFE4ABF20D89",
+      "path": "src/telemetry.cpp"
+    },
+    {
+      "sha256": "21F5029DF585E6CF459BB9C6711C5A9354AC1715CB5C230A4D4D43D30BA42036",
+      "path": "src/tests.cpp"
+    },
+    {
+      "sha256": "19EE4929D404104E77BB5E12E56B091A71BC66582D8F11C03C5AB7AEC8373EF7",
+      "path": "src/WinIsland.ico"
+    }
+  ],
+  "build": "1.2.5alpha-top-docked-20260912-r3"
+}

@@ -1,0 +1,4 @@
+            8664 machine (x64)
+            6.00 subsystem version
+               2 subsystem (Windows GUI)
+               0 [       0] RVA [size] of COM Descriptor Directory

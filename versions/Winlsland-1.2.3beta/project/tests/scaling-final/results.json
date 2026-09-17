@@ -1,0 +1,58 @@
+[
+  {
+    "scale": 1,
+    "image_px": [
+      656,
+      432
+    ],
+    "opaque_bounds": [
+      20,
+      0,
+      636,
+      211
+    ],
+    "export_button_visible": true
+  },
+  {
+    "scale": 1.25,
+    "image_px": [
+      820,
+      540
+    ],
+    "opaque_bounds": [
+      25,
+      0,
+      795,
+      263
+    ],
+    "export_button_visible": true
+  },
+  {
+    "scale": 1.5,
+    "image_px": [
+      984,
+      648
+    ],
+    "opaque_bounds": [
+      30,
+      0,
+      954,
+      316
+    ],
+    "export_button_visible": true
+  },
+  {
+    "scale": 2,
+    "image_px": [
+      1312,
+      702
+    ],
+    "opaque_bounds": [
+      195,
+      0,
+      1117,
+      422
+    ],
+    "export_button_visible": true
+  }
+]

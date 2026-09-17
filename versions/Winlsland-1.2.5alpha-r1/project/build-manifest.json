@@ -1,0 +1,33 @@
+{
+  "version": "1.2.5alpha-r1",
+  "build": "1.2.5alpha-r1-adjustable-arc-20260912",
+  "baseline": "1.2.5alpha-r1-outward",
+  "tests": {
+    "native": 68,
+    "layouts": 72,
+    "native_controls": "passed"
+  },
+  "sha256": {
+    "source\\src\\accessibility.cpp": "6ccda8087fed7d4a33f6670307e9b719131aa35c209f03f45000eb203906f5b4",
+    "source\\src\\app.cpp": "35aff0ccfdbcb68c8379b0d840c32a8f638db6e721947bb3b6533bce43c5c688",
+    "source\\src\\app.manifest": "913c48f058956d74a82244f56bb262f318094b0bafd1fda7cceb126418fe37c6",
+    "source\\src\\app.rc": "905bb9d1232ef918a86178321c7e9805127fd8a3625774aaa5991780f5b8e906",
+    "source\\src\\audio.cpp": "e7f8d75981ceaca94c2f21de51d040c4e23f5bff0a7869510d9641659070074b",
+    "source\\src\\browser_access.h": "2d29a0e98234cbb09a5e97b62dae7d4880a37d21763c5c93bd4fa3a0e98ab029",
+    "source\\src\\core.cpp": "a89b9f60878b4af5338d645a623a6f46f972a668ddc8e4ecd6bf9728c60a57c2",
+    "source\\src\\core.h": "290da93d90f72fbe97e45544ccd5f80cd2cc5bf49e66851c5b35bdcb25ca48ce",
+    "source\\src\\media.cpp": "ec06b4411290b5a0a9e9e1e472255a79a83ccc2e90a1888de9f7289f39a9636e",
+    "source\\src\\monitor.cpp": "161b5313ba2fd52f98b89feaabbc34e4bb640ae2fb913ede6fd19bb2b09e4b5a",
+    "source\\src\\music_sources.cpp": "be44687fa94d2e9275aecfc2cb472f0a87a836b5405c4aad91276b784ee50d91",
+    "source\\src\\notifications.cpp": "50ff4b6b59800a363d3cf45e1f8f40fe002adcaf5ed5cdc5394f5337c990d9c1",
+    "source\\src\\outline.h": "033bfad66fbb09c8664f3021b5c7a6b64501446bb0b1931a0f607685cdf393b3",
+    "source\\src\\qq_notifications.cpp": "fc6ebc9c956b4f0711fd550b8096edebd4d1353f5d69d11644f2c06eac00ea16",
+    "source\\src\\render.cpp": "e3f059a358a48cee09fa8cdd470c39b7ffce8fced025c5ed87c170710a9f33b4",
+    "source\\src\\render.h": "f324bf1d3949ea4e2b78e8231749968fdd8a8e9fe39f4221e2e637f26067c125",
+    "source\\src\\telemetry.cpp": "93f4f823af44b691b68e80a9c3b5857ca2058517b25a8d1ef4d8e637355b79dc",
+    "source\\src\\tests.cpp": "76f0b5a3287d105debff89f86358ed4c96b24e5497a4a31ba949d9aa3a052006",
+    "source\\src\\WinIsland.ico": "19ee4929d404104e77bb5e12e56b091a71bc66582d8f11c03c5ab7aec8373ef7",
+    "WinIsland-1.2.5alpha-r1.exe": "92d91973e1751c06b47123f29467ae236b9881eab4e85ee60155696cafda2e7e",
+    "source\\build.ps1": "e79eabcd40b1bf45b05069b63c6ef32c3aa171b0a555fb01036307e4a6106245"
+  }
+}

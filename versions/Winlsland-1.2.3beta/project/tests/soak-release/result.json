@@ -1,0 +1,6 @@
+{
+  "duration_seconds": 140.941,
+  "complete": false,
+  "reason": "Application entered normal quit path before planned workload finished; trigger unconfirmed.",
+  "frame_gap_max_ms": 51.835
+}

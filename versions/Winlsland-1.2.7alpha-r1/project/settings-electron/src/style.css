@@ -1,0 +1,85 @@
+:root{color-scheme:light;--background:#f5f6f9;--surface:#fff;--border:#dce1eb;--text:#202737;--muted:#626c7e;--accent:#315ddd;--hover:#edf2ff;--error:#ab3545;--success:#25714b}
+*{box-sizing:border-box}body{margin:0;padding:24px 28px;font:14px/1.6 "Microsoft YaHei UI","Segoe UI",sans-serif;color:var(--text);background:var(--background)}
+header{display:flex;justify-content:space-between;gap:16px;align-items:center}h1{font-size:26px;margin:0;font-weight:650}h1 span{font-size:12px;font-weight:400;color:var(--muted);margin-left:10px}p{margin:6px 0;color:var(--muted)}h2{font-size:19px;margin:0 0 12px}h3{font-size:15px;margin:0 0 6px}
+button,input,select{font:inherit;color:inherit;background:var(--surface);border:1px solid var(--border);border-radius:8px;min-height:36px;padding:6px 12px}button{cursor:pointer;white-space:normal}button:hover{background:var(--hover);border-color:#afc2f4}button:active{background:#e1eaff}button.primary{background:var(--accent);color:white;border-color:var(--accent)}button:disabled,input:disabled,select:disabled{cursor:default;background:#eef0f4;color:#78808f}button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}input[aria-invalid=true]{border-color:var(--error)}
+nav{display:flex;background:#e9edf5;border-radius:12px;padding:4px;gap:2px;margin:16px 0;position:sticky;top:0;z-index:1}nav button{flex:1;border-color:transparent;background:transparent;border-radius:9px;padding:8px}nav button[aria-selected=true]{background:var(--accent);color:white}
+section,.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;margin:12px 0}.row{display:grid;grid-template-columns:minmax(190px,1fr) minmax(180px,1fr);gap:20px;align-items:center;padding:14px 0;border-bottom:1px solid #edf0f5}.row:last-child{border-bottom:0}.row label{font-weight:550}.hint{font-size:12px;color:var(--muted)}.input-line{display:flex;gap:8px;align-items:center}.input-line input,.input-line select{width:100%;min-width:0}input[type=checkbox]{width:20px;height:20px;min-height:20px;accent-color:var(--accent)}select,select option{background:white;color:var(--text)}
+.toolbar,.actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.toolbar{margin-top:12px}.actions{margin-top:12px}#status,#connection{color:var(--muted);font-size:13px}#connection{margin-top:12px}#error{background:#fff0f1;border:1px solid #efc6cd;border-radius:8px;padding:10px;margin-top:12px;color:var(--error)}[hidden]{display:none!important}footer{font-size:12px;color:var(--muted);margin-top:20px}pre{white-space:pre-wrap;overflow-wrap:anywhere;font:12px/1.7 "Consolas",monospace;max-height:340px;overflow:auto}dl{display:grid;grid-template-columns:90px 1fr;gap:6px;margin:12px 0}dt{color:var(--muted)}dd{margin:0;overflow-wrap:anywhere}.badge{display:inline-block;padding:2px 8px;background:#eef4fa;border-radius:6px;margin-left:8px;color:#466287}.mod-header{display:flex;justify-content:space-between;gap:12px}.empty{padding:28px;text-align:center;color:var(--muted)}dialog{border:1px solid var(--border);border-radius:12px;padding:24px;max-width:520px}dialog::backdrop{background:#0005}dialog form{display:flex;justify-content:flex-end;gap:10px;margin-top:20px}
+@media(max-width:720px){body{padding:16px}.row{grid-template-columns:1fr;gap:8px}nav{flex-wrap:wrap}nav button{flex-basis:30%}header{align-items:flex-start}}
+
+body{height:100vh;overflow:hidden;display:flex;flex-direction:column}header,nav,footer,.toolbar,#connection,#error{flex-shrink:0}nav{position:static}main{flex:1;min-height:0;overflow:auto;padding-right:4px}.input-line button{flex-shrink:0;white-space:nowrap}.input-line input,.input-line select{flex:1;width:0}.input-line input[type=checkbox]{flex:0 0 20px;width:20px}
+
+/* Renderer motion tokens: milliseconds are shared with motion.ts (Web Animations).
+   No frame-rate, core reduced-motion or IPC setting is modified. */
+:root {
+  --motion-nav: 260; --motion-page: 220; --motion-switch: 200ms; --motion-picker: 180ms;
+  --motion-ease: cubic-bezier(.2,.75,.25,1); --motion-distance: 24px;
+  --layer-nav: 1; --layer-ghost: 2; --layer-error: 3; --nav-selected: #cadbff;
+  --switch-width: 44px; --switch-height: 26px; --switch-thumb: 20px;
+  --switch-off: #858fa0; --switch-on: var(--accent); --switch-ball: #fff;
+  --picker-selected: #e9efff; --picker-hover: #f0f4fc;
+  /* Measured baseline at 100%: 82 × 36.390625 CSS px. */
+  --plugin-entry-width: 164px; --plugin-entry-height: 54.585938px;
+}
+nav { position: relative; isolation: isolate; z-index: var(--layer-nav); }
+nav button { position: relative; z-index: 1; min-width: 0; }
+nav button[aria-selected=true] { background: transparent; color: var(--text); }
+nav button:not([aria-selected=true]):hover { background: #ffffff60; }
+.nav-indicator { position: absolute; left: 0; top: 0; background: var(--nav-selected); border-radius: 9px; pointer-events: none; transform-origin: 0 0; }
+.nav-indicator:not([data-ready=true]) { visibility: hidden; }
+main { position: relative; overflow-x: hidden; scrollbar-gutter: stable; }
+.page-ghost { position: fixed; overflow: hidden; pointer-events: none; z-index: var(--layer-ghost); }
+.page-ghost * { pointer-events: none !important; }
+/* Errors stay readable without moving the form or disturbing a focused draft. */
+#error { position: fixed; z-index: var(--layer-error); right: 28px; bottom: 48px; max-width: min(540px, calc(100vw - 56px)); max-height: 30vh; overflow: auto; box-shadow: 0 3px 14px #20273718; }
+#plugins-open { width: var(--plugin-entry-width); min-height: var(--plugin-entry-height); max-width: 100%; overflow-wrap: anywhere; }
+
+/* Keep the native checked/disabled/label semantics; only the visual changes. */
+input[type=checkbox], .input-line input[type=checkbox] {
+  appearance: none; flex: 0 0 var(--switch-width); width: var(--switch-width); height: var(--switch-height);
+  min-height: var(--switch-height); padding: 0; margin: 2px; border: 0; border-radius: 999px;
+  position: relative; cursor: pointer; background: var(--switch-off);
+  transition: background-color var(--motion-switch) var(--motion-ease);
+}
+input[type=checkbox]::before {
+  content: ''; position: absolute; top: 3px; left: 3px; width: var(--switch-thumb); height: var(--switch-thumb);
+  border-radius: 50%; background: var(--switch-ball); box-shadow: 0 1px 2px #0003;
+  transition: transform var(--motion-switch) var(--motion-ease);
+}
+input[type=checkbox]:checked { background: var(--switch-on); }
+input[type=checkbox]:checked::before { transform: translateX(calc(var(--switch-width) - var(--switch-thumb) - 6px)); }
+input[type=checkbox]:disabled { opacity: .55; cursor: default; }
+input[type=checkbox]:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* Chromium's customizable native select retains its platform keyboard, typeahead,
+   focus and accessibility behavior. Picker lives in the top layer with native
+   anchor positioning / flip fallback; no portal, Node access or JS event proxy. */
+select, ::picker(select) { appearance: base-select; }
+select { align-items: center; gap: 12px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; }
+select::picker-icon { color: var(--text); flex-shrink: 0; }
+select:disabled::picker-icon { color: var(--muted); }
+select:open { border-color: var(--accent); }
+::picker(select) {
+  background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: 8px;
+  padding: 4px; margin-block: 4px; box-shadow: 0 5px 18px #2027371a;
+  max-height: min(280px, 50vh); overflow: auto; overscroll-behavior: contain;
+  opacity: 0; transform: translateY(-6px) scaleY(.98); transform-origin: center;
+  transition: opacity var(--motion-picker) var(--motion-ease), transform var(--motion-picker) var(--motion-ease),
+    display var(--motion-picker) allow-discrete, overlay var(--motion-picker) allow-discrete;
+}
+select:open::picker(select) { opacity: 1; transform: translateY(0) scaleY(1); }
+@starting-style { select:open::picker(select) { opacity: 0; transform: translateY(-6px) scaleY(.98); } }
+select option { min-height: 34px; padding: 6px 10px; border-radius: 5px; white-space: normal; overflow-wrap: anywhere; }
+select option:checked { background: var(--picker-selected); color: var(--text); }
+select option:hover { background: var(--picker-hover); }
+select option:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+select option::checkmark { color: var(--accent); }
+@media (prefers-reduced-motion: reduce) {
+  :root { --motion-switch: 0ms; --motion-picker: 0ms; }
+}
+@media (forced-colors: active) {
+  input[type=checkbox] { border: 1px solid ButtonText; }
+  input[type=checkbox]::before { background: ButtonText; }
+  .nav-indicator { border: 2px solid Highlight; }
+  nav button[aria-selected=true] { color: Highlight; }
+}

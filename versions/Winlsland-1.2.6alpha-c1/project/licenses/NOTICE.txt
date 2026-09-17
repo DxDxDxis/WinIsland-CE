@@ -1,0 +1,26 @@
+WinIsland 1.2.4beta_2 third-party components
+
+QCloudMusicApi: MIT
+https://github.com/s12mmm3/QCloudMusicApi/tree/9574787a9085ee69aefed4a26ac73e71240dff9b
+Commit: 9574787a9085ee69aefed4a26ac73e71240dff9b
+Included source: ../../../third_party/QCloudMusicApi
+Local request.cpp changes: 5-second Qt transfer timeout; preserve actual HTTP and Qt network error separately; avoid waiting on a reply already finished.
+
+Crypto++ 8.9.0: see CryptoPP-License.txt (individual compilation copyright / public-domain components).
+https://github.com/weidai11/cryptopp/tree/CRYPTOPP_8_9_0
+cryptopp-cmake wrapper: https://github.com/abdes/cryptopp-cmake/tree/866aceb8b13b6427a3c4541288ff412ad54f11ea
+Included source: ../../../third_party/cryptopp and ../../../third_party/QCloudMusicApi/3rdparty/cryptopp-cmake
+
+Qt 6.8.3: dynamically linked QtCore, QtNetwork and Schannel TLS backend, distributed under LGPL-3.0.
+Unmodified Qt binaries obtained from the official Qt repository, MSVC2022 x64 QtBase package.
+Official matching source: https://download.qt.io/archive/qt/6.8/6.8.3/submodules/qtbase-everywhere-src-6.8.3.tar.xz
+Source mirror/tag: https://github.com/qt/qtbase/tree/v6.8.3
+License texts: LGPL-3.0.txt and GPL-3.0.txt. Qt's generated component attribution inventory: qtbase-6.8.3.spdx.json.
+Copyright (C) The Qt Company Ltd. and other contributors. Component copyright and license details are in the matching Qt source and attribution inventory.
+Qt DLL replacement is permitted; no signature lock is applied. Reverse engineering for debugging modifications to the LGPL components is not prohibited by this distribution. C++ helper source and build instructions are provided in this project.
+Qt archive SHA-256: 41688269fac0565db956c66d9eecae777d16197e0c02cd81b88640c1f5d73d3f
+
+Microsoft Visual C++ runtime DLLs: Microsoft.VC143.CRT x64, redistributable runtime from Visual Studio Build Tools 14.44.35112.
+Windows UCRT, Schannel and other operating-system components are system requirements and are not copied from the operating system.
+
+This project does not claim affiliation with Qt, NetEase, Tencent or LRCLIB. Lyrics availability depends on the respective services and recording matches; API availability does not imply access to local playback position.

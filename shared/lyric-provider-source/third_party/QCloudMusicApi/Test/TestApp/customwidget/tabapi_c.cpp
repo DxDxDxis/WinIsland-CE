@@ -1,0 +1,86 @@
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QFile>
+#include <QDebug>
+#include <QFileDialog>
+#include <QMessageBox>
+#include <string>
+
+#include "testtool.h"
+#include "tabapi_c.h"
+#include "ui_tabapi_c.h"
+#include "../logger.h"
+
+TabApi_c::TabApi_c(QWidget* parent) :
+    QWidget(parent),
+    ui(new Ui::TabApi_c)
+{
+    ui->setupUi(this);
+
+    ui->tabCommonUnit->callback = [this](QString member, QString arg) -> QVariantMap {
+        // 调用动态库的C接口invoke
+        using Invoke = const char* (*)(const char* memberName, const char* value);
+        Invoke invoke = (Invoke)library.resolve("invoke");
+        return invoke ? (QJsonDocument::fromJson(invoke(member.toStdString().c_str(), arg.toStdString().c_str())).toVariant().toMap()) : QVariantMap{};
+        };
+}
+
+TabApi_c::~TabApi_c()
+{
+    delete ui;
+    library.unload();
+}
+
+void TabApi_c::on_pushButton_select_clicked()
+{
+    auto fileName = QFileDialog::getOpenFileName(this);
+    if (!libraryLoad(fileName)) {
+        QMessageBox::warning(this, "Library load failed!", library.errorString());
+        return;
+    }
+    QMessageBox::information(this, "", "Library load succeed!");
+    ui->lineEdit_library_fileName->setText(fileName);
+
+    // 获取API中成员函数的数量
+    using MemberCount = int (*)();
+    MemberCount memberCount = (MemberCount)library.resolve("memberCount");
+    int count = 0;
+    if (memberCount) {
+        count = memberCount();
+    }
+
+    // 通过索引检索成员的名称
+    using MemberName = char* (*)(int index);
+    MemberName memberName = (MemberName)library.resolve("memberName");
+    if (memberName) {
+        for (int i = 0; i < count; i++) {
+            DEBUG << i << memberName(i);
+        }
+    }
+}
+
+void TabApi_c::on_pushButton_unload_clicked()
+{
+    if (libraryUnload(ui->lineEdit_library_fileName->text())) QMessageBox::information(this, "", "Library unload succeed!");
+    else QMessageBox::warning(this, "Library unload failed!", library.errorString());
+    ui->tabCommonUnit->setFunctions(TestTool::helper()->memberList());
+}
+
+void TabApi_c::on_pushButton_load_clicked()
+{
+    libraryLoad(ui->lineEdit_library_fileName->text());
+}
+
+bool TabApi_c::libraryLoad(QString fileName)
+{
+    library.unload();
+    library.setFileName(fileName);
+    return library.load();
+}
+
+bool TabApi_c::libraryUnload(QString fileName)
+{
+    Q_UNUSED(fileName)
+    return library.unload();
+}
+

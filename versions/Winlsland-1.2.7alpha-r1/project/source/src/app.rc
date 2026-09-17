@@ -1,0 +1,21 @@
+#include <windows.h>
+1 RT_MANIFEST "app.manifest"
+1 ICON "WinIsland.ico"
+#include "embedded_components.generated.rc"
+1 VERSIONINFO
+FILEVERSION 1,2,7,1
+PRODUCTVERSION 1,2,7,1
+FILETYPE VFT_APP
+BEGIN
+ BLOCK "StringFileInfo"
+ BEGIN
+  BLOCK "040904B0"
+  BEGIN
+   VALUE "FileVersion", "1.2.7alpha-r1"
+  END
+ END
+END
+
+
+
+

@@ -1,0 +1,585 @@
+{
+    "song_url_v1": {
+        "id": "2058263032, 2057797340",
+        "level": "exhigh"
+    },
+    "song_detail": {
+        "ids": "2058263032, 2057797340"
+    },
+    "lyric": {
+        "id": "2058263032"
+    },
+    "lyric_new": {
+        "id": "2058263032"
+    },
+    "related_playlist": {
+        "id": "2057797340"
+    },
+    "album": {
+        "id": "149114512"
+    },
+    "comment_music": {
+        "id": "2058263032"
+    },
+    "artists": {
+        "id": "15396"
+    },
+    "user_detail": {
+        "uid": "79248480"
+    },
+    "artist_detail": {
+        "id": "15396"
+    },
+    "artist_album": {
+        "id": "15396",
+        "limit": 5
+    },
+    "artist_top_song": {
+        "id": "15396"
+    },
+    "search": {
+        "keywords": "電音部"
+    },
+    "countries_code_list": {},
+    "user_playlist": {
+        "uid": "79248480"
+    },
+    "song_wiki_summary": {
+        "id": "2058263032"
+    },
+    "song_download_url": {
+        "id": "2058263032"
+    },
+    "cloudsearch": {
+        "keywords": "電音部"
+    },
+    "album_detail_dynamic": {
+        "id": "149114512"
+    },
+    "album_detail": {
+        "id": "149114512"
+    },
+    "album_list_style": {
+        "area": "Z_H"
+    },
+    "album_new": {
+        "area": "KR"
+    },
+    "album_songsaleboard": {
+        "type": "year",
+        "year": 2020,
+        "albumType": 0
+    },
+    "album_sub": {
+        "id": "149114512",
+        "t": 1
+    },
+    "artist_desc": {
+        "id": "15396"
+    },
+    "artist_fans": {
+        "id": "15396"
+    },
+    "artist_follow_count": {
+        "id": "15396"
+    },
+    "artist_list": {
+        "type": "1",
+        "area": "96",
+        "initial": "b"
+    },
+    "artist_mv": {
+        "id": "15396"
+    },
+    "artist_new_mv": {
+        "before": "1602777625000",
+        "limit": 1
+    },
+    "artist_new_song": {
+        "before": "1602777625000",
+        "limit": 1
+    },
+    "artist_songs": {
+        "id": "15396"
+    },
+    "artist_sub": {
+        "id": "6452",
+        "t": 1
+    },
+    "artist_video": {
+        "id": "15396"
+    },
+    "banner": {
+        "type": 2
+    },
+    "activate_init_profile": {
+        "nickname": "testUser2019"
+    },
+    "nickname_check": {
+        "nickname": "testUser2019"
+    },
+    "comment_album": {
+        "id": "149114512"
+    },
+    "comment_dj": {
+        "id": "794062371"
+    },
+    "comment_event": {
+        "threadId": "A_EV_2_6559519868_32953014"
+    },
+    "user_comment_history": {
+        "uid": "79248480"
+    },
+    "ugc_artist_search": {
+        "keyword": "sasa"
+    },
+    "ugc_album_get": {
+        "id": "149114512"
+    },
+    "ugc_artist_get": {
+        "id": "15396"
+    },
+    "ugc_mv_get": {
+        "id": "14572641"
+    },
+    "ugc_song_get": {
+        "id": "2058263032"
+    },
+    "summary_annual": {
+        "year": "2020"
+    },
+    "comment_mv": {
+        "id": "14572641"
+    },
+    "comment_playlist": {
+        "id": "705123491"
+    },
+    "comment_video": {
+        "id": "89ADDE33C0AAE8EC14B99F6750DB954D"
+    },
+    "digitalAlbum_detail": {
+        "id": "86433402"
+    },
+    "digitalAlbum_sales": {
+        "ids": "120605500,125080528"
+    },
+    "digitalAlbum_ordering": {
+        "id": "86286082",
+        "payment": "3",
+        "quantity": "1"
+    },
+    "dj_detail": {
+        "rid": "336355127"
+    },
+    "dj_program_detail": {
+        "id": "1367665101"
+    },
+    "dj_program": {
+        "rid": "336355127"
+    },
+    "dj_radio_hot": {
+        "cateId": "2001"
+    },
+    "dj_recommend_type": {
+        "type": "2001"
+    },
+    "dj_sub": {
+        "rid": "336355127",
+        "t": 1
+    },
+    "dj_subscriber": {
+        "id": "335425050"
+    },
+    "fm_trash": {
+        "id": "347230"
+    },
+    "follow": {
+        "id": "79248480",
+        "t": 1
+    },
+    "batch": {
+        "/api/v2/banner/get": "{\"clientType\":\"pc\"}"
+    },
+    "check_music": {
+        "id": "2058263032"
+    },
+    "comment_floor": {
+        "parentCommentId": "1438569889",
+        "id": "29764564",
+        "type": 0
+    },
+    "comment_hot": {
+        "id": "2058263032",
+        "type": "0"
+    },
+    "comment_hug_list": {
+        "uid": "285516405",
+        "cid": "1167145843",
+        "sid": "863481066",
+        "pageSize": 2,
+        "page": 1
+    },
+    "comment_like": {
+        "id": "29178366",
+        "cid": "12840183",
+        "t": 1,
+        "type": "0"
+    },
+    "comment_new": {
+        "id": "2058263032",
+        "sortType": 3,
+        "type": "0"
+    },
+    "comment": {
+        "id": "5436712",
+        "t": 1,
+        "type": "1",
+        "content": "test"
+    },
+    "get_userids": {
+        "nicknames": "binaryify"
+    },
+    "hug_comment": {
+        "uid": "285516405",
+        "cid": "1167145843",
+        "sid": "863481066"
+    },
+    "like": {
+        "id": "2058263032"
+    },
+    "likelist": {
+        "uid": "79248480"
+    },
+    "user_audio": {
+        "uid": "79248480"
+    },
+    "user_dj": {
+        "uid": "79248480"
+    },
+    "user_event": {
+        "uid": "79248480"
+    },
+    "user_followeds": {
+        "uid": "79248480"
+    },
+    "user_follows": {
+        "uid": "79248480"
+    },
+    "user_record": {
+        "uid": "79248480"
+    },
+    "login_cellphone": {
+        "phone": "xxx",
+        "password": "xxx"
+    },
+    "login_qr_create": {
+        "key": "xxx"
+    },
+    "login_qr_check": {
+        "key": "xxx"
+    },
+    "mlog_music_rcmd": {
+        "songid": "2058263032"
+    },
+    "mlog_to_video": {
+        "id": "a1qOVPTWKS1ZrK8"
+    },
+    "mlog_url": {
+        "id": "a1qOVPTWKS1ZrK8"
+    },
+    "playlist_create": {
+        "name": "测试歌单"
+    },
+    "playlist_delete": {
+        "id": "xxx, xxx"
+    },
+    "playlist_desc_update": {
+        "id": "24381616",
+        "desc": "描述"
+    },
+    "playlist_detail_dynamic": {
+        "id": "24381616"
+    },
+    "playlist_detail": {
+        "id": "24381616"
+    },
+    "playlist_name_update": {
+        "id": "24381616",
+        "name": "歌单名"
+    },
+    "playlist_order_update": {
+        "ids": "[111, 222]"
+    },
+    "playlist_privacy": {
+        "id": "24381616"
+    },
+    "playlist_subscribe": {
+        "id": "24381616",
+        "t": 1
+    },
+    "playlist_subscribers": {
+        "id": "24381616"
+    },
+    "playlist_tags_update": {
+        "id": "24381616",
+        "tags": "学习"
+    },
+    "playlist_track_add": {
+        "pid": "24381616",
+        "ids": "186041,186041"
+    },
+    "playlist_track_all": {
+        "id": "24381616"
+    },
+    "playlist_track_delete": {
+        "pid": "24381616",
+        "ids": "186041,186041"
+    },
+    "playlist_tracks": {
+        "pid": "24381616",
+        "op": "add",
+        "tracks": "186041,186041"
+    },
+    "playlist_update_playcount": {
+        "id": "24381616"
+    },
+    "playlist_update": {
+        "id": "24381616",
+        "name": "新歌单",
+        "desc": "描述",
+        "tags": "欧美"
+    },
+    "msg_comments": {
+        "uid": "79248480"
+    },
+    "msg_private_history": {
+        "uid": "79248480"
+    },
+    "mv_detail_info": {
+        "mvid": "14572641"
+    },
+    "mv_detail": {
+        "mvid": "14572641"
+    },
+    "mv_sub": {
+        "mvid": "14572641",
+        "t": 1
+    },
+    "mv_url": {
+        "id": "14572641"
+    },
+    "simi_artist": {
+        "id": "15396"
+    },
+    "simi_mv": {
+        "mvid": "14572641"
+    },
+    "simi_playlist": {
+        "id": "24381616"
+    },
+    "simi_song": {
+        "id": "2058263032"
+    },
+    "simi_user": {
+        "id": "79248480"
+    },
+    "search_multimatch": {
+        "keywords": "電音部"
+    },
+    "search_suggest": {
+        "keywords": "電音部"
+    },
+    "video_detail_info": {
+        "vid": "89ADDE33C0AAE8EC14B99F6750DB954D"
+    },
+    "video_detail": {
+        "id": "89ADDE33C0AAE8EC14B99F6750DB954D"
+    },
+    "video_group": {
+        "id": "9104"
+    },
+    "video_url": {
+        "id": "89ADDE33C0AAE8EC14B99F6750DB954D"
+    },
+    "send_album": {
+        "id": "149114512",
+        "user_ids": "79248480, 2608402"
+    },
+    "send_playlist": {
+        "playlist": "24381616",
+        "user_ids": "79248480, 2608402"
+    },
+    "send_song": {
+        "id": "2058263032",
+        "user_ids": "79248480, 2608402"
+    },
+    "send_text": {
+        "msg": "666",
+        "user_ids": "79248480, 2608402"
+    },
+    "style_album": {
+        "tagId": "1000"
+    },
+    "style_artist": {
+        "tagId": "1000"
+    },
+    "style_detail": {
+        "tagId": "1000"
+    },
+    "style_playlist": {
+        "tagId": "1000"
+    },
+    "style_song": {
+        "tagId": "1000"
+    },
+    "song_url": {
+        "id": "2058263032,2057797340"
+    },
+    "song_order_update": {
+        "pid": "24381616",
+        "ids": "[2058263032,2057797340]"
+    },
+    "topic_detail_event_hot": {
+        "actid": "111551188"
+    },
+    "topic_detail": {
+        "actid": "111551188"
+    },
+    "share_resource": {
+        "id": "2058263032"
+    },
+    "music_first_listen_info": {
+        "id": "2058263032"
+    },
+    "personal_fm_mode": {
+        "mode": "DEFAULT",
+        "subMode": "FAMILIAR"
+    },
+    "song_music_detail": {
+        "id": "2058263032"
+    },
+    "song_red_count": {
+        "id": "2058263032"
+    },
+    "playmode_intelligence_list": {
+        "songId": "2058263032",
+        "pid": "24381616"
+    },
+    "playmode_song_vector": {
+        "ids": "2058263032,2057797340"
+    },
+    "recommend_songs_dislike": {
+        "id": "2058263032"
+    },
+    "related_allvideo": {
+        "id": "89ADDE33C0AAE8EC14B99F6750DB954D"
+    },
+    "resource_like": {
+        "t": 1,
+        "type": 1,
+        "id": "5436712"
+    },
+    "scrobble": {
+        "id": "2058263032",
+        "sourceid": "168223858",
+        "time": 291
+    },
+    "search_match": {
+        "title": "フューチャー・イヴ",
+        "album": "未来イヴ",
+        "artist": "sasakure.UK",
+        "duration": 219,
+        "md5": "bd708d006912a09d827f02e754cf8e56"
+    },
+    "sheet_list": {
+        "id": "2058263032"
+    },
+    "sheet_preview": {
+        "id": "143190"
+    },
+    "eapi_decrypt": {
+        "hexString": "6E0B1C712DCB3648589D7C950C296204072A88C3E080C4CFFD0A71A553EC2533BA88E11B1E1C6DF3BE8EFA26177FCB6FCA34EB3FAFAB4671B2BBAFA9781AFDA2BF53A3DC423722493837B9BC6E80CED5BBD2DDC2856920E4D4E3E7F3EB77ECF265217A66AE677BE36F2D6FB203F721CA250E1453EA61A34904E33D5FCB9D483601D744BE0AE979AC911A00F25828538844F4B1C24F6C34880A4AB257F530C7FB10A81FED32B18D09D70C0B1B9D34A2E58A3C3FAD382C6F958077059C4F801AD7B3B248FDB9D7A59B6A9EEFF8C781A84315B33A7AFD48BE9FCFCBE1902CCC27949ACF2BDE3FA34D116E230C3597E8320B8C42BBBF371A00C03EC428E0440EB94C1540F3FD4173D29E310AFE43AB0EF449852904103EF305FC435AD43B7D8673642F74C89CCB2F1A6A79B3BE14F1235D3843C3B241D12C05DBDDF37B68CA8B5D0230AF1FCF2A9705886F4D126B33FFF6948DE1E4046DB6423D687E96C5B65122464D2E71AEC7722935FF2C3796FAE253A16AA3B102FBE7296AB0DB9EA5C46AD12B",
+        "isReq": "true"
+    },
+    "top_list": {
+        "id": "2809577409"
+    },
+    "album_privilege": {
+        "id": "149114512"
+    },
+    "artist_detail_dynamic": {
+        "id": "15396"
+    },
+    "api": {
+        "method": "POST",
+        "crypto": "",
+        "data": {
+            "cp": false,
+            "id": "2058263032",
+            "kv": 0,
+            "lv": 0,
+            "rv": 0,
+            "tv": 0,
+            "yrv": 0,
+            "ytv": 0,
+            "yv": 0
+        },
+        "uri": "/api/song/lyric/v1"
+    },
+    "song_download_url_v1": {
+        "id": "2058263032",
+        "level": "lossless"
+    },
+    "song_dynamic_cover": {
+        "id": "2101179024"
+    },
+    "song_like_check": {
+        "ids": "[2058263032,1497529942]"
+    },
+    "user_mutualfollow_get": {
+        "uid": "79248480"
+    },
+    "user_medal": {
+        "uid": "79248480"
+    },
+    "user_social_status": {
+        "uid": "79248480"
+    },
+    "playlist_import_name_task_create": {
+        "link": "[\"https://i.y.qq.com/n2/m/share/details/taoge.html?id=7716341988&hosteuin=\",\"https://i.y.qq.com/n2/m/share/details/taoge.html?id=8010042041&hosteuin=\"]"
+    },
+    "playlist_import_task_status": {
+        "id": "124050147"
+    },
+    "song_chorus": {
+        "id": "2058263032"
+    },
+    "playlist_detail_rcmd_get": {
+        "id": "2057797340"
+    },
+    "song_lyrics_mark": {
+        "id": "2057797340"
+    },
+    "broadcast_channel_currentinfo": {
+        "id": "5"
+    },
+    "user_playlist_collect": {
+        "uid": "79248480"
+    },
+    "user_playlist_create": {
+        "uid": "79248480"
+    },
+    "lbs_city_code": {
+        "bizCode": "chart"
+    },
+    "chart_detail": {
+        "chartCode": "CITY_STYLE_SONG_CHART",
+        "targetId": "110000_1020",
+        "targetType": "CITY_STYLE"
+    },
+    "chart_song_detail": {
+        "chartCode": "CITY_STYLE_SONG_CHART",
+        "targetId": "110000_1020",
+        "targetType": "CITY_STYLE"
+    }
+}

@@ -1,0 +1,1 @@
+PASS: native NetEase metadata, cover, playback start and pointer pause; SMTC timeline unavailable and repeat/shuffle unavailable.

@@ -1,0 +1,10 @@
+{
+  "author": "WinIsland 示例",
+  "id": "example-button",
+  "name": "按钮与问候示例",
+  "version": "1.0.0",
+  "entry": "example.dll",
+  "dependencies": [],
+  "description": "增加问候文字设置、实际按钮和灵动岛图层；调整动画倍率，可关闭恢复。",
+  "apiVersion": 1
+}
