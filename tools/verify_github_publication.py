@@ -24,6 +24,10 @@ def sha(p):
         return hashlib.file_digest(f, 'sha256').hexdigest().lower()
 
 rows = json.loads((ROOT/'release-assets/publish/manifest.json').read_text(encoding='utf-8'))
+# Existing historical releases were published from the previous archive commit.
+# The three releases added by the 1.3.4 archive update must point at this commit;
+# older tags remain valid immutable snapshots and are intentionally not rewritten.
+new_archive_tags = {'v1.3.2alpha', 'v1.3.3beta', 'v1.3.4'}
 releases = api('repos/'+REPO+'/releases?per_page=100')
 by_tag = {r['tag_name']: r for r in releases}
 errors=[]
@@ -46,14 +50,16 @@ for row in rows:
     obj=ref['object']
     if obj['type']=='tag':
         obj=api('repos/'+REPO+'/git/tags/'+obj['sha'])['object']
-    if obj['sha']!=args.source_commit:
-        errors.append('Tag commit mismatch '+tag)
+    tag_commit = obj['sha']
+    if tag in new_archive_tags and tag_commit!=args.source_commit:
+        errors.append('New tag commit mismatch '+tag)
     verified.append({'version':row['version'],'url':r['html_url'],'prerelease':r['prerelease'],
+                     'tagCommit':tag_commit,
                      'publishedAt':r['published_at'],'assets':[{k:a.get(k) for k in
                       ('name','size','digest','browser_download_url')} for a in r['assets']]})
 
 latest=api('repos/'+REPO+'/releases/latest')
-if latest['tag_name']!='v1.3.0':
+if latest['tag_name']!='v1.3.4':
     errors.append('Latest stable release mismatch')
 tree=api('repos/'+REPO+'/git/trees/'+args.source_commit+'?recursive=1')
 local=subprocess.check_output(['git','ls-tree','-r','--full-tree','-z',args.source_commit],cwd=ROOT)
@@ -71,7 +77,7 @@ report={'checkedAt':datetime.datetime.now().astimezone().isoformat(),
         'sourceFiles':len(remote_blobs),'releaseCount':len(verified),
         'assetCount':sum(len(r['assets']) for r in verified),
         'latestStable':latest['tag_name'],'errors':errors,'releases':list(reversed(verified)),
-        'scope':'Verified remote source blob IDs, release flags, tag targets and server SHA-256 attachment digests. Historical programs were not rebuilt or run.'}
+        'scope':'Verified remote source blob IDs, release flags, tag targets for the new archive releases, and server SHA-256 attachment digests. Historical tags retain their immutable prior archive commit; historical programs were not rebuilt or run.'}
 (ROOT/'catalog/github-publication.json').write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding='utf-8')
 print(json.dumps({k:v for k,v in report.items() if k!='releases'},ensure_ascii=False))
 raise SystemExit(bool(errors))
