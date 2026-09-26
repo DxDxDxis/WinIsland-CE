@@ -135,11 +135,13 @@ gtb开源/
 ├─ LICENSE                      项目自身 BSD-3-Clause
 ├─ THIRD_PARTY_NOTICES.md        第三方许可边界
 ├─ versions/                    每个正式版号的最新构建
-│  ├─ Winlsland-1.3.1alpha/
+│  ├─ Winlsland-1.3.4社区版/
 │  │  ├─ README.md              本版本身份、运行、源码和成品哈希
 │  │  ├─ project/               保留结构的源码、资源、SDK、原说明
 │  │  └─ dist/                  已构建运行文件（本地保留，Git 忽略）
-│  ├─ Winlsland-1.3.0社区版/
+│  ├─ Winlsland-1.3.3beta/
+│  ├─ Winlsland-1.3.2alpha/
+│  ├─ Winlsland-1.3.1alpha/
 │  ├─ ...
 │  └─ Winlsland-1.1.1社区版/
 ├─ extras/plugins/              找到的插件源码与开发资料
@@ -214,5 +216,5 @@ gtb开源/
 - 邮箱：**[725513212@qq.com](mailto:725513212@qq.com)**
 - GitHub：仓库发布后可通过其 Issues 提交问题、通过 Pull Requests 贡献修改。
 
-本目录是整理完成的本地开源归档，不表示已经上传或发布到 GitHub。
+本归档已发布到 [GitHub](https://github.com/DxDxDxis/WinIsland-CE)，共 21 个 Release；当前最新正式版为 1.3.4。附件及源码校验结果见 [发布校验记录](catalog/github-publication.json)。
 
