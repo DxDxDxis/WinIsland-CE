@@ -1,0 +1,5 @@
+#include <windows.h>
+1 RT_MANIFEST "app.manifest"
+1 ICON "WinIsland.ico"
+#include "embedded_components.generated.rc"
+#include "product_version.rcinc"

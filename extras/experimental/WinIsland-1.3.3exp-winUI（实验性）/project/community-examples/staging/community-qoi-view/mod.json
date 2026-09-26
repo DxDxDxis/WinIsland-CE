@@ -1,0 +1,9 @@
+{
+  "id": "community-qoi-view",
+  "name": "B 原有媒体 API 显示 QOI",
+  "author": "WinIsland community SDK examples",
+  "version": "1.0.0",
+  "apiVersion": 1,
+  "entry": "bin/community-qoi-view.dll",
+  "gameVersion": ">=1.3.2alpha <2.0.0"
+}

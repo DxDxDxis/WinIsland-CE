@@ -1,0 +1,9 @@
+{
+  "id": "open-lifecycle",
+  "name": "open-lifecycle",
+  "author": "WinIsland open SDK examples",
+  "version": "1.0.0",
+  "apiVersion": 1,
+  "entry": "bin/open-lifecycle.dll",
+  "gameVersion": ">=1.3.2alpha <2.0.0"
+}

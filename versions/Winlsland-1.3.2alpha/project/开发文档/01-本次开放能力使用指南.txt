@@ -1,0 +1,16 @@
+﻿WinIsland 1.3.2alpha 社区版
+构建标识：1.3.2alpha-open-runtime-20260918
+文档日期：2026-09-18
+
+先运行 release/WinIsland-1.3.2alpha.exe。示例包默认不写入日常数据、不自动启用。
+建议先备份数据，或使用：WinIsland-1.3.2alpha.exe --verify <本版verification下独立路径>。
+插件管理中安装 open-examples/packages 内需要的 .wimod，然后手动启用。
+
+open-browser：真实 WebView2 页面，需要机器已安装 Evergreen WebView2 Runtime。自己的浏览数据写插件 DATA/web-profile。可以输入文字并点击发送。不是完整浏览器产品。
+open-stream + open-stream-view：先安装两包，启用 view 时按依赖启动提供者；显示自定义格式视频测试图并提交轻音量PCM。需要系统可用音频设备。
+open-hooks：修改显示音乐标题、演示发布消息和动作替换；关闭后移除处理层。
+open-process：包内 helper.exe 经主程序启动，私有管道回送日志；插件设置有“测试辅助进程异常退出”按钮，日志保留退出现象，主程序继续运行。
+open-lifecycle：专门用于退出测试；请求关闭后还需6.2秒退出，超过5秒显示等待合作退出/需重启，真实线程结束后才卸载。不要把这个刻意慢退出示例当成普通业务行为。
+
+旧 community-examples 仍包含基础服务/消费者、后台任务和QOI；其构建方式与之前一致。
+开发者先看总开发者文档、开放范围与限制、SDK接口参考，再按需要看流式、视图、文件、进程和替换专章。

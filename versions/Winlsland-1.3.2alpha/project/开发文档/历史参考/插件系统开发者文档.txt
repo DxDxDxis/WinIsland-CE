@@ -1,0 +1,95 @@
+﻿历史基线资料：来自只读 1.3.1alpha；不是 1.3.2alpha 新接口的当前规范。
+当前规范请从上一级的 00-总开发者文档.txt 阅读。
+
+插件系统开发者文档 — 1.3.1alpha
+
+适用：WinIsland 1.3.1alpha 社区版，构建 1.3.1alpha-settings-adjust-20260917。源码核对日期：2026-09-17。产品版本与插件 ABI 分别管理。
+
+先看 开放范围与限制（插件接口开放范围与限制.txt），精确声明以 sdk（../sdk/README.txt） 与 接口参考（SDK接口参考.txt） 为准。不要从历史需求文档推断已实现接口。
+
+包与版本
+
+.wimod 是受限 ZIP，根目录必须有 mod.json，入口为包内 Windows x64 DLL。普通资源可放 assets/，路径禁止越界、链接、重复成员及加密 ZIP。插件不是直接运行的 EXE，也没有免 DLL 的 HTML/JSON 插件入口。
+
+{
+  "id": "my-tool",
+  "name": "我的工具",
+  "version": "1.0.0",
+  "author": "作者",
+  "description": "基于开放场景的自定义工具",
+  "entry": "bin/my-tool.dll",
+  "apiVersion": 1,
+  "gameVersion": ">=1.3.0 <=1.3.1alpha",
+  "dependencies": []
+}
+
+范围示例仅用于确实验证过这两版的插件，发布者应填写实际测试范围。gameVersion 被解析器强制检查，不是纯说明；旧示例中的 <1.3.0 会被两版拒绝，即使 DLL ABI 相同。语法支持 *、精确版本、空格连接的 > >= < <= = 条件；不是完整 npm semver，不宣称支持 ^、~ 或 ||。依赖可为 ID 字符串或 {"id":"other","version":">=1.0.0 <2.0.0"}。
+
+稳定 ID 用于身份与存档；不可为升级换 ID。清单 apiVersion=1，DLL WinIsland_ModAbi() 必须等于 0x00010002，产品版本、清单 API 与 DLL ABI 是三件不同的事。场景、设置、媒体扩展当前各版本 1。未签名包可校验加载；有签名时校验清单/CMS/Windows 信任链，签名无效不能当作未签名继续。
+
+ABI 与入口
+
+导出 WinIsland_ModAbi、WinIsland_CreateMod，返回 IWinIslandMod POD 表；使用 extern "C" 与 SDK 的导出宏，提供 DLL 自己的 destroy。不得跨边界传 STL/C++ 虚表、异常或要求宿主释放 DLL CRT 内存。字符串 UTF-8，调用期间借用并由宿主复制；结构必须初始化 size/version。
+
+先检查 host->size 覆盖 queryInterface 字段且指针存在，再发现扩展。例如在 onLoad/onEnable 回调中：
+
+include <stddef.h>
+include "mod_api.h"
+WiSceneApi scene{};
+if (host->size < offsetof(WinIslandHostApi, queryInterface) + sizeof(host->queryInterface)
+    || !host->queryInterface) return -1;
+if (host->queryInterface(host->context, WI_SCENE_INTERFACE, WI_SCENE_ABI,
+                         &scene, sizeof(scene)) != WI_OK) return -1;
+WiElement island = 0, text = 0;
+if (scene.find(scene.context, "island", &island) != WI_OK) return -1;
+if (scene.create(scene.context, WI_TEXT, "my-label", island, &text) != WI_OK) return -1;
+WiPropertyValue rect{}; rect.size = sizeof(rect); rect.version = 1;
+rect.number[0] = 12; rect.number[1] = 4;
+rect.number[2] = 150; rect.number[3] = 24;
+if (scene.set(scene.context, text, WI_RECT, &rect, 0) != WI_OK) return -1;
+WiPropertyValue value{}; value.size = sizeof(value); value.version = 1;
+// 填入 NUL 结尾 UTF-8 文字，最多 sizeof(value.text)-1 字节。
+value.text[0] = 'H'; value.text[1] = 'i';
+if (scene.set(scene.context, text, WI_TEXT_VALUE, &value, 0) != WI_OK) return -1;
+if (scene.commit(scene.context) != WI_OK) return -1;
+
+片段不是完整 DLL。需自己管理失败路径、重复启用与已创建句柄；宿主禁用仍会按 owner 回收。文字/图形不会自动为你增加适合布局的岛高度，尺寸选择见场景文档。
+
+加载、停止与状态
+
+扫描只验证包与读取元数据；只有用户启用或恢复 saved enabled 才解压、LoadLibrary、检查 ABI、工厂、onLoad/onEnable。新安装默认禁用；缺失/损坏 host-state 也禁用并记录原因。恢复依赖时不擅自启用被用户禁用的依赖。正常退出释放资源不改变用户启用选择。
+
+禁用先停止接受新 SDK 操作，再按 owner 撤销场景、输入、绘制、媒体和旧资源；卸载完成 onUnload/destroy/FreeLibrary。回调串行，不能在其中阻塞等待另一个需要 worker 的操作。取消、异常、失效句柄必须处理。
+
+插件管理“卸载”是停止并卸载实例，保留包与设置；“重装”验证当前原包并释放到独立缓存，保留设置/原选择，失败尝试恢复，不等于从网上升级，也不先删配置。
+
+设置与存档
+
+winisland.settings 的 define 注册文本、数字、开关、选项；读写的是该插件自己的 settings.xml，不是主程序 Settings。开关值为字符串 "0" / "1"，数字须有限且在范围内，选项值须来自 LF 分隔 choices。
+
+变更通知的实际限制： WiSettingDefinition 只有 key/label/defaultValue/choices/min/max，没有描述字段或 callback。define 创建的资源没有回调；当前没有通用 settings.changed 事件。需要在宿主 timer/事件回调读取 read/getSetting，与旧值比较后更新逻辑。旧 WI_SETTING 若注册 callback，宿主 UI 保存后会调用该回调；不要声称 define 自动通知。插件主动 write 保存也不自动调用变更回调。保存返回值要检查，错误后重新读取/重试，不制造假成功。
+
+插件卡片的“模组设置”来自真实注册资源；未启用时资源不可用，和没有注册设置不同。自有持久化文件不得写 EXE 目录或解压缓存；正式 SDK 没有通用 dataRoot 路径查询表，优先使用宿主设置和媒体来源接口，不猜临时 DLL 路径。
+
+目录
+
+用户确认的 dataRoot/
+  mods/<id>.wimod               插件包（文件名不作为身份）
+  mods/<id>/settings.xml        自有设置
+  mods/<id>/host-state.txt      宿主保存的 enabled/disabled/unloaded，插件勿擅改
+  mods/<id>/mod.log             日志
+  mods/<id>/quarantine.txt      故障恢复保护（可能存在）
+  mod-cache/...                可重建解压缓存，不存用户唯一数据
+
+media.load 是包根相对资源；loadFrom(WI_MEDIA_PLUGIN_DATA,...) 相对该插件数据目录；chooseLocalFile 由宿主弹出选择器。宿主内部定位/安装文件不是插件可直接篡改的配置接口。
+
+常见排错
+
+1. 清单被拒绝：先看 gameVersion、apiVersion、x64 DLL、依赖、签名；相同 ABI 不会绕过清单版本范围。
+2. 计时正常但文字不显示：使用 scene 文本节点，检查 RECT/可见性/父节点、commit、尺寸与当前宿主前景；旧 WI_LAYER 不是自由文本元素。
+3. API 返回 WI_THREAD / WI_STOPPED：线程或生命周期不对；停止后不能继续用 context/句柄。
+4. 媒体 load 成功不等于显示：检查 info 的 READY/ERROR、bind 自有节点、commit、父可见性/播放/隐藏策略。
+5. 高刷小游戏卡顿：onDraw 非逐帧保证，native timer 不是精确游戏循环；控制绘制量，按实际时间推进。
+6. 历史 plugins/host-scene、plugins/media-fixture 和 source/examples 仅作实现样本；部分打包脚本还带旧 gameVersion。复制到自己的开发目录、同步当前 sdk 并按实际验收修正清单后再构建。本次文档同步没有修改或重打包用户插件。
+
+失败码要区分：旧 add 失败为 0、旧 remove/getSetting 成功为非零；scene/settings 为 WI_OK=0；media 的负数枚举与 scene 不同。详见精确头文件。

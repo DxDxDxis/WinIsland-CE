@@ -1,0 +1,9 @@
+﻿WinIsland 1.3.2alpha 社区版
+构建标识：1.3.2alpha-open-runtime-20260918
+程序：release/WinIsland-1.3.2alpha.exe
+先看：开发文档/本次实现情况说明.txt
+完整中文TXT开发资料：开发文档/00-总开发者文档.txt
+可运行源码与插件包：community-examples 和 open-examples
+实测与未验证事项：开发文档/验证报告.txt
+本轮新增视图/WebView2、GPU共享纹理提交、流式媒体、文件OLE、托管进程及业务替换入口。
+保留旧ABI，原1.3.1alpha清单429个文件哈希未变；本轮修改前1.3.2alpha快照路径见verification/open-runtime-backup.txt。

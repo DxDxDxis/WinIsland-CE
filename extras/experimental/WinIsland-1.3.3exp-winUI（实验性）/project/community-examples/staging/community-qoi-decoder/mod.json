@@ -1,0 +1,15 @@
+{
+  "id": "community-qoi-decoder",
+  "name": "B QOI 解码基础服务",
+  "author": "WinIsland community SDK examples",
+  "version": "1.0.0",
+  "apiVersion": 1,
+  "entry": "bin/community-qoi-decoder.dll",
+  "gameVersion": ">=1.3.2alpha <2.0.0",
+  "providesServices": [
+    {
+      "id": "org.winisland.example.qoi",
+      "version": 1
+    }
+  ]
+}

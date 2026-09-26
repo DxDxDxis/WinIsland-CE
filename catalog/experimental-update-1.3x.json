@@ -1,0 +1,17 @@
+{
+  "branches": [
+    {
+      "name": "WinIsland-1.3.2alpha-winUI（实验性）",
+      "directory": "extras/experimental/WinIsland-1.3.2alpha-winUI（实验性）",
+      "files": 3194,
+      "bytes": 563909840
+    },
+    {
+      "name": "WinIsland-1.3.3exp-winUI（实验性）",
+      "directory": "extras/experimental/WinIsland-1.3.3exp-winUI（实验性）",
+      "files": 2921,
+      "bytes": 373596049
+    }
+  ],
+  "generatedAt": "2026-09-26T19:09:07.2321801+08:00"
+}

@@ -17,7 +17,7 @@ parser.add_argument('--gh', required=True)
 parser.add_argument('--commit', required=True)
 args = parser.parse_args()
 rows = json.loads((ROOT / 'release-assets/publish/manifest.json').read_text(encoding='utf-8'))
-if len(rows) != 18 or rows[0]['version'] != '1.1.1' or rows[-1]['version'] != '1.3.1alpha':
+if len(rows) != 21 or rows[0]['version'] != '1.1.1' or rows[-1]['version'] != '1.3.4':
     raise SystemExit('Expected complete, oldest-to-newest package manifest')
 state = ROOT / '.publish-state'
 state.mkdir(exist_ok=True)
@@ -94,7 +94,7 @@ for row in rows:
     if release['draft']:
         call('release', 'edit', tag, '--repo', REPO, '--draft=false',
              '--prerelease=' + str(row['prerelease']).lower(),
-             '--latest=' + str(row['version'] == '1.3.0').lower())
+             '--latest=' + str(row['version'] == '1.3.4').lower())
     release = api('repos/' + REPO + '/releases/' + str(release['id']))
     if release['draft'] or release['prerelease'] != row['prerelease']:
         raise RuntimeError('Published status mismatch: ' + tag)
@@ -106,3 +106,4 @@ for row in rows:
     print('Published and verified ' + tag, flush=True)
 
 print('Published and verified all ' + str(len(results)) + ' releases.', flush=True)
+

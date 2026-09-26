@@ -1,0 +1,21 @@
+﻿WinIsland 1.3.2alpha 社区版
+构建标识：1.3.2alpha-open-runtime-20260918
+文档日期：2026-09-18；以本目录源码、SDK 和验证报告为准。
+
+社区自定义事件
+subscribe(topic,callback,context,&subscription) 在 loader 注册，unsubscribe 取消；owner停止自动撤销。
+publish(topic,data,bytes) 在 loader/本 owner 宿主管理任务执行，topic 必须以本模组ID加点开头，来源由宿主填入。
+数据复制，单消息最多65536字节；用户事件排队上限256，满时返回 LIMIT，不允许无限堆积。
+事件存活2秒，超时未投递即丢弃。用于状态失效/变化提示，不是可靠数据库/支付/命令确认队列；重要状态用服务方法读取当前快照。
+service.changed 由宿主发布，包含 WiServiceInfo；系统事件队列上限4096，过载丢最旧，sequence 可用于发现缺口，重新 enumerate。订阅前的排队消息不重放。
+每次 pump 最多处理64个事件，回调中新发布的内容留待后续，防止递归无限发布。
+同 owner 停止后不投递；每次投递前检查订阅是否仍存活，取消后的排队事件不会调用已撤销回调。
+
+服务异步方法
+invoke 本身同步。方法也可同步返回 requestId，再通过同提供者命名空间事件发送“结果可取”提示，用另一个方法读取有界结果。由该服务文档定义取消/过期/重入。
+消费者持有引用至业务完成。不要通过原始函数指针互相调用后绕过调用计数。
+
+宿主事件与命令边界
+已有 WI_EVENT/WI_HOOK 的场景/媒体提示及 scene 输入仍有效；community 事件不是旧事件总线的别名，不允许伪造宿主 scene.changed。
+旧 WI_REPLACE 中 music-action 等是已有明确替换点，不代表任意内部函数可替换。
+本版open v1已接入音乐、通知、媒体动作、遥测处理链与Windows OLE视图文件接口；完整规则见宿主功能替换与数据来源.txt和插件文件拖放接口.txt。未导出所有私有处理函数。

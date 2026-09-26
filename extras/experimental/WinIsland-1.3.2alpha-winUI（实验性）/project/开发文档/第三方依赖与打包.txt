@@ -1,0 +1,24 @@
+﻿WinIsland 1.3.2alpha 社区版
+构建标识：1.3.2alpha-open-runtime-20260918
+文档日期：2026-09-18；以本目录源码、SDK 和验证报告为准。
+
+支持路径
+1. 静态链接至插件 DLL，示例 QOI 采用此路径。
+2. 包内 entry DLL 同目录部署私有依赖，遵循 Windows x64 loader 与自身库的部署要求。
+3. 另一个基础模组集中提供服务，其他模组只依赖社区服务 ABI。
+
+加载规则
+LoadLibraryEx 使用 LOAD_LIBRARY_SEARCH_DLL_LOAD_DIR | LOAD_LIBRARY_SEARCH_DEFAULT_DIRS，不调用进程全局 SetDllDirectory。
+宿主在解压后、加载入口前校验包内所有 DLL 的 PE 标头和 x64 machine。
+主入口按完整路径加载，旧插件同名 example.dll 仍兼容；私有导入 DLL 属于进程共享模块命名空间。
+包内同名私有 DLL 不同内容拒绝。已加载模组声明的私有 DLL 名称/哈希不同拒绝；Windows 已载同名不同内容 DLL 也拒绝，并显示名称及冲突来源。
+相同内容可共存。推荐使用供应商/版本前缀私有名称并相应修改导入，不要以系统 DLL 名打包自己的库。
+不修改全局搜索路径不等于 Windows 对同名导入提供隔离；本版采用保守冲突拒绝。延迟动态加载、插件自己绕过宿主加载或外部进程行为不构成安全沙箱保证。
+依赖子目录不会自动变成搜索路径。第三方库有动态加载要求时，应使用正式路径解析和完整路径，并保证自身析构与线程停止。
+
+许可证与部署
+QOI 来源/下载日期/文件 SHA256 记录在 community-examples/third_party/origin.txt；MIT 完整许可在 LICENSE.txt，也进入解码插件包。
+所有第三方库由插件作者核对许可证、再分发许可、VC 运行库、架构及宿主 OS 兼容；不能默认“放进 .wimod 就一定能工作”。
+.NET/Java/浏览器等复杂运行环境仍需核对COM apartment、辅助进程、GPU、DLL命名和退出协议。本次实测了WebView2 153.0.4234.32；没有实测CEF、Java、.NET和游戏引擎。
+WebView2 SDK 1.0.2903.40 来源 Microsoft 官方 NuGet；完整LICENSE/NOTICE及来源哈希见open-examples/third_party。该SDK使用静态loader，并不把整个浏览器runtime塞入插件包。
+辅助进程使用open.startProcess，详见辅助进程与进程隔离.txt。

@@ -1,0 +1,493 @@
+﻿WinIsland 1.3.2alpha 社区版
+构建标识：1.3.2alpha-open-runtime-20260918
+文档日期：2026-09-18；以本目录源码、SDK 和验证报告为准。
+
+版本与内存规则
+以下是本次发行 SDK 的完整头文件原文，不是未来规划。接口字段顺序、枚举值、签名以这些原文为准。
+所有字符串 UTF-8；固定文本含NUL；一般参数缓冲只借用至本次函数返回，host 需要长期使用的数据会复制。
+插件工厂对象由插件自己的 destroy 释放；服务表context由提供者持有至退出排空；调用结果写消费者缓冲；任务result和图像frame由host复制。
+structure size/version 必须正确。新增 community v1 需要完整 sizeof(WiCommunityApi)，不接受任意截短表。
+旧 media v1 保留原 replaceSource 之前的历史最小前缀协商，旧 scene/settings 仍要求完整表；不要假定所有表都支持任意尾部裁剪。
+社区服务方法的独立结构体由社区协议规定 size/version；WiServiceTable.version=1是分发头，不是服务实现版本。
+
+社区函数逐项
+registerService：loader；复制分发头/描述，owner绑定；返回 REGISTERED 句柄；重复id+version BUSY。
+setServiceState：loader；只允许自身从 REGISTERED/READY 转 READY/STOPPING/FAILED；停止后不可复活。
+unregisterService：loader；先STOPPING，引用/active未清零则BUSY，成功后句柄失效。
+enumerate：loader；输出所有当前服务（包含未就绪/停止），capacity<=512，count总量。
+acquire：loader；匹配READY、版本、能力及provider；输出owner绑定引用，不返回提供者指针。
+release：loader；允许owner停止阶段；只撤销此引用。
+invoke：loader或本owner受管理任务；提供者LOADER/CONCURRENT规则；input<=1MiB、output<=64MiB、嵌套<=16；同步。
+subscribe/unsubscribe：loader；topic精确匹配，无通配符；最多512订阅，全局序号。
+publish：loader/本owner任务；自己ID的命名空间，复制<=64KiB，队列满LIMIT。
+startJob：loader；最多8/owner、64全局；work后台、done回loader。
+cancelJob：loader/本owner任务；只设置取消标志。
+jobInfo：loader；运行1/取消2/完成待回送3，perMille=0..1000；回送后NOT_FOUND。
+manageLifetime：loader；最多16条/owner；stop非阻塞，joined轮询，真实完成才能1。
+path：loader/本owner任务；DATA或PACKAGE，拒绝绝对相对参数/.. /冒号/规范化后越界；bytes含NUL。
+
+社区错误码
+OK=0；INVALID=-200；VERSION=-201；NOT_FOUND=-202；STOPPED=-203；THREAD=-204；BUSY=-205；LIMIT=-206；FAULT=-207；CANCELLED=-208；UNSUPPORTED=-209；NOT_READY=-210。
+acquire有同名但无就绪兼容候选时NOT_READY（可能是版本/能力/provider不符），枚举各字段可进一步诊断；清单依赖错误给出具体服务名。
+其它旧接口错误码属于各自枚举，不可按社区枚举解释。
+
+
+新增open v1函数与字段
+完整方法签名见下方open_api.h。queryInterface要求完整sizeof(WiOpenApi)。createView/registerHook/removeHook为loader线程；其余可在活着的owner线程使用，外部线程必须登记生命周期。submitFrame同步复制；closeView/dragFiles异步，分别等DESTROY/DRAG_RESULT。startProcess启动x64helper；send只入队、receive非阻塞、stop合作退出、release要等process与管道线程均结束。视图/GPU/文件/进程/业务/流式各字段及所有权以对应中文专章补充。
+
+
+文件：sdk/mod_api.h
+#pragma once
+#include <stdint.h>
+#include "scene_api.h"
+#include "media_api.h"
+#ifdef __cplusplus
+extern "C" {
+#endif
+#define WINISLAND_MOD_ABI 0x00010002u
+#define WINISLAND_MOD_API __declspec(dllexport)
+// All strings are UTF-8, borrowed for the duration of a call and copied by host.
+// Legacy callbacks run serially on the loader worker. Background work and third-party
+// threads require the optional winisland.community v1 lifecycle contract.
+typedef int (*WinIslandCallback)(void* context, const char* value);
+enum WinIslandResourceKind { WI_SETTING=1, WI_BUTTON=2, WI_LAYER=3, WI_REPLACE=4, WI_TIMER=5, WI_EVENT=6, WI_TASK=7, WI_HOOK=8, WI_ANIMATION=9 };
+typedef struct WinIslandResource {
+    uint32_t size, version, kind;
+    const char *key, *label, *value;
+    WinIslandCallback callback;
+    void* context;
+    uint32_t intervalMs; // timer >=100ms
+} WinIslandResource;
+typedef struct WinIslandAnimationDefinition {
+    uint32_t size, version;
+    const char *key, *script;
+    double duration;
+    int32_t priority;
+} WinIslandAnimationDefinition;
+typedef struct WinIslandAnimationFrame {
+    uint32_t size, version;
+    uint64_t sequence;
+    float x,y,width,height,radius,opacity,scale,offsetX,offsetY,contentOpacity,lyricOpacity,noticeOpacity;
+} WinIslandAnimationFrame;
+typedef struct WinIslandHostApi {
+    uint32_t size, version;
+    void* context; // capability bound to THIS plugin; no caller-supplied owner
+    void (*log)(void*, const char*);
+    uint64_t (*add)(void*, const WinIslandResource*);
+    int (*remove)(void*, uint64_t);
+    int (*getSetting)(void*, const char*, char*, uint32_t); // writes caller buffer
+    uint32_t capabilities;
+    uint32_t (*animationCapabilities)(void*);
+    uint64_t (*registerAnimation)(void*, const WinIslandAnimationDefinition*);
+    int (*animationCommand)(void*, uint64_t, uint32_t, const WinIslandAnimationFrame*, WinIslandAnimationFrame*);
+    // Optional tail: check size >= offsetof(queryInterface)+sizeof(queryInterface).
+    int (*queryInterface)(void*, const char* name, uint32_t version, void* out, uint32_t bytes);
+} WinIslandHostApi;
+typedef struct IWinIslandMod {
+    uint32_t size, version;
+    void* context;
+    WinIslandCallback onLoad, onEnable, onDisable, onUnload;
+    void (*destroy)(void*); // allocated and released by same DLL CRT
+} IWinIslandMod;
+typedef uint32_t (*WinIslandModAbi)(void);
+typedef IWinIslandMod* (*WinIslandCreateMod)(const WinIslandHostApi*);
+// Exports: WinIsland_ModAbi() returns WINISLAND_MOD_ABI;
+// WinIsland_CreateMod(host) returns table valid until destroy(context).
+#ifdef __cplusplus
+}
+#endif
+
+
+
+文件：sdk/scene_api.h
+#pragma once
+#include <stdint.h>
+#ifdef __cplusplus
+extern "C" {
+#endif
+// Independent extension version. Lifecycle ABI remains 0x00010002.
+#define WI_SCENE_ABI 1u
+#define WI_SCENE_INTERFACE "winisland.scene"
+typedef uint64_t WiElement;
+enum WiResult { WI_OK=0, WI_INVALID=-1, WI_NOT_FOUND=-2, WI_VERSION=-3,
+    WI_THREAD=-4, WI_STOPPED=-5, WI_LIMIT=-6, WI_UNSUPPORTED=-7, WI_CONFLICT=-8 };
+enum WiElementType { WI_CONTAINER=1, WI_TEXT, WI_IMAGE, WI_ICON, WI_SCENE_BUTTON,
+    WI_SHAPE, WI_PROGRESS, WI_SLIDER, WI_INPUT, WI_CUSTOM_DRAW };
+enum WiProperty {
+    WI_RECT=1, WI_VISIBLE, WI_OPACITY, WI_SCALE, WI_ROTATION, WI_RADIUS,
+    WI_BACKGROUND, WI_BORDER_COLOR, WI_BORDER_WIDTH, WI_TEXT_COLOR, WI_FONT_SIZE,
+    WI_FONT_WEIGHT, WI_TEXT_VALUE, WI_FONT_FAMILY, WI_ALIGN, WI_Z_ORDER,
+    WI_RECEIVE_INPUT, WI_BLOCK_INPUT, WI_CLIP, WI_PARENT, WI_VALUE,
+    WI_MIN_SIZE, WI_MAX_SIZE, WI_ANCHOR, WI_MARGIN, WI_PADDING, WI_LAYOUT,
+    WI_SHADOW, WI_CUSTOM_DATA, WI_ELEMENT_TYPE, WI_SIZE_MODE, WI_POSITION,
+    WI_EXPANDED, WI_ENABLED, WI_MEDIA_FIT, WI_MEDIA_CROP
+};
+enum WiMediaFit { WI_FIT_STRETCH=0,WI_FIT_CONTAIN=1,WI_FIT_COVER=2 };
+enum WiSizeMode { WI_HOST_MANAGED=0, WI_PLUGIN_MANAGED=1, WI_OVERLAY=2, WI_INTRINSIC=3 };
+enum WiSceneFlags { WI_IDLE=1, WI_MUSIC=2, WI_PLAYING=4, WI_LYRIC=8,
+    WI_NOTICE=16, WI_IS_EXPANDED=32, WI_SETTINGS_OPEN=64, WI_REDUCED_MOTION=128,
+    WI_SOFTWARE_RENDERER=256 };
+// All geometry is final island-local DIP (not multiplied by MusicScale).
+// Colors use straight RGBA in number[0..3]. No caller-owned memory retained.
+typedef struct WiPropertyValue {
+    uint32_t size, version;
+    double number[4];
+    uint64_t handle; // parent element for WI_PARENT
+    char text[1024]; // UTF-8, terminated; WI_TEXT_VALUE/FONT_FAMILY/CUSTOM_DATA
+} WiPropertyValue;
+typedef struct WiElementInfo {
+    uint32_t size, version, type, visible;
+    WiElement id, parent;
+    char owner[96], key[128];
+    float x,y,width,height,opacity;
+    int32_t z;
+} WiElementInfo;
+typedef struct WiSceneSnapshot {
+    uint32_t size, version, flags, dpi;
+    uint64_t generation;
+    double time;
+    float x,y,width,height;
+    WiElement focus;
+    uint32_t elementCount, sizeMode;
+} WiSceneSnapshot;
+enum WiInputKind { WI_POINTER_ENTER=1, WI_POINTER_LEAVE, WI_POINTER_MOVE,
+    WI_POINTER_DOWN, WI_POINTER_UP, WI_POINTER_CLICK, WI_POINTER_WHEEL,
+    WI_KEY_DOWN, WI_KEY_UP, WI_FOCUS_GAINED, WI_FOCUS_LOST, WI_TEXT_INPUT,
+    WI_DRAG_START,WI_DRAG_UPDATE,WI_DRAG_END,WI_DRAG_CANCEL };
+typedef struct WiInputEvent {
+    uint32_t size, version, kind, key;
+    WiElement target;
+    uint64_t generation;
+    double time;
+    float x,y,wheel;
+    uint32_t modifiers;
+} WiInputEvent;
+typedef int (*WiInputCallback)(void*, const WiInputEvent*); // 0 unhandled, 1 handled
+enum WiDrawKind { WI_DRAW_RECT=1, WI_DRAW_ELLIPSE, WI_DRAW_LINE, WI_DRAW_TEXT, WI_DRAW_TRIANGLE, WI_PATH_BEGIN, WI_PATH_LINE, WI_PATH_CUBIC, WI_PATH_END };
+typedef struct WiDrawCommand {
+    uint32_t size, version, kind, reserved;
+    float x,y,width,height,x2,y2,radius,stroke,fontSize;
+    float color[4];
+    char text[512];
+} WiDrawCommand;
+typedef struct WiDrawContext {
+    uint32_t size,version;
+    WiSceneSnapshot scene;
+    WiElementInfo element;
+    WiInputEvent lastInput;
+    float clip[4],background[4],foreground[4];
+} WiDrawContext;
+typedef int (*WiDrawCallback)(void*,const WiDrawContext*);
+typedef struct WiSceneApi {
+    uint32_t size, version;
+    void* context; // bound to host Record; never supply an owner ID
+    int (*snapshot)(void*, WiSceneSnapshot*);
+    int (*enumerate)(void*, uint64_t generation, WiElement parent, uint32_t type,
+                     WiElementInfo* out, uint32_t capacity, uint32_t* count);
+    int (*find)(void*, const char* key, WiElement*);
+    int (*read)(void*, WiElement, uint32_t property, WiPropertyValue*);
+    int (*create)(void*, uint32_t type, const char* key, WiElement parent, WiElement*);
+    int (*clone)(void*, WiElement source, const char* key, WiElement*);
+    int (*set)(void*, WiElement, uint32_t property, const WiPropertyValue*, int32_t priority);
+    int (*clear)(void*, WiElement, uint32_t property); // remove this owner's property layer
+    int (*remove)(void*, WiElement); // own node: destroy; host/other: reversible hide
+    int (*listen)(void*, WiElement, WiInputCallback, void* callbackContext);
+    int (*draw)(void*, WiElement, const WiDrawCommand*, uint32_t count);
+    int (*bitmap)(void*, WiElement, uint32_t width, uint32_t height, const void* bgra, uint32_t bytes);
+    int (*commit)(void*); // publish copied scene changes; no DLL code on rendering thread
+    int (*visible)(void*, uint64_t generation, WiElementInfo* out, uint32_t capacity, uint32_t* count);
+    int (*onDraw)(void*,WiElement,WiDrawCallback,void* callbackContext);
+    int (*requestDraw)(void*,WiElement);
+    int (*reset)(void*); // revoke only this owner's edits/elements/input/draw data
+} WiSceneApi;
+enum WiSettingType { WI_SETTING_TEXT=1, WI_SETTING_NUMBER, WI_SETTING_SWITCH, WI_SETTING_CHOICE };
+typedef struct WiSettingDefinition {
+    uint32_t size, version, type, reserved;
+    const char *key,*label,*defaultValue,*choices; // choice values separated by LF
+    double minimum,maximum;
+} WiSettingDefinition;
+typedef struct WiSettingsApi {
+    uint32_t size, version;
+    void* context;
+    int (*define)(void*,const WiSettingDefinition*,uint64_t*);
+    int (*read)(void*,const char* key,char* out,uint32_t bytes);
+    int (*write)(void*,const char* key,const char* value);
+} WiSettingsApi;
+#ifdef __cplusplus
+}
+#endif
+
+
+
+文件：sdk/media_api.h
+#pragma once
+#include <stdint.h>
+#ifdef __cplusplus
+extern "C" {
+#endif
+#define WI_MEDIA_INTERFACE "winisland.media"
+#define WI_MEDIA_ABI 1u
+typedef uint64_t WiMedia;
+enum WiMediaResult { WI_MEDIA_OK=0, WI_MEDIA_INVALID=-1, WI_MEDIA_NOT_FOUND=-2, WI_MEDIA_VERSION=-3, WI_MEDIA_LIMIT=-4, WI_MEDIA_UNSUPPORTED=-5, WI_MEDIA_BUSY=-6, WI_MEDIA_WRONG_THREAD=-7, WI_MEDIA_OWNER_STOPPED=-8 };
+enum WiMediaKind { WI_MEDIA_IMAGE=1, WI_MEDIA_ANIMATION=2, WI_MEDIA_VIDEO=3 };
+enum WiMediaState { WI_MEDIA_LOADING=1, WI_MEDIA_READY=2, WI_MEDIA_PLAYING=3, WI_MEDIA_PAUSED=4, WI_MEDIA_STOPPED=5, WI_MEDIA_ENDED=6, WI_MEDIA_ERROR=7, WI_MEDIA_RELEASED=8 };
+enum WiMediaFormat { WI_MEDIA_PNG=1,WI_MEDIA_JPEG=2,WI_MEDIA_BMP=4,WI_MEDIA_GIF=8,WI_MEDIA_H264=16 };
+enum WiMediaHiddenPolicy { WI_MEDIA_PAUSE_HIDDEN=0,WI_MEDIA_CONTINUE_HIDDEN=1 };
+enum WiMediaSourceKind { WI_MEDIA_PACKAGE=0,WI_MEDIA_PLUGIN_DATA=1 };
+typedef struct WiMediaInfo {
+    uint32_t size, version, kind, state;
+    uint32_t width, height, frameCount;
+    double duration, frameRate;
+    uint32_t hasAlpha, hasAudio;
+    char format[32], codec[64], error[256];
+    uint32_t originalWidth, originalHeight;
+    double position, rate, volume;
+    uint64_t generation, frameSequence;
+    uint32_t muted,loop, audioSupported;
+    uint64_t audioSamplesSubmitted;
+} WiMediaInfo;
+typedef struct WiMediaCapabilities {
+    uint32_t size, version, imageFormats, animationFormats, videoFormats;
+    uint32_t hardwareDecode, softwareDecode, transparentVideo;
+    char formats[512];
+} WiMediaCapabilities;
+typedef struct WiMediaApi {
+    uint32_t size, version; void* context;
+    int (*capabilities)(void*, WiMediaCapabilities*);
+    int (*load)(void*, const char* relativePath, WiMedia*);
+    int (*info)(void*, WiMedia, WiMediaInfo*);
+    int (*bind)(void*, WiMedia, uint64_t element);
+    int (*play)(void*, WiMedia); int (*pause)(void*, WiMedia); int (*stop)(void*, WiMedia);
+    int (*seek)(void*, WiMedia, double seconds); int (*setLoop)(void*, WiMedia, uint32_t loop);
+    int (*setRate)(void*, WiMedia, double rate); int (*setMuted)(void*, WiMedia, uint32_t muted);
+    int (*release)(void*, WiMedia);
+    int (*replaceSource)(void*, WiMedia, const char* relativePath);
+    int (*unbind)(void*, WiMedia, uint64_t element);
+    int (*setVolume)(void*, WiMedia, double volume);
+    int (*setHiddenPolicy)(void*, WiMedia, uint32_t policy);
+    int (*loadFrom)(void*, uint32_t sourceKind, const char* path, uint32_t maxDecodeEdge, WiMedia*);
+    // Opens an asynchronous host-owned file chooser. Loading starts only after user selection.
+    int (*chooseLocalFile)(void*, uint32_t maxDecodeEdge, WiMedia*);
+} WiMediaApi;
+#ifdef __cplusplus
+}
+#endif
+
+
+文件：sdk/community_api.h
+#pragma once
+#include <stdint.h>
+#ifdef __cplusplus
+extern "C" {
+#endif
+#define WI_COMMUNITY_INTERFACE "winisland.community"
+#define WI_COMMUNITY_ABI 1u
+/* All strings UTF-8; buffers borrowed during calls. No C++ types/exceptions across DLLs.
+   Registry mutation/acquire/release/subscription/task creation: loader thread.
+   invoke/publish/path: loader or THIS owner's managed task. Other threads: no SDK calls.
+   A reference is an opaque host handle, NEVER a provider function pointer. */
+enum WiExtResult { WI_EXT_OK=0, WI_EXT_INVALID=-200, WI_EXT_VERSION=-201,
+ WI_EXT_NOT_FOUND=-202, WI_EXT_STOPPED=-203, WI_EXT_THREAD=-204,
+ WI_EXT_BUSY=-205, WI_EXT_LIMIT=-206, WI_EXT_FAULT=-207,
+ WI_EXT_CANCELLED=-208, WI_EXT_UNSUPPORTED=-209, WI_EXT_NOT_READY=-210 };
+enum WiServiceState { WI_SERVICE_REGISTERED=1, WI_SERVICE_READY=2,
+ WI_SERVICE_STOPPING=3, WI_SERVICE_FAILED=4, WI_SERVICE_REMOVED=5 };
+enum WiServiceThread { WI_SERVICE_LOADER=1, WI_SERVICE_CONCURRENT=2 };
+#define WI_SERVICE_IMAGE_DECODER 1ull
+#define WI_IMAGE_PROBE 1u
+#define WI_IMAGE_DECODE 2u
+typedef uint64_t WiService, WiServiceRef, WiJob, WiSubscription;
+typedef struct WiServiceInfo {
+ uint32_t size,version; WiService handle;
+ char id[160],provider[81]; uint32_t interfaceVersion,interfaceSize;
+ uint64_t capabilities; uint32_t state,thread;
+} WiServiceInfo;
+typedef int (*WiServiceInvoke)(void*,uint32_t method,const void* input,uint32_t inputBytes,
+ void* output,uint32_t capacity,uint32_t* written);
+typedef struct WiServiceTable { uint32_t size,version; void* context; WiServiceInvoke invoke; } WiServiceTable;
+typedef struct WiServiceDefinition {
+ uint32_t size,version; const char* id; uint32_t interfaceVersion;
+ uint64_t capabilities; uint32_t thread; const WiServiceTable* table;
+} WiServiceDefinition;
+typedef struct WiServiceQuery {
+ uint32_t size,version; const char* id; const char* provider; /* empty = deterministic selection */
+ uint32_t minVersion,maxVersion; uint64_t requiredCapabilities;
+} WiServiceQuery;
+typedef struct WiCommunityEvent {
+ uint32_t size,version; uint64_t sequence; const char* source; const char* topic;
+ const void* data; uint32_t bytes; /* copied payload, valid only during callback */
+} WiCommunityEvent;
+typedef int (*WiCommunityListener)(void*,const WiCommunityEvent*);
+typedef struct WiJobContext {
+ uint32_t size,version; void* context;
+ int (*cancelled)(void*); int (*result)(void*,const void*,uint32_t);
+ int (*progress)(void*,uint32_t perMille);
+} WiJobContext;
+typedef int (*WiJobWork)(void*,const WiJobContext*); /* background thread; cooperative cancellation */
+typedef void (*WiJobDone)(void*,WiJob,int,const void*,uint32_t); /* loader; suppressed on owner stop */
+typedef struct WiJobDefinition { uint32_t size,version; void* context; WiJobWork work; WiJobDone done; } WiJobDefinition;
+typedef struct WiJobInfo { uint32_t size,version,state,progress; int32_t result; } WiJobInfo;
+/* Third-party libraries may have threads. stop requests cancellation without blocking;
+   joined returns 1 ONLY after the library has joined all its threads and callbacks.
+   Host polls on loader thread and pins the DLL until joined. Not a sandbox. */
+typedef struct WiExternalLifetime {
+ uint32_t size,version; void* context; void (*stop)(void*); int (*joined)(void*);
+} WiExternalLifetime;
+enum WiPluginPath { WI_PATH_DATA=1,WI_PATH_PACKAGE=2 };
+typedef struct WiImageDecodeRequest {
+ uint32_t size,version,maxEdge; const char* path;
+ const uint8_t* prefix; uint32_t prefixBytes;
+ void* context; int (*cancelled)(void*);
+ /* Top-down premultiplied BGRA. Host copies before return. One frame, <=4096^2. */
+ int (*frame)(void*,uint32_t width,uint32_t height,const void*,uint32_t bytes);
+} WiImageDecodeRequest;
+typedef struct WiCommunityApi {
+ uint32_t size,version; void* context;
+ int (*registerService)(void*,const WiServiceDefinition*,WiService*);
+ int (*setServiceState)(void*,WiService,uint32_t);
+ int (*unregisterService)(void*,WiService);
+ int (*enumerate)(void*,WiServiceInfo*,uint32_t,uint32_t*);
+ int (*acquire)(void*,const WiServiceQuery*,WiServiceRef*,WiServiceInfo*);
+ int (*release)(void*,WiServiceRef);
+ int (*invoke)(void*,WiServiceRef,uint32_t,const void*,uint32_t,void*,uint32_t,uint32_t*);
+ /* service.changed payload = WiServiceInfo; other topics must start with provider ID + '.' */
+ int (*subscribe)(void*,const char* topic,WiCommunityListener,void*,WiSubscription*);
+ int (*unsubscribe)(void*,WiSubscription);
+ int (*publish)(void*,const char* topic,const void*,uint32_t);
+ int (*startJob)(void*,const WiJobDefinition*,WiJob*);
+ int (*cancelJob)(void*,WiJob);
+ int (*jobInfo)(void*,WiJob,WiJobInfo*);
+ int (*manageLifetime)(void*,const WiExternalLifetime*);
+ int (*path)(void*,uint32_t kind,const char* relative,char*,uint32_t,uint32_t*);
+} WiCommunityApi;
+#ifdef __cplusplus
+}
+#endif
+
+
+文件：sdk/open_api.h
+#pragma once
+#include "community_api.h"
+#ifdef __cplusplus
+extern "C" {
+#endif
+#define WI_OPEN_INTERFACE "winisland.open"
+#define WI_OPEN_ABI 1u
+typedef uint64_t WiView,WiProcess,WiHook;
+enum WiViewKind { WI_VIEW_PIXELS=1,WI_VIEW_NATIVE=2 };
+enum WiViewEventKind { WI_VIEW_CREATE=1,WI_VIEW_LAYOUT,WI_VIEW_INPUT,WI_VIEW_IME,
+ WI_VIEW_FOCUS,WI_VIEW_HIDDEN,WI_VIEW_DESTROY,WI_VIEW_DEVICE_LOST,WI_VIEW_FILES,WI_VIEW_DRAG_RESULT };
+/* Views are owned by the host STA UI thread. Callbacks run on that thread, NOT the
+ loader. No old SDK calls there. Native child windows inherit real Windows input/IME.
+ Offscreen input contains Windows message/key/local pixel coordinates; text is UTF-8.
+ CREATE: nativeChild is output, set to a child HWND created on the supplied parent.
+ DESTROY is delivered exactly once, even when closing before CREATE or CREATE fails.
+ Stop callbacks/close controllers before returning; DLL remains pinned until all
+ registered external lifetime protocols also acknowledge joined. Native v1 is a
+ rectangular overlay ABOVE the scene, not an arbitrarily composited child surface.
+ Pixel v1 clips (does not stretch) the submitted frame to current layout bounds and
+ applies the node's radius/opacity; submit a new physical-pixel frame on LAYOUT.
+ Hidden views receive no painting; plugin must suspend its own frame production.
+ Device loss is queued back to the view STA; recreate resources before resubmitting. */
+typedef struct WiViewEvent {
+ uint32_t size,version,kind,dpi;WiView view;uintptr_t parent,nativeChild;
+ int32_t x,y,width,height;uint32_t message;uint64_t wparam;int64_t lparam;
+ const char* text; /* IME composition/result or LF-separated file paths, borrowed */
+ uint32_t flags; /* IME: 1=result; focus:1=gained; drag: DROPEFFECT_COPY or 0 */
+} WiViewEvent;
+typedef int (*WiViewCallback)(void*,WiViewEvent*);
+typedef struct WiViewDefinition {
+ uint32_t size,version,kind,flags; /* flags bit0 receives external files */
+ uint64_t element; /* own scene element, layout is synchronized in island DIP */
+ void* context;WiViewCallback callback;
+} WiViewDefinition;
+typedef struct WiViewFrame {
+ uint32_t size,version,width,height,stride;const void* bgra;uint32_t bytes;
+} WiViewFrame;
+/* D3D11 legacy shared texture, B8G8R8A8_UNORM, SHARED_KEYEDMUTEX, same adapter.
+ Producer releases acquireKey; host acquires/copies/releases releaseKey. Producer must
+ keep HANDLE valid until submission returns. Host opens a COM reference synchronously.
+ Host uses a bounded staging copy into immutable PBGRA for its software-compatible
+ compositing path; this v1 is NOT a zero-copy GPU compositor. */
+typedef struct WiSharedTexture {
+ uint32_t size,version;uintptr_t handle;uint64_t acquireKey,releaseKey;
+} WiSharedTexture;
+typedef struct WiProcessDefinition {
+ uint32_t size,version;const char* executable; /* package-relative, .exe only */
+ const char* arguments;uint32_t shutdownTimeoutMs; /* 100..10000 */
+} WiProcessDefinition;
+typedef struct WiProcessInfo {uint32_t size,version,state,exitCode,pid;uint64_t received,dropped;} WiProcessInfo;
+/* Child stdin/stdout are PRIVATE inherited pipes, no globally named endpoint. Framing:
+ uint32 little-endian payload length followed by bytes (<=1MiB); length=0 requests
+ cooperative shutdown. stdout is protocol only. stderr goes to owner helper log.
+ Working directory and APPDATA/LOCALAPPDATA/TEMP/TMP are owner data/helper. Host job kills descendants on
+ crash/timeout. This isolates process memory, NOT filesystem/user permissions. */
+enum WiHostTopic { WI_HOST_MUSIC=1,WI_HOST_NOTICE=2,WI_HOST_ACTION=3,WI_HOST_TELEMETRY=4 };
+enum WiHookResult { WI_HOOK_PASS=0,WI_HOOK_REPLACE=1,WI_HOOK_CONSUME=2 };
+typedef struct WiHostPacket {
+ uint32_t size,version,topic,flags;uint64_t sequence;
+ char source[81],title[1024],detail[2048],extra[512];
+ double number[8]; /* MUSIC: position,duration,rate; ACTION: command 1..4;
+ TELEMETRY: fps,ping. flags MUSIC bit0 playing bit1 prev bit2 toggle bit3 next */
+} WiHostPacket;
+typedef int (*WiHostHook)(void*,WiHostPacket*); /* loader thread; copied packet */
+typedef struct WiHostHookDefinition {uint32_t size,version,topic;int32_t priority;void* context;WiHostHook callback;} WiHostHookDefinition;
+typedef struct WiOpenApi {
+ uint32_t size,version;void* context;
+ int (*createView)(void*,const WiViewDefinition*,WiView*);
+ int (*closeView)(void*,WiView);
+ int (*submitFrame)(void*,WiView,const WiViewFrame*); /* copies; any owner thread while alive */
+ int (*submitTexture)(void*,WiView,const WiSharedTexture*);
+ int (*focusView)(void*,WiView,int32_t caretX,int32_t caretY); /* queue focus/IME caret */
+ int (*dragFiles)(void*,WiView,const char* paths); /* LF absolute UTF8, copy only, async */
+ int (*startProcess)(void*,const WiProcessDefinition*,WiProcess*); /* x64 executable */
+ int (*sendProcess)(void*,WiProcess,const void*,uint32_t);
+ int (*receiveProcess)(void*,WiProcess,void*,uint32_t,uint32_t*);
+ int (*processInfo)(void*,WiProcess,WiProcessInfo*);
+ int (*stopProcess)(void*,WiProcess);
+ int (*registerHook)(void*,const WiHostHookDefinition*,WiHook*);
+ int (*removeHook)(void*,WiHook);
+ int (*submitHost)(void*,const WiHostPacket*); /* alternative data source / real command */
+ int (*releaseProcess)(void*,WiProcess); /* only after process AND pipe workers exited */
+ int (*viewBarrier)(void*,uint64_t* ticket);
+ int (*viewBarrierReady)(void*,uint64_t ticket);
+} WiOpenApi;
+/* STA callback retirement: call viewBarrier BEFORE publishing pending==0/destroyed.
+ The ticket becomes ready only after the STA dispatch batch actually returns. In a
+ registered lifetime.joined require pending==0 AND viewBarrierReady(ticket)==OK.
+ This closes the callback-epilogue gap; it does not cancel future third-party work.
+ Stop/cancel all later callbacks first. Barrier is for THIS host view STA only;
+ external threads still need real join. Both methods are allowed during cleanup. */
+/* queryInterface/createView/registerHook/removeHook: loader thread. Remaining open
+ methods may be used on a live owner's threads, including view callbacks; external
+ threads MUST participate in manageLifetime. close/stop/release support cleanup.
+ Never block a callback. OLE dragFiles is queued and returns before drag completion;
+ its result arrives through WI_VIEW_DRAG_RESULT. It requires a real pressed pointer.
+ IPC receive is nonblocking; NOT_READY is not an error. Full buffers return LIMIT.
+ Hooks: priority descending, provider ID ascending, registration order within owner.
+ PASS ignores edits, REPLACE commits a validated packet, CONSUME stops the chain.
+ source and sequence cannot be forged by hooks; submitHost binds source to owner.
+ Action topic currently accepts media commands 1=previous,2=toggle,3=next,4=repeat.
+ Hook packets are bounded transient work, not a durable command/event journal. */
+
+#define WI_SERVICE_STREAM_DECODER 2ull
+enum WiStreamMethod {WI_STREAM_PROBE=100,WI_STREAM_OPEN=101,WI_STREAM_READ=102,WI_STREAM_SEEK=103,WI_STREAM_CLOSE=104};
+typedef struct WiStreamInfo {
+ uint32_t size,version,width,height,sampleRate,channels;double duration,frameRate;
+ uint64_t session;uint32_t hasVideo,hasAudio;char codec[64];
+} WiStreamInfo;
+/* Provider calls sinks synchronously during READ; host copies, applies backpressure by
+ issuing one bounded read at a time. Video PBGRA <=maxEdge, audio PCM s16 interleaved
+ 1/2 channels, 8..192kHz, max 0.25s per READ. timestamps seconds, monotonic per seek.
+ READ returns OK with a sample, 1=end, BUSY=not yet available. CLOSE is always called
+ even after owner stopping, while DLL is pinned. Do not retain request/sink pointers. */
+typedef struct WiStreamRequest {
+ uint32_t size,version,maxEdge;const char* path;uint64_t session;double position;
+ void* context;int (*cancelled)(void*);
+ int (*video)(void*,double,uint32_t,uint32_t,const void*,uint32_t);
+ int (*audio)(void*,double,const int16_t*,uint32_t frames);
+} WiStreamRequest;
+#ifdef __cplusplus
+}
+#endif
+

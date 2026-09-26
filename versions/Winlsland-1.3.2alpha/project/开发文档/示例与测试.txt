@@ -1,0 +1,25 @@
+﻿WinIsland 1.3.2alpha 社区版
+构建标识：1.3.2alpha-open-runtime-20260918
+文档日期：2026-09-18；以本目录源码、SDK 和验证报告为准。
+
+构建
+在本版本根目录执行：
+powershell -ExecutionPolicy Bypass -File community-examples/build.ps1 -BuildTools E:\WinIslandBuildTools
+powershell -ExecutionPolicy Bypass -File build-release.ps1 -BuildTools E:\WinIslandBuildTools
+
+示例包位置：community-examples/packages
+A：community-base + community-consumer。消费者声明服务依赖，宿主先启用基础模组。显示“社区基础服务 v1：42”。community-base-v2 证明接口版本协商；community-optional 缺失服务时有明确降级文字。
+B：community-qoi-view 用旧media接口加载QOI；先不启用community-qoi-decoder可见media error，再启用解码模组并重新加载view，显示绿色QOI。不是在消费者里硬编码QOI。
+C：community-task 运行约5秒可取消任务；禁用时写task-cancelled.txt，done不再执行；日志onDisable在真实退出后。
+community-restart：重启关闭状态示例，默认不要批量启用全部，按需单独验证。
+
+安装
+通过现有插件管理导入wimod，默认保持禁用。开发测试请使用 --verify 指向本版verification下的隔离目录，不复制到日常安装mods。
+测试入口：
+release/WinIsland-1.3.2alpha.exe --community-test <本版community-examples/packages绝对路径> <本版verification输出目录>
+其它回归入口：--mods-test、--scene-test、--animation-test、--self-test。
+Windows GUI子系统程序建议用 Start-Process -PassThru，等待退出并读取退出码，而不是只观察命令返回。
+验证报告应列实际断言、DLL路径、失败项和未验证项目；源代码测试存在不等于已运行。
+
+本次扩展
+本轮open-examples/build.ps1构建6个正式包：stream、stream-view、browser、hooks、process、lifecycle。--open-test运行真实HWND/GPU/管道/生命周期测试。settings-electron/verify-open.cjs运行正式主程序和插件包，临时CDP仅注入隔离测试进程，正式示例不开放远程调试端口。验证报告.txt区分单元、真实联调和未验证。

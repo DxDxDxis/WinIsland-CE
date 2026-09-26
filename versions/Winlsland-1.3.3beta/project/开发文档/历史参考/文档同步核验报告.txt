@@ -1,0 +1,50 @@
+﻿历史基线资料：来自只读 1.3.1alpha；不是 1.3.2alpha 新接口的当前规范。
+当前规范请从上一级的 00-总开发者文档.txt 阅读。
+
+开发文档同步核验报告
+
+日期：2026-09-17。目录：E:\aaAAx项目\WinIsland-社区版-大更新\release\1.3.1alpha。构建：1.3.1alpha-settings-adjust-20260917。
+
+已更新主程序开发、插件开发、SDK 精确参考、开放场景/能力边界、媒体、动画、设置协议、索引与交接说明。旧需求/方案保留并标注历史状态。未修改运行源码、SDK 头文件或发行 EXE。
+
+核验结果
+
+- 修改前快照：snapshots\docs-before-20260917-233611，34 文件 SHA-256 已验证可恢复。
+- 源码、renderer、SDK 与发行文件共 477 项逐项核对，和本次开始前相同。
+- SDK 三个头文件与 source/src 字节哈希一致，接口参考中的声明与对应当前头文件一致。
+- 最新 1.3.0 是 1.3.0-path-state-fix，较早 sibling 1.3.0 未改；当前 1.3.1alpha 是 settings-adjust 构建。两版 SDK 一致。
+- EXE release\WinIsland-1.3.1alpha.exe SHA-256：3851B77D4EBB8AA27E144B2E7EB5000D8902D2DC0571E4333698F4BCD6F550B2，本次未变化。
+- 已检查本次更新文档的本地链接；旧报告未携带的截图/录屏改为明确标注缺失的历史路径，不冒充当前可用证据。
+- 机器结果：verification/docs-update-verification.json；本次是文档核对，没有重编译或重新运行功能验收，也没有新增网页/游戏能力。
+
+关键说明
+
+gameVersion 会强制校验；旧 <1.3.0 示例被新版拒绝。WiSettingsApi.define 没有变更订阅参数，需要实际已有回调或轮询同步。QuickJS/GSAP 没有浏览器 DOM。通用场景图元并不代表所有宿主业务、独立窗口和文件中转均可接管。完整网页、实时游戏循环及 DLL 进程隔离未实现。
+
+回退与历史基准
+
+文档回退按 before 快照恢复对应 README/docs/sdk 文档，对照下面清单处理新文档。无需还原源码、EXE 或用户配置。旧版本历史哈希清单没有被重写；本次用户明确授权最新 1.3.0 文档同步，其合法文档变化不能误报为源码被修改。本次保护清单记录源码和产物未变。
+
+文档清单
+
+- README.txt
+- docs/AI交接文档.txt
+- docs/SDK接口参考.txt
+- docs/no-motion.txt
+- docs/主程序开发者文档.txt
+- docs/内嵌JavaScript动画引擎方案.txt
+- docs/动画与插件脚本接口.txt
+- docs/媒体资源与皮肤扩展.txt
+- docs/官方作者API接口提示词.txt
+- docs/官方作者接口适配文档.txt
+- docs/开放场景API.txt
+- docs/插件接口开放范围与限制.txt
+- docs/插件系统动画与JS扩展AI提示词.txt
+- docs/插件系统开发者文档.txt
+- docs/插件系统扩展开发文档.txt
+- docs/文档索引.txt
+- docs/组件安装与更新说明.txt
+- docs/设置动画优化与双向闪烁修复报告.txt
+- docs/设置协议与字段映射.txt
+- docs/设置迁移交付报告.txt
+- sdk/README.txt

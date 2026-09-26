@@ -1,0 +1,8 @@
+{
+  "entry": "bin/example.dll",
+  "name": "宿主场景 API 验证",
+  "author": "Host tests",
+  "version": "1.0.0",
+  "apiVersion": 1,
+  "id": "scene-fixture"
+}

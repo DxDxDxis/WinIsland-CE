@@ -1,0 +1,74 @@
+﻿历史基线资料：来自只读 1.3.1alpha；不是 1.3.2alpha 新接口的当前规范。
+当前规范请从上一级的 00-总开发者文档.txt 阅读。
+
+主程序开发者文档 — 1.3.1alpha
+
+适用：WinIsland 1.3.1alpha 社区版，构建 1.3.1alpha-settings-adjust-20260917。源码核对日期：2026-09-17。产品版本与插件 ABI 分别管理。
+
+版本与构建
+
+本目录最终入口 release/WinIsland-1.3.1alpha.exe，build-manifest.json 指明确切构建、SHA/清单位置。主 EXE 压缩内嵌 Electron 设置和歌词运行组件，可单 EXE 分发；不要直接运行 settings 子程序。根部 settings、历史 build/fixture 不能当作当前 UI 源码或最终成品。
+
+.uild-release.ps1 -BuildTools E:\WinIslandBuildTools
+
+实际脚本顺序：锁文件 npm ci → TypeScript 编译 → Electron 打包 → bundle-runtime → MSVC x64/C++20 原生链接。不要用旧文档的 -RebuildSettings 参数，当前脚本没有此参数。-SkipNative 会跳过原生重打包，不用于交付更改了设置资源的最终单 EXE。
+
+当前 build-1.3.1alpha 中的旧中间 EXE 因运行占用而保留；最终代码通过 verification/relink-settings-adjust.ps1 链接到 build-settings-adjust 并复制到 release。日常开发应使用完整构建，新构建遇文件占用请先确认输出，不覆盖正在运行的用户进程。
+
+模块与边界
+
+| 模块 | 源码与职责 |
+|---|---|
+| App/渲染 | source/src/app.cpp、render.cpp、scene_render.inc；Win32、D2D/DComp、状态、几何、输入与实际显示 |
+| 插件 | mod_system.cpp、scene_host.inc、scene_store.cpp、mod_package.cpp、mod_dependency.cpp；串行 DLL 回调、包与兼容检查、owner 撤销 |
+| 动画/媒体 | animation_runtime.cpp（QuickJS-ng + GSAP）；media_runtime.cpp、media_host.inc（WIC/MF/waveOut） |
+| 设置 | settings-electron/src/main.ts/preload.ts/renderer.ts、motion.ts/style.css；settings_bridge.cpp、settings_host.inc 连接核心 |
+| 安装和路径 | embedded_components.cpp、installation_ui.inc、core.cpp；dataDir 单一解析，组件完整性与迁移 |
+| 文件中转 | transfer.cpp、transfer_widget.cpp、transfer_paint.h/transfer_motion.h；settings-electron/src/transfer*.ts；宿主私有功能，不是插件扩展表 |
+
+UI/Renderer 消费宿主复制状态，不调用 DLL 绘图。插件回调在 loader worker，媒体解码在宿主专用 worker，文件选择有独立 STA。原生回调不是安全进程隔离；不得承诺死循环可自动抢占。
+
+Electron contextIsolation=true、nodeIntegration=false、sandbox=true；preload 暴露有界宿主调用，main 检查来源和命令白名单。命名管道由当前宿主生成 token，只有宿主设置界面使用；插件不能把这套授权 IPC 当作通用 SDK。
+
+统一目录与用户状态
+
+%LOCALAPPDATA%/WinIsland/installer/install-location.json 保存少量定位信息；实际应用数据在用户首次确认的 dataRoot。首次建议可写且空间足够的 D:\WinIsland，不满足则按 D–Z 本地固定盘顺序选备选，最后本地用户目录。再次启动读取定位，不扫整盘、不随 EXE 移动。
+
+dataRoot/
+  install-state.json
+  components/runtime/<hash>/    校验过的内嵌依赖与 settings
+  settings.xml                 主程序真实设置
+  mods/<id>.wimod
+  mods/<id>/                   插件设置、状态与日志
+  mod-cache/                   可重建包缓存
+  lyrics/                      歌词资源/缓存
+  electron-data/ logs/ temp/    明确指定子进程路径
+  migration/                   已知旧位置迁移记录与冲突副本
+
+本版另有 file-transfer/{files,staging,index.json,index.backup.json}；当前只创建 files/staging，文件内容预览已移除，旧 previews 可能遗留但不再作为现用功能。副本与索引不散落 EXE 目录。
+
+迁移只读明确历史路径，先复制校验，再切换定位，冲突不静默覆盖。盘离线不能创建空根冒充恢复。Windows/运行库自行管理的系统文件不归应用完全控制。
+
+用户插件选择 host-state 和当前 loaded/enabled 分开；扫描不执行 DLL，新安装默认禁用；损坏记录也保持禁用；正常退出/重载资源清理不抹去用户选择。插件设置和状态原子写入；失败返回错误。按 ID 关联、校验依赖、故障隔离标记，避免无限重启回调。
+
+设置与动画
+
+两个入口共用样式，插件管理在左/中转在右；都从实时按钮边界扩展为当前设置客户端，正常 600 ms。底层保留且 inert，返回前恢复滚动，resize 重新测量。文件详情展开 451.389 ms 线性，收起 650 ms；独立中转组件速度未再次改变。
+
+主设置 reduceMotion / XML ManualReducedMotion 手动默认关闭、保存后确认，不被系统策略覆盖；导航和下拉立即到正确终态且保留高亮。showMusic/showMessages 控制呈现而不停止业务。注意：mod_system.cpp 的旧资源淡入淡出 fade 仍单独读取系统动画设置；这不是修改手动选项，也不等于全部宿主/插件动画都统一受它管理。不得文档宣传已经全局替换所有动画策略。
+
+验证与发布
+
+本次是文档更新，没有重编译或重新验收运行功能。先核对 文档同步核验报告（文档同步核验报告.txt） 与原版本报告，区分已测试和未测试。
+
+$exe = Join-Path $PWD 'release/WinIsland-1.3.1alpha.exe'
+$out = Join-Path $PWD 'verification/developer-isolated'
+New-Item -ItemType Directory -Force $out | Out-Null
+$p = Start-Process -FilePath $exe -ArgumentList @('--self-test', ('"'+$out+'\core.txt"')) -WindowStyle Hidden -PassThru
+$p.WaitForExit(); $p.ExitCode
+同类 --scene-test / --animation-test 接受报告路径。
+真实隔离窗口：--verify <独立数据目录>；用该目录 exit.request 结束测试。
+
+--mods-test、媒体用例需要对应样本与参数，不把缺失样本当作宿主故障。诊断 DPI、renderer 缩放不能代替真实多屏/DPI 验收。
+
+发布保留 build-manifest、SDK、当前文档和验证限制；不要分发 verification 的凭据或测试数据。回退运行旧版独立成品，保留数据根目录及用户插件；变更只通过版本化迁移，不删除日常数据。产品版本升级不强迫插件 ABI 升级。

@@ -2,22 +2,22 @@
 
 **让音乐、消息、插件和文件中转聚合到 Windows 桌面的灵动岛中。**
 
-WinIsland 是一个面向 Windows 的桌面交互项目：在屏幕边缘呈现紧凑的黑色灵动岛，在需要时展开音乐、歌词、通知或文件内容管理入口，并通过设置页面调整显示、布局和插件行为。本仓库整理从 **1.1.1 社区版到 1.3.1alpha** 的历史源码、构建产物和说明，便于使用、学习、追踪演进和继续开发。
+WinIsland 是一个面向 Windows 的桌面交互项目：在屏幕边缘呈现紧凑的黑色灵动岛，在需要时展开音乐、歌词、通知或文件内容管理入口，并通过设置页面调整显示、布局和插件行为。本仓库整理从 **1.1.1 社区版到 1.3.4社区版** 的历史源码、构建产物和说明，便于使用、学习、追踪演进和继续开发。
 
 项目自身采用 **BSD-3-Clause** 许可证。第三方依赖保留各自许可，详见 [第三方声明](THIRD_PARTY_NOTICES.md)。不同历史版本的功能、依赖和完整程度不同，请先查看对应版本 README。每个正式版号只保留找到的最新构建，fixed、path-state-fix、快照日期等额外后缀不作为产品版本。
 
-> 最新归档：**[Winlsland-1.3.1alpha](versions/Winlsland-1.3.1alpha/README.md)**，构建标识 `1.3.1alpha-settings-adjust-20260917`。它属于 alpha 阶段，不把“最新”表述为“所有环境均已验证”。
+> 最新归档：**[Winlsland-1.3.4社区版](versions/Winlsland-1.3.4社区版/README.md)**，构建标识 `1.3.4-community-lyrics-20260925`。它是当前最新正式社区版；1.3.2alpha 与 1.3.3beta 仍按预发布版本处理，不把“最新”表述为“所有环境均已验证”。
 >
 > 文件夹按要求使用 **Winlsland-** 前缀；原项目名称、源码标识和原 EXE 仍为 **WinIsland**。两者是归档命名与产品命名的区别，不是重新命名源代码。
 
 ## 快速入口
 
-- [下载发行版本](https://github.com/DxDxDxis/WinIsland-CE/releases) · [1.3.1alpha 预发布](https://github.com/DxDxDxis/WinIsland-CE/releases/tag/v1.3.1alpha) · [1.3.0 社区版](https://github.com/DxDxDxis/WinIsland-CE/releases/tag/v1.3.0)
+- [下载发行版本](https://github.com/DxDxDxis/WinIsland-CE/releases) · [1.3.4 社区版](https://github.com/DxDxDxis/WinIsland-CE/releases/tag/v1.3.4) · [1.3.3beta](https://github.com/DxDxDxis/WinIsland-CE/releases/tag/v1.3.3beta) · [1.3.2alpha](https://github.com/DxDxDxis/WinIsland-CE/releases/tag/v1.3.2alpha)
 - [版本列表：从新到旧](docs/VERSIONS.md)
 - [安装、运行与配置](docs/INSTALL_AND_CONFIGURE.md)
 - [源码构建与依赖准备](docs/BUILD.md)
 - [架构及功能关系](docs/ARCHITECTURE.md)
-- [文件来源、缺失项与整理规则](docs/ARCHIVE.md) · [整理与发布报告](docs/整理与发布报告.md)
+- [文件来源、缺失项与整理规则](docs/ARCHIVE.md) · [整理与发布报告](docs/整理与发布报告.md) · [1.3.4 更新报告](docs/整理与发布报告-1.3.4更新.md)
 - [上传 GitHub 与发布成品](docs/GITHUB_PUBLISH.md) · [哪些文件要上传](docs/UPLOAD_CHECKLIST.md)
 - [许可证](LICENSE) · [第三方许可](THIRD_PARTY_NOTICES.md) · [联系方式](#联系方式)
 
@@ -97,7 +97,7 @@ mindmap
 
 1. 普通用户优先选择版本索引中的最新目标版本，阅读其已知限制。
 2. 从 GitHub Releases 下载对应成品；本地完整归档中的成品位于各版本 `dist/`。
-3. **1.3.1alpha** 的正式运行文件为 `WinIsland-1.3.1alpha.exe`。这是内嵌运行依赖的发行 EXE，首次运行按引导确认数据目录，通常优先建议 `D:\WinIsland`，磁盘不可用时根据现有规则选择可用位置。
+3. **1.3.4社区版** 的正式运行文件为 `WinIsland-1.3.4.exe`。这是内嵌运行依赖的发行 EXE，首次运行按引导确认数据目录，通常优先建议 `D:\WinIsland`，磁盘不可用时根据现有规则选择可用位置。
 4. 双击主 EXE。设置页由宿主启动，不单独双击 `WinIslandSettings.exe`。
 5. 通过托盘或主程序已有入口打开设置，调整音乐、通知、显示器、尺寸、插件和文件中转。
 
@@ -107,7 +107,7 @@ mindmap
 
 ## 怎么配置
 
-最新版设置包含五个主分类：**界面通知、音乐歌词、实时信息、运行诊断、其他设置**。
+1.3.4 设置使用 WinUI 3 客户端；历史 1.3.1alpha/1.3.3beta 仍保留各自设置宿主。最新版设置包含五个主分类：**界面通知、音乐歌词、实时信息、运行诊断、其他设置**。
 
 - **界面通知**：常驻、通知停驻时间、隐藏 Windows 自带通知、是否在灵动岛显示消息。
 - **音乐歌词**：信息来源、播放器、歌词来源/API、是否在灵动岛显示音乐。显示开关与播放器本身的播放状态独立。
@@ -137,6 +137,7 @@ gtb开源/
 │  ├─ ...
 │  └─ Winlsland-1.1.1社区版/
 ├─ extras/plugins/              找到的插件源码与开发资料
+├─ extras/experimental/         1.3.2/1.3.3 WinUI 实验分支（不作为正式版）
 ├─ shared/lyric-provider-source/ 歌词辅助程序与第三方源码
 ├─ licenses/                    集中保留的第三方声明
 ├─ docs/                        安装、构建、架构、归档和上传说明
@@ -149,31 +150,37 @@ gtb开源/
 
 ## 全部正式版本（每版仅保留最新构建）
 
-| 版本（新 → 旧） | 所选构建时间（UTC+08:00） | 源码情况 |
+| 版本（新 → 旧） | 所选构建时间 | 源码情况 |
 |---|---|---|
-| [Winlsland-1.3.1alpha](versions/Winlsland-1.3.1alpha/README.md) | 2026-09-17 16:02:22 | 已找到源码 |
-| [Winlsland-1.3.0社区版](versions/Winlsland-1.3.0社区版/README.md) | 2026-09-16 14:08:19 | 已找到源码 |
-| [Winlsland-1.2.7alpha-r1](versions/Winlsland-1.2.7alpha-r1/README.md) | 2026-09-14 21:15:47 | 已找到源码 |
-| [Winlsland-1.2.7alpha](versions/Winlsland-1.2.7alpha/README.md) | 2026-09-14 14:25:33 | 已找到源码 |
-| [Winlsland-1.2.6alpha-c2](versions/Winlsland-1.2.6alpha-c2/README.md) | 2026-09-13 15:16:22 | 已找到源码 |
-| [Winlsland-1.2.6alpha-c1](versions/Winlsland-1.2.6alpha-c1/README.md) | 2026-09-12 23:25:29 | 已找到源码 |
-| [Winlsland-1.2.5alpha2](versions/Winlsland-1.2.5alpha2/README.md) | 2026-09-12 12:41:47 | 缺少完整对应源码 |
-| [Winlsland-1.2.5alpha-r1](versions/Winlsland-1.2.5alpha-r1/README.md) | 2026-09-12 16:40:12 | 已找到源码 |
-| [Winlsland-1.2.5alpha](versions/Winlsland-1.2.5alpha/README.md) | 2026-09-12 06:35:39 | 缺少完整对应源码 |
-| [Winlsland-1.2.4beta_2](versions/Winlsland-1.2.4beta_2/README.md) | 2026-09-07 18:16:04 | 已找到源码 |
-| [Winlsland-1.2.4beta](versions/Winlsland-1.2.4beta/README.md) | 2026-09-07 00:38:50 | 已找到源码 |
-| [Winlsland-1.2.3beta_2](versions/Winlsland-1.2.3beta_2/README.md) | 2026-09-06 19:41:22 | 已找到源码 |
-| [Winlsland-1.2.3beta](versions/Winlsland-1.2.3beta/README.md) | 2026-09-06 19:10:34 | 已找到源码 |
-| [Winlsland-1.2.2beta](versions/Winlsland-1.2.2beta/README.md) | 2026-09-06 17:12:12 | 已找到源码 |
-| [Winlsland-1.2.1beta](versions/Winlsland-1.2.1beta/README.md) | 2026-09-06 16:56:23 | 缺少完整对应源码 |
-| [Winlsland-1.2.0社区版](versions/Winlsland-1.2.0社区版/README.md) | 2026-09-06 16:55:22 | 缺少完整对应源码 |
-| [Winlsland-1.1.2社区版](versions/Winlsland-1.1.2社区版/README.md) | 2026-09-06 13:45:44 | 缺少完整对应源码 |
-| [Winlsland-1.1.1社区版](versions/Winlsland-1.1.1社区版/README.md) | 2026-09-06 00:32:37 | 已找到源码 |
+| [Winlsland-1.3.4社区版](versions/Winlsland-1.3.4社区版/README.md) | 2026-09-26T13:45:37+08:00 | 已收录对应主线源码与 SDK；未在归档机重新构建 |
+| [Winlsland-1.3.3beta](versions/Winlsland-1.3.3beta/README.md) | 2026-09-20T13:38:13+08:00 | 已收录对应主线源码与 SDK；未在归档机重新构建 |
+| [Winlsland-1.3.2alpha](versions/Winlsland-1.3.2alpha/README.md) | 2026-09-18T12:42:55+08:00 | 已收录对应主线源码与 SDK；未在归档机重新构建 |
+| [Winlsland-1.3.1alpha](versions/Winlsland-1.3.1alpha/README.md) | 2026-09-17T16:02:22+08:00 | 已收录所见源码；未重新构建证明与所有成品逐字节对应 |
+| [Winlsland-1.3.0社区版](versions/Winlsland-1.3.0社区版/README.md) | 2026-09-16T14:08:19+08:00 | 已收录所见源码；未重新构建证明与所有成品逐字节对应 |
+| [Winlsland-1.2.7alpha-r1](versions/Winlsland-1.2.7alpha-r1/README.md) | 2026-09-14T21:15:47+08:00 | 已收录所见源码；未重新构建证明与所有成品逐字节对应 |
+| [Winlsland-1.2.7alpha](versions/Winlsland-1.2.7alpha/README.md) | 2026-09-14T14:25:33+08:00 | 已收录所见源码；未重新构建证明与所有成品逐字节对应 |
+| [Winlsland-1.2.6alpha-c2](versions/Winlsland-1.2.6alpha-c2/README.md) | 2026-09-13T15:16:22+08:00 | 已收录所见源码；未重新构建证明与所有成品逐字节对应 |
+| [Winlsland-1.2.6alpha-c1](versions/Winlsland-1.2.6alpha-c1/README.md) | 2026-09-12T23:25:29+08:00 | 已收录所见源码；未重新构建证明与所有成品逐字节对应 |
+| [Winlsland-1.2.5alpha2](versions/Winlsland-1.2.5alpha2/README.md) | 2026-09-12T12:41:47+08:00 | 未找到独立完整对应源码 |
+| [Winlsland-1.2.5alpha-r1](versions/Winlsland-1.2.5alpha-r1/README.md) | 2026-09-12T16:40:12+08:00 | 已收录所见源码；未重新构建证明与所有成品逐字节对应 |
+| [Winlsland-1.2.5alpha](versions/Winlsland-1.2.5alpha/README.md) | 2026-09-12T06:35:39+08:00 | 未找到独立完整对应源码 |
+| [Winlsland-1.2.4beta_2](versions/Winlsland-1.2.4beta_2/README.md) | 2026-09-07T18:16:04+08:00 | 已收录所见源码；未重新构建证明与所有成品逐字节对应 |
+| [Winlsland-1.2.4beta](versions/Winlsland-1.2.4beta/README.md) | 2026-09-07T00:38:50+08:00 | 已收录所见源码；未重新构建证明与所有成品逐字节对应 |
+| [Winlsland-1.2.3beta_2](versions/Winlsland-1.2.3beta_2/README.md) | 2026-09-06T19:41:22+08:00 | 已收录所见源码；未重新构建证明与所有成品逐字节对应 |
+| [Winlsland-1.2.3beta](versions/Winlsland-1.2.3beta/README.md) | 2026-09-06T19:10:34+08:00 | 已从历史源码包恢复；core.h 为 1.2.3beta |
+| [Winlsland-1.2.2beta](versions/Winlsland-1.2.2beta/README.md) | 2026-09-06T17:12:12+08:00 | 已收录所见源码；未重新构建证明与所有成品逐字节对应 |
+| [Winlsland-1.2.1beta](versions/Winlsland-1.2.1beta/README.md) | 2026-09-06T16:56:23+08:00 | 未找到独立完整对应源码 |
+| [Winlsland-1.2.0社区版](versions/Winlsland-1.2.0社区版/README.md) | 2026-09-06T16:55:22+08:00 | 未找到独立完整对应源码 |
+| [Winlsland-1.1.2社区版](versions/Winlsland-1.1.2社区版/README.md) | 2026-09-06T13:45:44+08:00 | 未找到独立完整对应源码 |
+| [Winlsland-1.1.1社区版](versions/Winlsland-1.1.1社区版/README.md) | 2026-09-06T00:32:37+08:00 | 已收录所见源码；未重新构建证明与所有成品逐字节对应 |
 
 ## 版本演进
 
 | 阶段（新 → 旧） | 项目演进 |
 |---|---|
+| 1.3.4社区版 | WinUI 3 设置客户端、统一数据目录与插件/歌词运行包的社区版整合 |
+| 1.3.3beta | 复制粘贴入口、WinUI 实验分支准备与主线设置修复 |
+| 1.3.2alpha | 开放运行时、插件 SDK 与复制粘贴功能演进 |
 | 1.3.1alpha | 音乐/消息显示开关、文件中转、停靠浮动与拖放；后续布局、接收底板和手动动画修复 |
 | 1.3.0 | 紧凑插件卡片、搜索、模组设置、页面转场；统一目录和插件状态保存修复 |
 | 1.2.7alpha-r1 | 多媒体皮肤、动态媒体与开放场景扩展 |
@@ -183,8 +190,6 @@ gtb开源/
 | 1.2.4beta / beta_2 | 媒体识别、歌词来源、QQ 通知与原生布局迭代 |
 | 1.2.3beta / beta_2 | 从早期 C# 框架向 C++ 原生核心重构 |
 | 1.2.2beta 至 1.1.1 | 早期 WPF / C# 桌面通知、音乐与交互演进 |
-
-归档不会虚构历史：部分早期版本仅存发布 EXE；已有源码工作区后来继续升级，不能视作所有早期成品的源码。每版 README 明确列出“已找到”“未找到”“未重新构建核对”。
 
 ## 参与开发
 
@@ -204,3 +209,4 @@ gtb开源/
 - GitHub：仓库发布后可通过其 Issues 提交问题、通过 Pull Requests 贡献修改。
 
 本目录是整理完成的本地开源归档，不表示已经上传或发布到 GitHub。
+

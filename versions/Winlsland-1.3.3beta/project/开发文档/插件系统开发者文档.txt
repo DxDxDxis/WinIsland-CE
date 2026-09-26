@@ -1,0 +1,43 @@
+﻿WinIsland 1.3.2alpha 社区版
+构建标识：1.3.2alpha-open-runtime-20260918
+文档日期：2026-09-18；以本目录源码、SDK 和验证报告为准。
+
+适用结构
+清单 apiVersion=1；生命周期 ABI=0x00010002；导出 WinIsland_ModAbi 与 WinIsland_CreateMod，返回 IWinIslandMod POD。destroy 在 DLL 自己的 CRT 释放对象。
+保持 size/version 初始化。host->size 必须覆盖 queryInterface，且指针非空。
+queryInterface("winisland.community",1,&api,sizeof(api)) 获取新增接口。旧插件不必查询，也不必注册服务。
+新插件在旧宿主得到 unsupported 应明确拒绝或降级；依赖新接口时设置 gameVersion >=1.3.2alpha。
+
+最小工程
+从 community-examples/example.cpp 复制骨架，替换唯一 id、namespace、显示名称。
+DLL 必须 x64。推荐静态 CRT /MT 或明确打包兼容运行库。
+清单示例：
+{"id":"my-base","name":"我的基础模组","version":"1.0.0","apiVersion":1,"entry":"bin/my-base.dll","gameVersion":">=1.3.2alpha <2.0.0","lifecycle":"managed","providesServices":[{"id":"org.example.compute","version":1}]}
+包根目录是 mod.json，DLL 位于声明的 entry。不是把上级文件夹一起压入。
+新安装默认禁用；扫描只读清单和保存状态，不调用 DLL。
+产品版本范围用数字版本与比较符（空格 AND）；不支持 npm ^、~ 等全部语法。
+
+场景和设置
+onLoad/onEnable 中 query scene/settings；创建自己的节点，按需修改公开节点的属性层，然后 commit。
+文本、数字、开关、选项用 WiSettingsApi.define。数据由宿主保存于本插件 settings.xml。
+define 不含说明/变更回调字段；读取当前值或使用旧 WI_SETTING 回调机制，不能虚构宿主尚无的订阅。
+耗时计算放 startJob。完成回调在 loader 线程执行，可调用 scene/settings/media，结果采用只读借用数据，复制后再保存。
+关闭时不恢复一张启动时的整页截图，不覆盖其他模组/当前音乐状态；交给 owner 撤销机制。
+
+关闭和状态
+managed 默认：关闭接受入口、使服务 stopping、取消任务/后续回调、移除可见资源；真实任务和调用退出后 onDisable/onUnload/destroy/FreeLibrary。
+停止等待期间：enabled=false、loaded=true、stopping=true，界面显示等待退出并禁止重复操作。
+restart-required：用户选择关闭后立即保存 disabled/unloaded，pendingRestart=true、enabled=true、loaded=true，界面显示仍运行；下次启动不加载。
+用户在重启前重新启用可取消待重启关闭；reload/reinstall 不绕过此限制。
+插件管理卸载是卸载运行实例，保留包和数据，不是删除用户原文件。
+后台不响应取消时保持 DLL 加载；不会 TerminateThread，也不会假称已卸载。程序退出会等待真实退出，因此不合作的第三方库可能使退出等待，需修复该库的终止协议。
+
+发布
+附源码/版本、第三方许可证、架构、必要的运行库要求，使用独立 DLL 名。
+打包工具见 source/examples/pack-wimod.ps1 和 community-examples/build.ps1。
+包限制仍为单成员/包 256MiB、展开 512MiB、4096 文件；路径穿越、重复项、重解析风险和签名按原规则检查。
+未签名不等于签名有效；签名失效不能降级为未签名。
+日志位于 <dataRoot>/mods/<id>/mod.log。失败/就绪超时及依赖原因在插件详情原有错误区显示。
+
+本次open-runtime补充
+旧接口和上述功能保留。新增可选winisland.open v1，浏览器/原生视图、共享纹理、文件拖放、进程和业务替换见对应专章。不能从view STA回调直接调用旧loader-only SDK。

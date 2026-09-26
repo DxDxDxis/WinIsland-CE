@@ -1,0 +1,28 @@
+#include "clipboard.h"
+namespace wi {
+int clipboardTest(const fs::path& root){
+    using namespace winrt::Windows::Data::Json;fs::create_directories(root);std::string report;int failures=0;
+    auto check=[&](bool pass,const char* label){report+=(pass?"PASS ":"FAIL ")+std::string(label)+"\n";if(!pass)++failures;};
+    auto params=[](const std::wstring& id=L""){JsonObject p;if(!id.empty())p.Insert(L"id",JsonValue::CreateStringValue(id));return p;};
+    try {
+        auto data=root/L"data";ClipboardStore store(data,nullptr,false);
+        auto state=store.snapshot();check(state.preferences.maximum==20&&state.preferences.show,"defaults: 20 history, show enabled");
+        store.captureText(L"中文 English 日本語 한국어 Русский Deutsch हिन्दी 😀\n第二行",L"test-fixture");store.captureText(L"中文 English 日本語 한국어 Русский Deutsch हिन्दी 😀\n第二行");check(store.snapshot().entries.size()==1,"consecutive duplicate suppressed");
+        auto first=store.snapshot().entries.front();auto p=params(first.id);p.Insert(L"text",JsonValue::CreateStringValue(L"修改后的文本\nUnicode 😀"));p.Insert(L"version",JsonValue::CreateNumberValue(1));store.command("save",p);auto updated=store.snapshot().entries.front();check(updated.modified&&updated.original==first.text&&updated.version==2,"edit preserves original and increments version");bool stale=false;try{store.command("save",p);}catch(...){stale=true;}check(stale,"stale save rejected");
+        auto list=store.command("list",params());auto preferences=list.GetNamedObject(L"preferences");preferences.Insert(L"show",JsonValue::CreateBooleanValue(false));p=params();p.Insert(L"preferences",preferences);store.command("preferences",p);store.captureText(L"hidden display still records");check(store.snapshot().entries.size()==2&&!store.snapshot().preferences.show,"hide does not stop capture");
+        for(int i=0;i<25;++i)store.captureText(L"record-"+std::to_wstring(i));check(store.snapshot().entries.size()==20,"20 entry eviction oldest first");
+        preferences.Insert(L"maximum",JsonValue::CreateNumberValue(4));p.Insert(L"preferences",preferences);bool confirmation=false;try{store.command("preferences",p);}catch(...){confirmation=true;}check(confirmation&&store.snapshot().entries.size()==20,"lower limit requires confirmation");p.Insert(L"confirmed",JsonValue::CreateBooleanValue(true));store.command("preferences",p);check(store.snapshot().entries.size()==4,"confirmed lower limit trims oldest");
+        store.captureText(std::wstring(100000,L'文'));auto longEntry=store.snapshot().entries.front();auto longGet=store.command("get",params(longEntry.id)).GetNamedObject(L"entry");check(utf8(longGet.GetNamedString(L"text").c_str()).size()==300000,"long Unicode complete get");
+        auto raw=readFile(data/L"clipboard"/L"history.dat",64*1024*1024);check(raw.find("record-")==std::string::npos,"DPAPI encrypted at rest");
+        {ClipboardStore restored(data,nullptr,false);check(restored.snapshot().entries.front().text==longEntry.text&&!restored.snapshot().preferences.show,"restart restores full history and settings");}
+        bool unavailable=false;try{store.command("translate",params(longEntry.id));}catch(const std::exception&){unavailable=true;}check(unavailable,"unconfigured translator explicitly fails");
+        struct Mock final:TranslationProvider{TranslationResult translate(const TranslationRequest& q,const std::atomic_bool& c)override{if(c)throw std::runtime_error("cancelled");return {q.id,L"test translation",L"zh-Hans"};}};
+        store.setProvider(std::make_unique<Mock>());p=params(longEntry.id);p.Insert(L"requestId",JsonValue::CreateStringValue(L"test-request"));p.Insert(L"target",JsonValue::CreateStringValue(L"auto"));auto translated=store.command("translate",p);check(translated.GetNamedString(L"target")==L"en"&&store.snapshot().entries.front().text==longEntry.text&&!store.snapshot().entries.front().translation.empty(),"adapter preserves original and resolves Chinese to English (fixture only)");
+        auto prefs=store.command("list",params()).GetNamedObject(L"preferences");prefs.Insert(L"listening",JsonValue::CreateBooleanValue(false));p=params();p.Insert(L"preferences",prefs);store.command("preferences",p);auto count=store.snapshot().entries.size();store.captureText(L"must not record");check(store.snapshot().entries.size()==count,"pause listener stops capture");
+        p=params();p.Insert(L"confirmed",JsonValue::CreateBooleanValue(true));store.command("clear",p);check(store.snapshot().entries.empty(),"clear history");
+        prefs.Insert(L"listening",JsonValue::CreateBooleanValue(true));prefs.Insert(L"save",JsonValue::CreateBooleanValue(false));p=params();p.Insert(L"preferences",prefs);store.command("preferences",p);store.captureText(L"memory only");{ClipboardStore restored(data,nullptr,false);check(restored.snapshot().entries.empty()&&!restored.snapshot().preferences.save,"save off means session-only history");}
+        auto corrupt=root/L"corrupt";writeAtomic(corrupt/L"clipboard"/L"history.dat","broken-index");{ClipboardStore restored(corrupt,nullptr,false);check(!restored.snapshot().preferences.listening&&!restored.snapshot().error.empty()&&readFile(corrupt/L"clipboard"/L"history.dat")=="broken-index","corrupt index preserved and capture paused");}
+    }catch(const std::exception& e){report+="FAIL unexpected: "+std::string(e.what())+"\n";++failures;}catch(...){report+="FAIL unexpected WinRT error\n";++failures;}
+    writeAtomic(root/L"clipboard-tests.txt",report);return failures?1:0;
+}
+}

@@ -1,0 +1,17 @@
+{
+  "id": "open-stream-view",
+  "name": "open-stream-view",
+  "author": "WinIsland open SDK examples",
+  "version": "1.0.0",
+  "apiVersion": 1,
+  "entry": "bin/open-stream-view.dll",
+  "gameVersion": ">=1.3.2alpha <2.0.0",
+  "serviceDependencies": [
+    {
+      "id": "org.winisland.example.wiav",
+      "maxVersion": 1,
+      "provider": "open-stream",
+      "minVersion": 1
+    }
+  ]
+}

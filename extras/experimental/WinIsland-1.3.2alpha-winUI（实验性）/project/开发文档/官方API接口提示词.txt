@@ -1,0 +1,18 @@
+﻿WinIsland 1.3.2alpha 社区版
+构建标识：1.3.2alpha-open-runtime-20260918
+文档日期：2026-09-18；以本目录源码、SDK 和验证报告为准。
+
+供 AI 开发插件时完整粘贴的约束
+你正在为 WinIsland 1.3.2alpha 社区版开发插件。先读取本目录 SDK接口参考.txt、插件接口开放范围与限制.txt 和实际 sdk/*.h，不得猜测接口。
+生命周期 ABI=0x00010002；manifest apiVersion=1；新增 queryInterface("winisland.community",1,...)，不更改旧结构前缀。
+插件逻辑可以自行集成第三方实现，通过服务提供给其他模组；不要要求宿主为每个用途硬编码接口。
+注册服务使用 namespace、自己的 interfaceVersion、size/version 的通用分发表，宿主绑定 owner。先注册，初始化成功后 READY。
+消费者声明必需/可选服务依赖，使用 acquire/invoke/release，不保留 DLL 裸函数地址；写明方法号、数据结构、线程、所有权与错误码。
+耗时工作用 startJob；完成回调才调用 scene/settings。第三方线程必须 manageLifetime，cancel不等于join。
+实际宿主能力按当前专章使用：静态及流式解码进入media；open v1提供视图/GPU纹理/OLE/进程/业务hook。共享纹理有staging复制，native视图为矩形上层，不能编造零拷贝或任意透明合成。
+自有画面用复制的 BGRA/绘图命令和场景节点，遵守大小、DPI、裁剪、输入范围。原生设置界面不能任意注入。
+存档用 community.path(DATA)，资源用 PACKAGE，UTF-8；不要写 EXE 相对路径。
+使用独立数据目录验证缺失依赖/错误版本/任务期间关闭/旧句柄/重启/真实显示。交付源码、wimod、许可证、实测和未验证项目，不能以画了按钮或编译通过冒充运行完成。
+
+本次SDK适配要求
+使用当前5个SDK头文件，按size/version获取可选winisland.open v1。只宣称已接入的能力：视图/纹理/OLE/托管进程/4类业务hook/流式解码。不要继续宣称本版没有这些接口；也不要宣称任意私有函数、全GPU零拷贝、CEF透明浏览器或所有库的热卸载已完成。视图回调在独立STA，旧SDK仍loader-only。第三方线程必须stop+真实joined；需硬故障隔离时用helper，不能TerminateThread。

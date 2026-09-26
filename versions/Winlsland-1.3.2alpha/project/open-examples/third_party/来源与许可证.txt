@@ -1,0 +1,6 @@
+﻿WebView2 SDK 1.0.2903.40
+来源：https://api.nuget.org/v3-flatcontainer/microsoft.web.webview2/1.0.2903.40/microsoft.web.webview2.1.0.2903.40.nupkg
+获取日期：2026-09-18
+SHA256=EF128016DD1E51C59178C827ED5B8AA3322C57AFA8675D930F8109505542AD74
+许可原文：webview2/LICENSE.txt和NOTICE.txt；已随open-browser包携带。
+运行时单独使用机器已安装的Microsoft WebView2，未打包完整浏览器。

@@ -1,0 +1,18 @@
+﻿WinIsland 1.3.2alpha 社区版
+构建标识：1.3.2alpha-open-runtime-20260918
+验证日期：2026-09-18
+
+本轮在当前独立1.3.2alpha内扩展，之前1.3.2alpha源码/SDK/文档/EXE先做快照，没有修改1.3.1alpha。
+open_api.h：新增可选open v1，保留旧ABI；新增流式服务协议，不复用静态图片协议。
+open_runtime.cpp/.h：STA视图、像素/GPU纹理、真实Windows OLE、辅助进程/Job/IPC、业务hook、owner回收和STA回调返回屏障。
+open_runtime_tests.inc：真实HWND、COM、D3D、子进程和停止边界44项测试。
+file_drag_identity.h、transfer_widget.cpp：共享内部拖放身份，避免插件拖回现有中转站重复导入。
+community_runtime.cpp/.h：持有流式会话引用直到CLOSE，stopping允许最终关闭；内建退出钩子不消耗旧SDK的16个外部lifetime配额。
+media_runtime.cpp/.h：社区视频/PCM进入原媒体流程，背压、播放、暂停、跳转、静音及关闭。
+mod_system.cpp/.h、community_host.inc、scene_host.inc：owner绑定、可选查询、轮询、5秒等待后的真实需重启状态。
+app.cpp：音乐原始数据与插件结果分离，音乐/通知/动作/遥测实际处理入口；场景布局同步至视图。
+core.h：产品仍1.3.2alpha，新BuildId用于区分本轮产物。source/build.ps1编译新运行层并链接imm32。
+open-examples：6个完整示例源码、构建脚本、包、WebView2官方SDK及许可。
+settings-electron/verify-open.cjs：16项真实主程序插件包验证。
+开发文档：SDK精确头文件原文及所有相关TXT专章更新。原生设置界面布局、动画参数未改。
+完整文件变化清单：verification/open-changed-files.json。

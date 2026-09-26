@@ -1,0 +1,11 @@
+﻿WinIsland 1.3.2alpha 社区版
+构建标识：1.3.2alpha-open-runtime-20260918
+文档日期：2026-09-18
+
+视图启用 WiViewDefinition.flags bit0 后，在 parent 注册 IDropTarget，接收外部 CF_HDROP。
+WI_VIEW_FILES 的 text 是 LF 分隔的 UTF-8 绝对文件路径，回调期间借用；最多 256 项、总文本约 64KiB。自行检查文件可用性；不要在 UI 回调里复制大文件。
+dragFiles(view,paths) 验证真实普通文件与绝对路径，排队在视图 STA 的 OLE 循环中 DoDragDrop；结果 WI_VIEW_DRAG_RESULT，COPY 或 0。调用时应有实际按住的鼠标手势；正常取消不修改源文件。
+IDataObject 提供 CF_HDROP 与本进程私有 GUID 来源标识。插件视图和现有文件中转共用身份判断，内部拖出返回来源不触发外部接收，不重复保存。
+API 不自动打开/执行文件、不移动文件、不提供任意剪贴板执行、不保证所有目标软件支持文件接收。虚拟尚未落盘文件流未实现。
+第三方原生子窗口可能已有自己的 OLE target；基础模组需协调该子控件，不应重复处理同一次拖入。
+测试已检查 CF_HDROP 数据、私有来源、返回源区域不回调；人工拖到 Explorer/桌面、实际多文件长按完整手势仍未验证。

@@ -1,0 +1,32 @@
+[
+  {
+    "path": "open-examples\\packages\\open-browser.wimod",
+    "bytes": 130462,
+    "sha256": "19766E6348958B8F829DAC4C7F7077DCF7CAC75060792D4DBC3820BE891D2CAE"
+  },
+  {
+    "path": "open-examples\\packages\\open-hooks.wimod",
+    "bytes": 57212,
+    "sha256": "FFB02BCD3458AD05A27BECAFE53CFC0AD60C30C02EA6CA6E45DABFEA603AB083"
+  },
+  {
+    "path": "open-examples\\packages\\open-lifecycle.wimod",
+    "bytes": 68273,
+    "sha256": "85211B2C115F3BD95EDFB0FA82757799B5B8AAE99E569A740E09468B4F00E3C9"
+  },
+  {
+    "path": "open-examples\\packages\\open-process.wimod",
+    "bytes": 122221,
+    "sha256": "4DCFB6D282519629E43107CBB2D600776B0711B1D106B1F6BF3D883E0EFAED26"
+  },
+  {
+    "path": "open-examples\\packages\\open-stream-view.wimod",
+    "bytes": 57652,
+    "sha256": "A65E17399DD3BAA0C5E40622AF9F89E597709D97826815B7E0144ABE1B112742"
+  },
+  {
+    "path": "open-examples\\packages\\open-stream.wimod",
+    "bytes": 117478,
+    "sha256": "F81F66ED3E2DD71227D2C68BDBD1170E80FE49374C541BADB254198F08F40271"
+  }
+]

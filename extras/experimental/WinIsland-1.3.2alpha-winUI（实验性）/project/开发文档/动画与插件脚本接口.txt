@@ -1,0 +1,38 @@
+﻿WinIsland 1.3.2alpha 社区版
+构建标识：1.3.2alpha-open-runtime-20260918
+文档日期：2026-09-18；以本目录源码、SDK 和验证报告为准。
+
+本版保留下列接口及其 ABI。新增后台任务与第三方线程协议见“异步任务与安全退出.txt”；它不改变旧场景/设置 API 的 loader 线程要求。
+
+动画与插件脚本接口 — 1.3.2alpha
+
+当前实现为 source/src/animation_runtime.cpp 的 QuickJS-ng + GSAP，不是历史方案中的 V8 浏览器环境；设置页面另用 Electron CSS/Web Animations/rAF。
+
+插件动画
+
+WinIslandHostApi 的 animationCapabilities/registerAnimation/animationCommand 保留。脚本定义 winislandAnimation(state, from, to, duration)，返回带 object/tween 的对象；宿主 seek 取样 12 个数值属性：x/y/width/height/radius/opacity/scale/offsetX/offsetY/contentOpacity/lyricOpacity/noticeOpacity。
+
+| animationCommand 值 | 含义 |
+|---|---|
+| 1 | 开始；input 为 from，output 原内容作为 to；以注册 duration 开始 |
+| 2 / 3 / 4 / 5 | 取消 / 暂停 / 恢复 / 反向 |
+| 6 | 取样；input.x 是进度，output 收到数值与递增 sequence |
+
+这些结果不会自动成为任意节点动画。插件应读取结果并 set/draw/commit，按实际时间调度。注册结构中的 priority 不能当作通用场景属性优先级；场景覆盖优先级由 scene.set 的 priority 决定。
+
+源码脚本上限 256 KiB、运行时内存 16 MiB、栈 512 KiB，求值/调用设置约 50 ms 中断期限；duration 限制 0.01–5 秒。输出校验有限性与范围。预算不等于整个 DLL 可抢占，原生回调仍是同进程。
+
+bootstrap 中 window/self 是兼容别名，setTimeout/requestAnimationFrame 是空垫片；没有 DOM、CSS、Canvas/WebGL、fetch 或真实浏览器事件循环。不能拿 HTML 游戏、网页脚本直接加载此引擎，也不能据 window 名字推断已支持网页。
+
+onDraw 是场景/布局/输入或 requestDraw 驱动；WI_TIMER/WI_TASK 是 worker 调度，不保证刷新率。不存在正式逐显示帧游戏循环接口。轻量游戏可以组合公开图元和输入；高刷新效果先做实际性能验收。
+
+设置与业务动画分离
+
+本版 renderer 使用主程序确认的手动 reduceMotion。normal：导航基准 325、页面进入/返回 600、文件详情展开 451.389、收起 650（毫秒）；开启减少动画时相关 renderer 效果即时完成，保留选择高亮。独立中转组件、接收过渡的既有速度系数保持，不因为页面详情提速重复相乘。
+
+Core App 也读取明确手动值；旧资源 ModLoader::fade 仍读取系统设置。插件可从 scene.flags 的 WI_REDUCED_MOTION 观察，但必须自行处理自己的动画。不能声称所有插件或所有宿主路径自动应用统一策略。
+
+时间轴、变换、绘制控制不等于暂停播放器、视频、文件复制或业务计时。历史设计说明保留在内嵌JavaScript动画引擎方案.txt，仅作方案沿革。
+
+本次open-runtime补充
+旧接口和上述功能保留。新增可选winisland.open v1，浏览器/原生视图、共享纹理、文件拖放、进程和业务替换见对应专章。不能从view STA回调直接调用旧loader-only SDK。

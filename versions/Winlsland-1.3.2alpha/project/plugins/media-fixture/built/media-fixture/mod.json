@@ -1,0 +1,9 @@
+{
+  "version": "1.0.0",
+  "id": "media-fixture",
+  "gameVersion": ">=1.2.7alpha-r1 <1.3.0",
+  "entry": "bin/media-fixture.dll",
+  "apiVersion": 1,
+  "author": "WinIsland SDK example",
+  "name": "多媒体与交互皮肤"
+}

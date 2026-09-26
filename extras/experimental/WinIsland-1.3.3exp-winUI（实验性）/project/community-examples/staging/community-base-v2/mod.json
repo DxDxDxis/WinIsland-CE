@@ -1,0 +1,15 @@
+{
+  "id": "community-base-v2",
+  "name": "A 第二版本服务",
+  "author": "WinIsland community SDK examples",
+  "version": "1.0.0",
+  "apiVersion": 1,
+  "entry": "bin/community-base-v2.dll",
+  "gameVersion": ">=1.3.2alpha <2.0.0",
+  "providesServices": [
+    {
+      "id": "org.winisland.example.math",
+      "version": 2
+    }
+  ]
+}

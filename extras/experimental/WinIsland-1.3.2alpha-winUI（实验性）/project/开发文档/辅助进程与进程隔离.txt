@@ -1,0 +1,15 @@
+﻿WinIsland 1.3.2alpha 社区版
+构建标识：1.3.2alpha-open-runtime-20260918
+文档日期：2026-09-18
+
+startProcess 执行经规范化、位于当前包内的 x64 .exe。exe 路径不能逃出包根，不更改全局 DLL 搜索路径。arguments 是 Windows 参数字符串，作者按自己 helper 的解析规则编码。
+子进程当前目录为 DATA/helper，TEMP/TMP/APPDATA/LOCALAPPDATA 指向该数据域，stderr 写 helper/stderr.log。系统/运行库自管文件仍可能不受应用控制。
+仅显式继承 stdin/stdout/stderr 句柄。私有匿名双向管道，不创建全局可连接端点。
+协议为 uint32 小端长度 + payload，单帧上限 1MiB。长度零是合作退出请求；stdout 只用于协议，日志写 stderr。
+sendProcess 复制进发送队列，成功仅表示入队。receiveProcess 非阻塞，未到达 NOT_READY；容量不足 LIMIT 且保留消息。收发各最多 32 帧；接收满丢最旧并累计 dropped，重要数据需自行确认/重试。
+processInfo state=1运行/2停止中/3已退出，含 exitCode/pid/received/dropped。进程退出与 pipe worker 退出是不同阶段；releaseProcess 仅在两者完成时成功，否则 BUSY。
+stopProcess 先发零长帧，等待 100..10000ms 的约定退出期限；超时 TerminateJobObject，只结束独立 helper 及其 Job 后代。宿主本身异常结束时 KILL_ON_JOB_CLOSE 清理 Job。
+插件关闭时停止新发送、取消排队业务、发退出请求，等 process 和 reader/writer 真正结束后才满足 owner 的 joined。
+此处隔离的是进程地址空间、崩溃和挂死；没有安全降权，helper 仍拥有当前用户权限。不要称它为 DLL 沙箱。
+真实测试：echo、owner cwd、外部 owner 拒绝、合作退出、退出码73、挂死 helper 超时结束、所有管道线程排空；实际包 open-process 可运行。
+Windows Job 防后代遗留路径已实现，未覆盖全部复杂第三方进程树/崩溃现场。

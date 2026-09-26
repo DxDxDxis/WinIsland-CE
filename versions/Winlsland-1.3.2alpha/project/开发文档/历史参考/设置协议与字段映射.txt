@@ -1,0 +1,65 @@
+﻿历史基线资料：来自只读 1.3.1alpha；不是 1.3.2alpha 新接口的当前规范。
+当前规范请从上一级的 00-总开发者文档.txt 阅读。
+
+设置协议与字段映射 — 1.3.1alpha
+
+构建 1.3.1alpha-settings-adjust-20260917，2026-09-17 按 source/src/settings_host.inc 与 settings-electron/src/protocol.ts 核对。
+
+本协议专供宿主启动的 Electron 设置程序，不是插件的 queryInterface 扩展。插件只通过自己的 WiSettingsApi 定义/读写自有设置，不能取得或绕过设置会话令牌。
+
+调用与保存
+
+renderer → 隔离 preload → Electron main → 命名管道 → C++ UI 线程。main 限制合法来源、白名单和参数。管道请求包含 protocol=1、token、command、params；响应 ok 或 code/error。诊断连接文件不得随发行品暴露。
+
+settings.write 携带 revision 与 patch。核心构造候选、校验、原子写 settings.xml 成功后发布新 revision/applySettings，再返回实际值。冲突返回 CONFLICT。开关保持核心确认值，单字段队列合并连续意图；失败读取核心并显示错误。renderer 本地导航历史只存页面/滚动/焦点，不作为 C++ 设置副本。
+
+当前字段
+
+| TypeScript / IPC 字段 | C++ / XML 字段 | 类型及范围 |
+|---|---|---|
+| reduceMotion | reduceMotion / ManualReducedMotion | boolean，默认 false，明确手动保存 |
+| showMusic | showMusic / ShowMusic | boolean，默认 true，只控制呈现 |
+| showMessages | showMessages / ShowMessages | boolean，默认 true，只控制呈现 |
+| resident | resident / Resident | boolean |
+| hideNative | hideNative / HideNative | boolean |
+| seconds | seconds / DwellSeconds | 0.1–3600，默认 4 |
+| fps | fps / FrameRate | 0 或 30–240 整数 |
+| songSource | songSource / SongSource | 0 自动、1 SMTC、2 窗口标题 |
+| lyricSource | lyricSource / LyricSource | 0–5，原版多源、LRCLIB、关闭、网易云、搜索、QCloud |
+| playerFilter | playerFilter / PlayerFilter | 0 自动、1 网易云、2 QQ、3 汽水 |
+| lyricApi | lyricApi / LyricApi | 原版 validLyricApi 校验，HTTPS，最多 512 字符 |
+| showFps | showFps / ShowFps | boolean |
+| showPing | showPing / ShowPing | boolean |
+| pingTarget | pingTarget / PingTarget | 原版 validPingTarget，IPv4/IPv6 或空，最多 63 字符 |
+| islandZoom | islandZoom / IslandZoom | 1.0–2.0，默认 1.5 |
+| widthRatio | widthRatio / WidthRatio | 0.75–1.5，默认 1 |
+| heightRatio | heightRatio / HeightRatio | 0.75–1.5，默认 1 |
+| dpiCorrection | dpiCorrection / DpiCorrection | 0.8–1.25，默认 1 |
+| topAttach | topAttach / TopAttach | boolean |
+| topArcScale | topArcScale / TopArcScale | 0.5–1.5，默认 1 |
+| radiusMode | radiusMode / RadiusMode | 0–2 |
+| monitorDevice | monitorDevice / MonitorDevice | 空值为自动；否则必须存在于当前真实显示器枚举 |
+
+“降低动画”使用明确手动字段 reduceMotion；无 ManualReducedMotion 记录默认关闭，保存的 true/false 重启保留，不根据系统策略改变用户选择。收到确认值时设置导航、下拉及进行中的 renderer 动画落实终态；不会停止复制/视频等业务。
+
+capabilities.settingsAnimation=false 是保留字段，不能据此认定设置窗口实际没有动画。
+
+其他命令
+
+| 命令 | 实际路径/返回 |
+|---|---|
+| settings.read/write、layout.reset | 设置快照/校验/保存/默认布局 |
+| capabilities.read | 版本/BuildId、渲染器、显示器/DPI、减少动画信息 |
+| media.read | 真实当前音乐、歌词与诊断状态 |
+| mods.list | ModLoader 快照；元数据、API/ABI、包/签名/依赖、设置资源；不是插件 API 表 |
+| mods.affected | 连带关闭依赖者预览 |
+| mods.import/action/invoke | main 注入文件路径或合法操作；ModLoader 排队返回 operation/pending，后续 list 看 completedOperation/operationError |
+| mods.folder/log | 打开统一 mods 或读取目标日志（有长度上限） |
+| lyrics.import/clear | main 文件选择、核心校验当前歌曲标识、更新缓存 |
+| diagnostics.action | 后台监测/导出，等待真实完成状态 |
+
+mods.action 包含 scan/enable/disable/unload/reload/reinstall；重装是当前原包修复，不是假定可下载最新版。资源句柄由宿主生成，失效或未启用时拒绝。插件声明的文本/数值/开关/选项通过真实资源显示；define 的设置没有自动订阅参数，插件变更同步方式见 插件文档（插件系统开发者文档.txt）。
+
+本版增加 transfer.call（文件中转）以及 preload 文件路径导入/拖出桥。renderer 可执行的动作由 main 白名单限定，文件选择与路径由 main 注入；它们没有出现在插件 SDK，不能把内部 IPC 当作所有 DLL 都可用的文件中转扩展。
+
+协议细节和实际字段边界优先以本版 protocol.ts、main.ts/preload.ts、settings_host.inc 为准。产品版本与命名管道 protocol、插件 ABI 各自管理。

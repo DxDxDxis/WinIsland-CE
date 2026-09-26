@@ -1,0 +1,5 @@
+QOI by Dominic Szablewski
+Source: https://raw.githubusercontent.com/phoboslab/qoi/master/qoi.h
+Retrieved: 2026-09-18; vendored file pinned by SHA256 (upstream HEAD lookup unavailable)
+SHA256: 7DE6FCA1A285B1C20D38F2723DEC8B774EB9F144EDB9710800A95FEEEA09375A
+License: MIT; full license in LICENSE.txt; qoi.h has SPDX MIT identifier

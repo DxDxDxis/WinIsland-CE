@@ -1,0 +1,15 @@
+# WinIsland 1.3.4 社区版
+
+本目录为 WinIsland 1.3.4 正式社区版，设置客户端使用原生 WinUI 3，主程序保留 C++ 核心与插件 ABI。
+
+运行 `release/WinIsland-1.3.4.exe`。分发时只需这个 EXE；首次运行会把内嵌 WinUI 运行组件安装到统一数据目录。请先退出旧宿主，避免单实例逻辑把“打开设置”请求交给仍运行的旧版本。
+
+设置打不开的问题已修复：恢复打包 WinUI 的 resources.pri 主题索引，并通过独立安装后的真实窗口验证。
+
+- 构建：PowerShell 7 执行 `./build-release.ps1 -BuildTools E:/WinIslandBuildTools`。
+- 移植与回退说明：docs/1.3.4-community-verification.md。
+- 真实验证与未验证项：docs/1.3.4-community-verification.md。
+- 中文 TXT：开发文档/本次移植与设置启动修复.txt、验证报告.txt。
+- 产物哈希：verification/release-hashes.json。
+
+这是正式社区版；真实在线歌词服务、多显示器、其他 DPI 和其他电脑仍需在目标环境继续验证。

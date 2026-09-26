@@ -1,0 +1,30 @@
+﻿WinIsland 1.3.2alpha 社区版
+构建标识：1.3.2alpha-open-runtime-20260918
+文档日期：2026-09-18；以本目录源码、SDK 和验证报告为准。
+
+统一根目录沿用当前安装定位机制，未变更首次安装流程。
+固定定位文件：%LOCALAPPDATA%/WinIsland/installer/install-location.json。
+<dataRoot>/settings.xml：主程序设置。
+<dataRoot>/mods/<id>.wimod：安装包。
+<dataRoot>/mods/<id>/settings.xml、host-state.txt、mod.log、quarantine.txt：插件设置、用户选择、日志与保护信息。
+<dataRoot>/mod-cache：经校验的解压资源。
+新增 community.path(DATA,relative) 返回当前插件 mods/<id> 内路径；PACKAGE 返回其真实包解压根。UTF-8、NUL结尾，bytes 含结尾，空间不足返回 LIMIT，可先传0容量查询。
+包资源只读约定，持久数据放 DATA；插件不得猜 EXE 路径、盘符或当前工作目录。本 API 是规范化路径服务，不是防御恶意原生 DLL 的权限隔离。
+服务表、引用、任务只在当前进程中存在；重启重新注册，句柄不持久化。
+用户启用选择仍是稳定模组 ID 的 host-state，即时原子保存。退出清理不把 enabled 改成 disabled。缺失/损坏状态沿用安全禁用策略。
+
+开发与测试隔离
+所有本次测试数据位于本版 verification 子目录；不会写入用户日常 mods 或原 1.3.1alpha。
+独立副本通过 verification/baseline-1.3.1alpha.json 记录基线文件哈希；最终比对见 baseline-verification.json。
+
+回退
+保留原 1.3.1alpha 可执行文件和源码，停止本版后可以重新启动旧版。
+本次不迁移/删除用户已有配置，不更改旧生命周期 ABI。旧插件按原 gameVersion 判断是否支持新产品。
+新 community 插件通过 gameVersion >=1.3.2alpha 限定宿主；旧版不应加载这些插件。回退不会把它们的状态改成自动启用。
+无需为回退复制全部用户数据；重要数据仍建议用户常规备份。本次实际验证使用隔离副本，不把测试包写入日常安装目录。
+
+本次扩展
+新增helper工作目录和日志为mods/<id>/helper；WebView示例profile为mods/open-browser/web-profile。所有隔离数据在verification下。当前1.3.2alpha修改前源码/SDK/文档/原EXE保存在snapshots/before-open-runtime-*，准确路径见verification/open-runtime-backup.txt，可停止程序后回退该快照。
+
+快照恢复对应关系：快照根WinIsland-1.3.2alpha.exe -> release同名EXE；source-src -> source/src；sdk -> sdk；build.ps1 -> source/build.ps1。先停止当前版本，仅恢复这些明确文件；不要替换用户mods/配置。
+helper环境子目录：APPDATA=helper/roaming，LOCALAPPDATA=helper/local，TEMP/TMP=helper/temp。

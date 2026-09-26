@@ -1,0 +1,42 @@
+[
+  {
+    "path": "community-examples\\packages\\community-base-v2.wimod",
+    "bytes": 56964,
+    "sha256": "C7C35EBFA57D69C1811DD91833AFDF4D8E191083DBA9AB4976138A9BAC161FD5"
+  },
+  {
+    "path": "community-examples\\packages\\community-base.wimod",
+    "bytes": 56945,
+    "sha256": "452CA4E4D6020783C6C72257827A6BB1FFDA32D6AF94E7A889354099EF6F1B04"
+  },
+  {
+    "path": "community-examples\\packages\\community-consumer.wimod",
+    "bytes": 57661,
+    "sha256": "6D73FBBEECAFB25D588B951A50CE8BDCA5F869237407E6D897DBFC983683D617"
+  },
+  {
+    "path": "community-examples\\packages\\community-optional.wimod",
+    "bytes": 57656,
+    "sha256": "2B5EAF3EF9169F581EC28F1CDDAF63EEE84181C9C0F3BE390BAEC5274F75403E"
+  },
+  {
+    "path": "community-examples\\packages\\community-qoi-decoder.wimod",
+    "bytes": 120313,
+    "sha256": "89262FAB68BFE7760F364076BB4E7E0841A185B90818BAB4A969E46C013442C6"
+  },
+  {
+    "path": "community-examples\\packages\\community-qoi-view.wimod",
+    "bytes": 57268,
+    "sha256": "BA48AFD05141278C991650DCEFE39F15D36CC1AA655EA8B815D1F22AD243412F"
+  },
+  {
+    "path": "community-examples\\packages\\community-restart.wimod",
+    "bytes": 56986,
+    "sha256": "711B5F4BA741C0308E6BA42769090C5BCCA5F71A02D137FA7D87114783EECE00"
+  },
+  {
+    "path": "community-examples\\packages\\community-task.wimod",
+    "bytes": 115096,
+    "sha256": "2165AAEEF6C8CD75D22D565F3708F7D51853C1403E7F6B32AB7141D558FC3C09"
+  }
+]

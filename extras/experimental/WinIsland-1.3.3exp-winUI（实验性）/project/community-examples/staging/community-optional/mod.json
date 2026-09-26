@@ -1,0 +1,17 @@
+{
+  "id": "community-optional",
+  "name": "A 可选服务消费者",
+  "author": "WinIsland community SDK examples",
+  "version": "1.0.0",
+  "apiVersion": 1,
+  "entry": "bin/community-optional.dll",
+  "gameVersion": ">=1.3.2alpha <2.0.0",
+  "serviceDependencies": [
+    {
+      "optional": true,
+      "minVersion": 1,
+      "id": "org.winisland.example.math",
+      "maxVersion": 1
+    }
+  ]
+}

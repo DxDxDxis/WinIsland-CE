@@ -1,0 +1,49 @@
+﻿// Included in open_runtime.cpp so tests can inspect host-owned resources without
+// exposing diagnostic pointers in the public plugin ABI.
+int OpenRuntime::test(const fs::path& output){
+ fs::create_directories(output);setDataRoot(fs::absolute(output)/L"data");std::ostringstream report;int passed=0,failed=0;
+ auto check=[&](bool ok,const char* name){report<<(ok?"PASS ":"FAIL ")<<name<<'\n';ok?++passed:++failed;};
+ auto wait=[&](auto fn,int ms=6000){auto end=now()+ms/1000.;do{if(fn())return true;Sleep(10);}while(now()<end);return false;};
+ try{
+ OpenRuntime h;auto package=fs::absolute(output).parent_path().parent_path()/L"open-examples/obj";
+ auto a=h.owner("open-test-a",package,fs::absolute(output)/L"owner-a"),b=h.owner("open-test-b",package,fs::absolute(output)/L"owner-b");
+ auto api=h.api(*a),api2=h.api(*b);auto life=h.lifetime(*a),life2=h.lifetime(*b);
+ struct Seen{std::atomic<int> created=0,layout=0,destroyed=0,input=0,files=0,lost=0;std::atomic<DWORD> thread=0;std::atomic<HWND> window=nullptr,child=nullptr;bool native=false;};Seen seen;
+ auto callback=+[](void* c,WiViewEvent* e)->int{auto& s=*(Seen*)c;s.thread=GetCurrentThreadId();s.window=(HWND)e->parent;if(e->kind==WI_VIEW_CREATE){++s.created;if(s.native){e->nativeChild=(uintptr_t)CreateWindowExW(0,L"EDIT",L"Chinese input",WS_CHILD|WS_VISIBLE|ES_AUTOHSCROLL,0,0,80,30,(HWND)e->parent,nullptr,GetModuleHandleW(nullptr),nullptr);s.child=(HWND)e->nativeChild;}}if(e->kind==WI_VIEW_DESTROY)++s.destroyed;if(e->kind==WI_VIEW_LAYOUT)++s.layout;if(e->kind==WI_VIEW_INPUT)++s.input;if(e->kind==WI_VIEW_FILES)++s.files;if(e->kind==WI_VIEW_DEVICE_LOST)++s.lost;return 0;};
+ WiViewDefinition def{sizeof(def),1,WI_VIEW_PIXELS,1,42,&seen,callback};WiView v=0;
+ check(api.createView(api.context,&def,&v)==0,"pixel view registered");check(wait([&]{return seen.created==1;}),"real STA HWND created");check(seen.thread!=GetCurrentThreadId(),"view callbacks execute on distinct host STA");
+ check(api2.closeView(api2.context,v)==WI_EXT_NOT_FOUND,"foreign owner cannot close view");
+ uint8_t px[]={7,11,19,255,7,11,19,255,7,11,19,255,7,11,19,255};WiViewFrame f{sizeof(f),1,2,2,8,px,sizeof(px)};
+ check(api.submitFrame(api.context,v,&f)==0,"PBGRA submitted");px[0]=99;auto internal=Impl::view(*a,v);{std::lock_guard l(internal->mutex);check(internal->frame[0]==7,"pixel submission copies caller memory");internal->desired={80,80,82,82};internal->visible=true;}
+ check(wait([&]{return seen.layout>0;}),"view layout reaches real HWND");
+ auto files=new FilesObject(utf8((package/L"helper.exe").wstring()));check(internalDrag(files)&&managedFileSource(files),"plugin drag marker recognized by host file-transfer receiver");
+ check(fileList(files)==utf8((package/L"helper.exe").wstring()),"OLE CF_HDROP contains real absolute file path");
+ Impl::FilesDrop drop(internal.get());DWORD effect=DROPEFFECT_COPY;drop.DragEnter(files,0,{},&effect);check(effect==DROPEFFECT_NONE,"internal return rejects duplicate file import");drop.Drop(files,0,{},&effect);check(seen.files==0,"internal return never calls external file callback");files->Release();
+ internal->deviceLost=true;check(wait([&]{return seen.lost==1;}),"device-loss event delivered on view thread");
+ ComPtr<ID3D11Device> device;ComPtr<ID3D11DeviceContext> context;auto hr=D3D11CreateDevice(nullptr,D3D_DRIVER_TYPE_HARDWARE,nullptr,D3D11_CREATE_DEVICE_BGRA_SUPPORT,nullptr,0,D3D11_SDK_VERSION,&device,nullptr,&context);
+ if(SUCCEEDED(hr)){
+  D3D11_TEXTURE2D_DESC d{};d.Width=d.Height=2;d.MipLevels=d.ArraySize=1;d.Format=DXGI_FORMAT_B8G8R8A8_UNORM;d.SampleDesc.Count=1;d.Usage=D3D11_USAGE_DEFAULT;d.BindFlags=D3D11_BIND_SHADER_RESOURCE|D3D11_BIND_RENDER_TARGET;d.MiscFlags=D3D11_RESOURCE_MISC_SHARED_KEYEDMUTEX;
+  ComPtr<ID3D11Texture2D> t;hr=device->CreateTexture2D(&d,nullptr,&t);check(SUCCEEDED(hr),"D3D11 keyed shared texture created");if(SUCCEEDED(hr)){ComPtr<IDXGIKeyedMutex> key;t.As(&key);ComPtr<IDXGIResource> resource;t.As(&resource);HANDLE shared=nullptr;resource->GetSharedHandle(&shared);key->AcquireSync(0,100);context->UpdateSubresource(t.Get(),0,nullptr,px,8,16);context->Flush();key->ReleaseSync(1);WiSharedTexture texture{sizeof(texture),1,(uintptr_t)shared,1,2};check(api.submitTexture(api.context,v,&texture)==0,"real shared GPU texture enters host compositing frame");{std::lock_guard l(internal->mutex);check(internal->frame[0]==99&&internal->frame[3]==255,"GPU copied PBGRA pixels correct");}check(key->AcquireSync(2,100)==S_OK,"GPU ownership returned to producer key");key->ReleaseSync(0);}
+ }else report<<"UNVERIFIED GPU hardware unavailable HRESULT="<<hr<<'\n';
+ struct BarrierTest{WiOpenApi api;std::atomic<uint64_t> ticket=0;std::atomic<bool> leave=false,entered=false;};BarrierTest bt{api};
+ WiViewDefinition bd{sizeof(bd),1,WI_VIEW_PIXELS,0,50,&bt,+[](void* c,WiViewEvent* e)->int{auto& b=*(BarrierTest*)c;if(e->kind==WI_VIEW_CREATE){uint64_t t=0;b.api.viewBarrier(b.api.context,&t);b.ticket=t;b.entered=true;while(!b.leave)Sleep(1);}return 0;}};WiView bv=0;
+ api.createView(api.context,&bd,&bv);check(wait([&]{return bt.entered.load();}),"STA retirement callback entered");check(api.viewBarrierReady(api.context,bt.ticket)==WI_EXT_NOT_READY,"STA fence not ready while callback still executing");bt.leave=true;check(wait([&]{return api.viewBarrierReady(api.context,bt.ticket)==0;}),"STA fence ready only after callback returns");api.closeView(api.context,bv);
+ Seen native;native.native=true;def.kind=WI_VIEW_NATIVE;def.context=&native;WiView nv=0;check(api.createView(api.context,&def,&nv)==0,"native child view registered");check(wait([&]{return native.child.load()!=nullptr;}),"real native EDIT child created in STA");check(GetParent(native.child)==native.window,"native child has supplied host parent");
+ check(api.focusView(api.context,nv,12,14)==0,"focus and IME caret request accepted");
+ check(api.closeView(api.context,nv)==0&&wait([&]{return native.destroyed==1;}),"native destroy callback completes before retirement");check(!IsWindow(native.child),"native child destroyed");
+ check(api.closeView(api.context,v)==0&&wait([&]{return seen.destroyed==1;}),"pixel view closes exactly once");
+ Seen immediate;def.context=&immediate;def.kind=WI_VIEW_PIXELS;WiView iv=0;api.createView(api.context,&def,&iv);api.closeView(api.context,iv);check(wait([&]{return immediate.destroyed==1;}),"close-before-create still acknowledges destroy");
+ auto replace=+[](void* c,WiHostPacket* p)->int{strcat_s(p->title,(const char*)c);return WI_HOOK_REPLACE;};WiHook ha=0,hb=0;WiHostHookDefinition hd{sizeof(hd),1,WI_HOST_MUSIC,0,(void*)"A",replace};api.registerHook(api.context,&hd,&ha);hd.context=(void*)"B";api2.registerHook(api2.context,&hd,&hb);WiHostPacket packet{sizeof(packet),1,WI_HOST_MUSIC};strcpy_s(packet.source,"host");strcpy_s(packet.title,"song:");packet.sequence=9;
+ auto result=h.route(packet);check(!strcmp(result.title,"song:AB")&&result.sequence==9&&!strcmp(result.source,"host"),"deterministic hook priority/provider order and bound identity");api.removeHook(api.context,ha);result=h.route(packet);check(!strcmp(result.title,"song:B"),"hook revoke recalculates remaining layers");
+ hd.topic=WI_HOST_NOTICE;hd.callback=+[](void*,WiHostPacket*)->int{return WI_HOOK_CONSUME;};api.registerHook(api.context,&hd,&ha);packet.topic=WI_HOST_NOTICE;check(h.route(packet).flags&0x80000000u,"replacement point can consume host behavior");
+ strcpy_s(packet.source,"spoofed");check(api.submitHost(api.context,&packet)==0,"custom host data source accepted");h.pump();auto results=h.take();check(results.size()==1&&!strcmp(results[0].source,"open-test-a"),"custom source bound by host");
+ std::vector<WiProcess> launched;auto start=[&]{WiProcess p=0;WiProcessDefinition d{sizeof(d),1,"helper.exe","",200};check(api.startProcess(api.context,&d,&p)==0,"managed helper created");if(p)launched.push_back(p);return p;};
+ auto roundtrip=[&](WiProcess p,const std::string& value){api.sendProcess(api.context,p,value.data(),(uint32_t)value.size());std::string got;wait([&]{h.pump();char buffer[8192];uint32_t n=0;if(api.receiveProcess(api.context,p,buffer,sizeof(buffer),&n)==0){got.assign(buffer,n);return true;}return false;});return got;};
+ auto p=start();if(p){check(roundtrip(p,"hello")=="helper:hello","private framed IPC echo");check(roundtrip(p,"where")==utf8((a->data/L"helper").wstring()),"helper uses owner data working directory");check(api2.stopProcess(api2.context,p)==WI_EXT_NOT_FOUND,"foreign owner cannot stop helper");api.stopProcess(api.context,p);check(wait([&]{h.pump();WiProcessInfo i{sizeof(i),1};api.processInfo(api.context,p,&i);return i.state==3&&i.exitCode==0;}),"cooperative helper exits before deadline");}
+ auto crash=start();if(crash){api.sendProcess(api.context,crash,"crash",5);check(wait([&]{h.pump();WiProcessInfo i{sizeof(i),1};api.processInfo(api.context,crash,&i);return i.state==3&&i.exitCode==73;}),"helper crash isolated with exact exit code");}
+ auto hang=start();if(hang){api.sendProcess(api.context,hang,"hang",4);Sleep(80);api.stopProcess(api.context,hang);check(wait([&]{h.pump();WiProcessInfo i{sizeof(i),1};api.processInfo(api.context,hang,&i);return i.state==3&&i.exitCode==ERROR_CANCELLED;}),"uncooperative auxiliary process killed by job after grace period");}
+ life.stop(life.context);life2.stop(life2.context);check(wait([&]{h.pump();return life.joined(life.context)&&life2.joined(life2.context);}),"all owners wait for views and pipe threads to finish");check(api.submitFrame(api.context,v,&f)==WI_EXT_STOPPED,"stopped owner rejects new work");h.retire(*a);h.retire(*b);check(h.impl->views.empty()&&h.impl->processes.empty()&&h.impl->hooks.empty(),"owner resources fully retired");
+ }catch(const std::exception& e){check(false,e.what());}
+ report<<"Passed="<<passed<<" Failed="<<failed<<'\n';writeAtomic(output/L"open-runtime-tests.txt",report.str());return failed?1:0;
+}
+

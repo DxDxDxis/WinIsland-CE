@@ -1,0 +1,9 @@
+{
+  "id": "community-task",
+  "name": "C 可取消后台任务",
+  "author": "WinIsland community SDK examples",
+  "version": "1.0.0",
+  "apiVersion": 1,
+  "entry": "bin/community-task.dll",
+  "gameVersion": ">=1.3.2alpha <2.0.0"
+}

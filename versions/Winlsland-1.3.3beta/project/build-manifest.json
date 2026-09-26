@@ -1,0 +1,129 @@
+{
+  "product": "WinIsland 1.3.3beta 社区版",
+  "buildId": "1.3.3beta-installer-version-sync-20260920",
+  "lifecycleAbi": "0x00010002",
+  "manifestApi": 1,
+  "communityAbi": 1,
+  "openAbi": 1,
+  "sceneSettingsMediaAbi": 1,
+  "exe": {
+    "path": "release\\WinIsland-1.3.3beta.exe",
+    "bytes": 170280960,
+    "sha256": "0AD3EC5F6D360520717D169AC6B12B856447D0A2162CF4BB4B9468D828304E13"
+  },
+  "sdk": [
+    {
+      "path": "sdk\\community_api.h",
+      "bytes": 4815,
+      "sha256": "216E0031B41649DFBDDCE065684B33CA7950D5695BC9C5D14CC2AD9D49886FEA"
+    },
+    {
+      "path": "sdk\\media_api.h",
+      "bytes": 2691,
+      "sha256": "8D669E4C0428F5467D308834617878DDB704343FDCDEA08EAA8DF964DC43C356"
+    },
+    {
+      "path": "sdk\\mod_api.h",
+      "bytes": 2668,
+      "sha256": "3391EE26CBADB308D3FEDABCB07FAC0060B43AB1ED90172BB9A126803F1EAE73"
+    },
+    {
+      "path": "sdk\\open_api.h",
+      "bytes": 8014,
+      "sha256": "5A075AE0E33031C204D24E360B7C854F797CB9538EF33F55CD5D4350741F2D08"
+    },
+    {
+      "path": "sdk\\scene_api.h",
+      "bytes": 5674,
+      "sha256": "B30607D8FAA5961340D9A174E4B111AEFCB648999DFECCE6A9F433E25BF4A406"
+    }
+  ],
+  "examples": [
+    {
+      "path": "community-examples\\packages\\community-base-v2.wimod",
+      "bytes": 56964,
+      "sha256": "C7C35EBFA57D69C1811DD91833AFDF4D8E191083DBA9AB4976138A9BAC161FD5"
+    },
+    {
+      "path": "community-examples\\packages\\community-base.wimod",
+      "bytes": 56945,
+      "sha256": "452CA4E4D6020783C6C72257827A6BB1FFDA32D6AF94E7A889354099EF6F1B04"
+    },
+    {
+      "path": "community-examples\\packages\\community-consumer.wimod",
+      "bytes": 57661,
+      "sha256": "6D73FBBEECAFB25D588B951A50CE8BDCA5F869237407E6D897DBFC983683D617"
+    },
+    {
+      "path": "community-examples\\packages\\community-optional.wimod",
+      "bytes": 57656,
+      "sha256": "2B5EAF3EF9169F581EC28F1CDDAF63EEE84181C9C0F3BE390BAEC5274F75403E"
+    },
+    {
+      "path": "community-examples\\packages\\community-qoi-decoder.wimod",
+      "bytes": 120313,
+      "sha256": "89262FAB68BFE7760F364076BB4E7E0841A185B90818BAB4A969E46C013442C6"
+    },
+    {
+      "path": "community-examples\\packages\\community-qoi-view.wimod",
+      "bytes": 57268,
+      "sha256": "BA48AFD05141278C991650DCEFE39F15D36CC1AA655EA8B815D1F22AD243412F"
+    },
+    {
+      "path": "community-examples\\packages\\community-restart.wimod",
+      "bytes": 56986,
+      "sha256": "711B5F4BA741C0308E6BA42769090C5BCCA5F71A02D137FA7D87114783EECE00"
+    },
+    {
+      "path": "community-examples\\packages\\community-task.wimod",
+      "bytes": 115096,
+      "sha256": "2165AAEEF6C8CD75D22D565F3708F7D51853C1403E7F6B32AB7141D558FC3C09"
+    },
+    {
+      "path": "open-examples\\packages\\open-browser.wimod",
+      "bytes": 130462,
+      "sha256": "19766E6348958B8F829DAC4C7F7077DCF7CAC75060792D4DBC3820BE891D2CAE"
+    },
+    {
+      "path": "open-examples\\packages\\open-hooks.wimod",
+      "bytes": 57212,
+      "sha256": "FFB02BCD3458AD05A27BECAFE53CFC0AD60C30C02EA6CA6E45DABFEA603AB083"
+    },
+    {
+      "path": "open-examples\\packages\\open-lifecycle.wimod",
+      "bytes": 68273,
+      "sha256": "85211B2C115F3BD95EDFB0FA82757799B5B8AAE99E569A740E09468B4F00E3C9"
+    },
+    {
+      "path": "open-examples\\packages\\open-process.wimod",
+      "bytes": 122221,
+      "sha256": "4DCFB6D282519629E43107CBB2D600776B0711B1D106B1F6BF3D883E0EFAED26"
+    },
+    {
+      "path": "open-examples\\packages\\open-stream-view.wimod",
+      "bytes": 57652,
+      "sha256": "A65E17399DD3BAA0C5E40622AF9F89E597709D97826815B7E0144ABE1B112742"
+    },
+    {
+      "path": "open-examples\\packages\\open-stream.wimod",
+      "bytes": 117478,
+      "sha256": "F81F66ED3E2DD71227D2C68BDBD1170E80FE49374C541BADB254198F08F40271"
+    }
+  ],
+  "settingsAsarSha256": "8DC5794C06CAD2AED47E76F024D418DADE466359B24E1534CEBE67F372065C8B",
+  "rollbackSnapshot": "E:\\aaAAx项目\\WinIsland-社区版-大更新\\release\\1.3.2alpha",
+  "verification": {
+    "clipboardUnit": 17,
+    "clipboardPaint": "verification/clipboard-paint-1789879823211",
+    "clipboardIntegration": "verification/clipboard-integration.log",
+    "baselineFilesVerified": 4265,
+    "report": "verification/final-report.md",
+    "inheritedTestsNotRerun": true,
+    "clipboardDelete": "verification/clipboard-delete-final.log",
+    "editorRealInput": [
+      "verification/clipboard-paint-1789881045345",
+      "verification/clipboard-paint-1789881157257"
+    ],
+    "installerVersion": "verification/installer-version-20260920-133846/installer-version.png"
+  }
+}

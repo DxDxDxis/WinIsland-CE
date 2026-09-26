@@ -1,0 +1,17 @@
+﻿WinIsland 1.3.2alpha 社区版
+构建标识：1.3.2alpha-open-runtime-20260918
+文档日期：2026-09-18；以本目录源码、SDK 和验证报告为准。
+
+给第三方库或基础模组作者
+请先说明你要输出的通用服务能力，以及它如何通过现有宿主扩展点进入实际流程。
+复用 sdk/community_api.h，不跨DLL传 STL 或未约定释放方式，size/version 和 interfaceVersion 分开。
+算法/网络/脚本库可用宿主管理任务或 CONCURRENT 服务；需要专用线程的库必须显式 stop + joined。
+不能热释放则声明 lifecycle=restart-required，界面必须展示仍运行、重启生效。不要偷偷终止线程。
+图片库实现 IMAGE_DECODER 的 PROBE/DECODE，输出一次宿主复制的 PBGRA 并轮询取消，证明原先失败的媒体加载现在真正显示。
+浏览器/游戏框架可提供自己的服务，使用open视图、GPU纹理、IME事件和辅助进程桥。参照已实测的WebView2例程适配尺寸/输入/退出；其他引擎仍需真实验证。
+区分场景手势与系统文件拖放；区分普通异常捕获与进程隔离。
+给出服务消费者示例、多提供者选择规则、缺失依赖降级、关闭顺序、退出等待和许可证。
+请勿修改宿主原生设置布局、清空用户插件状态或绕过包校验。
+
+本次SDK适配要求
+使用当前5个SDK头文件，按size/version获取可选winisland.open v1。只宣称已接入的能力：视图/纹理/OLE/托管进程/4类业务hook/流式解码。不要继续宣称本版没有这些接口；也不要宣称任意私有函数、全GPU零拷贝、CEF透明浏览器或所有库的热卸载已完成。视图回调在独立STA，旧SDK仍loader-only。第三方线程必须stop+真实joined；需硬故障隔离时用helper，不能TerminateThread。

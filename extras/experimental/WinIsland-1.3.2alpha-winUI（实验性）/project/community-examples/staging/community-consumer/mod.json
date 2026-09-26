@@ -1,0 +1,17 @@
+{
+  "id": "community-consumer",
+  "name": "A 服务消费者",
+  "author": "WinIsland community SDK examples",
+  "version": "1.0.0",
+  "apiVersion": 1,
+  "entry": "bin/community-consumer.dll",
+  "gameVersion": ">=1.3.2alpha <2.0.0",
+  "serviceDependencies": [
+    {
+      "optional": false,
+      "minVersion": 1,
+      "id": "org.winisland.example.math",
+      "maxVersion": 1
+    }
+  ]
+}

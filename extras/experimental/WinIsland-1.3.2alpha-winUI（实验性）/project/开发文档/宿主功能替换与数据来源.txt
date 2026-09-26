@@ -1,0 +1,27 @@
+﻿WinIsland 1.3.2alpha 社区版
+构建标识：1.3.2alpha-open-runtime-20260918
+文档日期：2026-09-18
+
+本版正式替换机制分三部分：已有 owner 场景/动画/资源替换、解码服务扩展，以及 open.registerHook/submitHost 业务处理链。
+
+当前实际接入表
+WI_HOST_MUSIC=1：App::onMusic 在使用原始音乐信息前进入插件链；可替换 title/artist/album、播放位置/时长/速率和控制能力，CONSUME 暂停该条信息展示。原始数据单独保留；撤销 hook 后按当前原始数据重新计算。
+WI_HOST_NOTICE=2：App::enqueue 的实际通知入口；可替换标题/正文或过滤。submitHost 可发布自定义来源通知，来源由 owner 绑定，仍受主程序消息显示选择约束。
+WI_HOST_ACTION=3：App::action 中媒体操作 1上一首/2播放暂停/3下一首/4播放模式；可替换或消费原动作，最终沿真实媒体控制逻辑执行。命令不能伪造播放器实际不具备的能力，仍有业务状态门禁。
+WI_HOST_TELEMETRY=4：实际遥测采样进入处理链；number[0]=fps、number[1]=ping，可替换处理结果或提交自定义数据。
+scene v1：既有节点属性、创建、绘图、位图、输入、布局及 owner 修改层。
+media：静态图片和流式提供者进入实际媒体加载/显示/音频输出。
+animation/旧 WI_REPLACE：继续使用已公开的动画脚本与具名旧替换点。
+
+链规则
+registerHook 在 loader 注册，WiHostHookDefinition 带 size/version/topic/priority/context/callback。
+优先级降序，再 provider ID ASCII 升序，同 owner 保留注册顺序。每次调用传复制的 WiHostPacket。
+PASS 忽略编辑，REPLACE 采用校验后的编辑，CONSUME 停止链并阻止该次宿主处理。source/sequence 保留宿主身份，不能借字段冒充来源。
+回调必须快返回。耗时工作用后台任务准备快照，hook 只读缓存。回调抛错产生 hook-error.txt 并对该次请求降级；异常捕获不能隔离内存损坏。
+提交队列和结果队列各最多256；入队失败 LIMIT/false，结果过载丢最旧。不是可靠事务日志；上层主程序用序号保证音乐最后一次有效选择生效。
+停止 owner 时移除 hook 与其排队数据，撤销场景修改层；不恢复启动时的旧全局 UI 快照。
+
+开放性的实际含义
+开发者可自行提供具体服务和流程处理器，不必为每个网站、小游戏或文件格式修改宿主。
+本版没有导出全部私有 C++ 函数地址，也没有通用任意地址 detour；未接入上述边界的内部函数仍不可通过稳定 SDK 替换。不能把4个新业务主题描述成整个宿主每个函数均可替换。
+需要新增宿主流程时，在该流程入口投递有版本的值对象，并明确默认实现、优先级和撤销，再进入同一宿主管理机制；不新增每个具体用途专用接口。

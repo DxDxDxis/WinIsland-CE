@@ -1,0 +1,63 @@
+﻿WinIsland 1.3.2alpha 社区版
+构建标识：1.3.2alpha-open-runtime-20260918
+验证日期：2026-09-18
+
+交付概况
+这次补齐了实际可运行的open扩展层，不能据此称“任意内部函数、任意库、任何线程都可热卸载”。简明结果见本次实现情况说明.txt。
+独立目录：E:\aaAAx项目\WinIsland-社区版-大更新\release\1.3.2alpha
+保留回退快照：E:\aaAAx项目\WinIsland-社区版-大更新\release\1.3.2alpha\snapshots\before-open-runtime-20260918-115957
+当前源码、SDK、6个新示例包和构建产物在同一版本内；未向日常mods安装测试包。
+
+最终构建
+release/WinIsland-1.3.2alpha.exe
+大小：170169344字节
+SHA256：F059F6A68A41F06AB67E9AAD0E5859F9E453A1BD5FEFF261229FA45769397176
+build-open-runtime与build-1.3.2alpha的同名EXE哈希相同。五个SDK头与source/src逐字节相同。
+旧生命周期ABI=0x00010002、manifestAPI=1、scene/settings/media/community版本不变；新增可选open v1。
+构建日志：verification/rebuild-open-final.log；示例：verification/build-open-examples-final.log。
+仍有继承的scene枚举/浮点与QuickJS转换警告；没有把无编译错误当作功能验收。
+
+实际运行通过
+1. verification/open-runtime/open-runtime-tests.txt：44通过，0失败。
+   真正创建STA HWND、原生EDIT子窗口、尺寸更新、owner越权拒绝、像素复制、close-before-create。
+   真实D3D11共享纹理、像素值核对、keyed-mutex归还；设备丢失通知采用模拟触发，未强制GPU故障。
+   OLE IDataObject的CF_HDROP、同进程来源、拖回拒绝和不回调；不等于Explorer人工完整手势。
+   实际helper进程：echo、数据工作目录、正常退出、退出码73、挂死超时Job结束、pipe线程排空。
+   实际阻塞在STA回调内时barrier不提前完成，回调返回后才就绪；外部慢线程真实join由联调验证。
+2. verification/open-regression-community-final/community-tests.txt：120通过，0失败。
+   原服务注册/版本/引用/依赖/缺失/故障/取消/退出/QOI真实显示/保存与重启均回归。
+3. verification/open-regression-mods-final/mod-tests.txt：148通过，0失败。
+   旧插件、包校验、设置、操作与状态保持。
+4. verification/open-native-results.json：scene、animation、core各退出0。
+5. verification/open-live/results.json：16项真实EXE+.wimod联调通过。
+   音乐处理被hook替换，撤销恢复当前原始数据。
+   包内helper IPC回送、崩溃后宿主可继续处理命令。
+   stream服务自动依赖、视频连续帧、非零PCM提交、暂停、暂停跳转、恢复/静音、阻止有依赖提供者单独关闭、连带关闭排空。
+   WebView2实际HTML、中文文本输入、按钮、消息回调；宿主DPI诊断缩放后仍存活；控制器先关闭，再DLL卸载；重复启停。
+   外部std::thread在请求停止后仍运行6.2秒，5秒时显示需重启且DLL仍加载，主UI可响应，真正join后才卸载。
+6. verification/community-ui/results.json：4项打包Electron+当前EXE回归通过。
+   真实依赖启动、QOI目标色8128像素、真实重启状态/DLL仍加载展示、设置入口可用。
+7. verification/baseline-verification.json：原1.3.1alpha清单429个源码/SDK/设置/产物哈希不变。
+   核验范围以已有清单为准，未遍历所有历史缓存。没有写入1.3.0/1.3.1alpha；不把未建立基线的目录说成已逐字节核验。
+
+证据图
+verification/open-live/webview-real.png：来自真实WebView2页面截图，不是宿主整桌面合成截图。
+verification/open-live/stream-host.png：来自宿主Renderer的实际社区视频帧。
+verification/community-ui/restart-status.png：打包设置界面真实状态。
+
+过程失败及修复
+WebView2示例首次链接缺user32/advapi32，补正式链接依赖后成功。
+首次底层测试2项helper字符串断言不匹配：echo有helper前缀，cwd含尾NUL；修正示例协议和准确断言后重跑44项全通过。
+首次联调helper timer的key含旧SDK不支持的点号；改为合法连字符并检查注册返回值，随后16项全通过。
+最终回归使用上述SHA256的同一EXE。
+
+尚未实现/不能保证
+任意私有C++函数地址级detour、全量内部函数稳定替换体系未提供；已完成的正式替换入口有完整列举。
+GPU零拷贝合成、CEF离屏浏览器透明圆角完整产品、全部游戏引擎/第三方codec适配未交付。
+本进程永久不合作线程无法安全强制卸载；继续保留DLL且可能延迟进程退出。托管helper提供独立进程超时终止路径，不能把两者混为一谈。
+
+未验证
+真实中文IME候选/组合输入全过程（中文文本自动化输入已通过）；真实跨DPI显示器和负坐标多屏；所有显卡及强制设备丢失；大帧长期性能/内存泄漏工具检测。
+人工拖文件到桌面/Explorer再取消/返回的完整手势；原生第三方控件自带drop target的兼容组合。
+人工听音与长时间音画同步、直播、所有音频速率设备、所有第三方依赖许可证和运行组合。
+未故意破坏用户配置，未实测本轮永久卡死进程中的整体重启；慢合作线程和独立helper挂死已实测。

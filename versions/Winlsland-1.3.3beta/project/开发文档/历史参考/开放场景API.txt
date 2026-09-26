@@ -1,0 +1,71 @@
+﻿历史基线资料：来自只读 1.3.1alpha；不是 1.3.2alpha 新接口的当前规范。
+当前规范请从上一级的 00-总开发者文档.txt 阅读。
+
+开放场景 API — 1.3.1alpha
+
+适用：WinIsland 1.3.1alpha 社区版，构建 1.3.1alpha-settings-adjust-20260917。源码核对日期：2026-09-17。产品版本与插件 ABI 分别管理。
+
+接口 winisland.scene 版本 1，POD 声明见 SDK接口参考（SDK接口参考.txt）。适用能力和未开放内容先看 边界清单（插件接口开放范围与限制.txt）。
+
+调用关系
+
+宿主 App/Renderer 生成实时基线和最近显示节点
+  → ModLoader 更新快照/事件
+  → 串行 worker 调用插件
+  → snapshot / enumerate / visible / read
+  → create / clone / set / draw / bitmap / listen
+  → commit 当前 owner
+  → 宿主复制计划 → App 几何 → Renderer 绘制与命中
+  → 输入排队回到 worker → 插件更新 → commit
+
+onDraw 在 worker 上响应 requestDraw、场景变化/布局变化及输入，不是 DLL 在渲染线程直接画图，也不是每显示帧必到的事件。宿主渲染不保留插件缓冲指针。
+
+状态和查找
+
+snapshot 含 flags、generation、time、DPI、岛屏幕位置/宽高、focus、elementCount、sizeMode。flags：IDLE/MUSIC/PLAYING/LYRIC/NOTICE/IS_EXPANDED/SETTINGS_OPEN/REDUCED_MOTION/SOFTWARE_RENDERER。
+
+常用事件 scene.changed、scene.idle、scene.music.started/changed/stopped、scene.lyric.started/changed/stopped、scene.notice.shown/hidden、scene.expanded/collapsed、scene.layout.changed、scene.input.changed。事件用于提示，回调重新取快照，不能等同完整业务历史。
+
+- enumerate/read 是当前基线加暂存属性；不代表已经呈现。
+- visible 来自最近一轮渲染记录（变换/裁剪后的节点范围），不计算不透明元素的像素级遮挡。
+- enumerate/visible 用非零 generation 时不匹配返回 WI_CONFLICT，重新读取重试；容量不足返回 WI_LIMIT 并给所需数量。
+- find 优先本 owner key，再宿主 key，再唯一其他 owner key，歧义冲突。
+- 根 key island；常见宿主容器 host.music、host.idle、host.notice。文字、歌词、按钮、遥测由 render.cpp 动态发布；必须 find/enumerate，不能缓存所有宿主节点永久存在。
+
+布局与属性
+
+元素局部坐标为最终岛内 DIP，不再叠乘 MusicScale。根 WI_RECT 为 (0,0,width,height)；根 WI_POSITION 是屏幕物理坐标定位入口，使用当前 DPI 处理，不能与子节点 DIP 混用。
+
+WI_HOST_MANAGED 使用宿主布局；WI_OVERLAY 不自动增高；WI_PLUGIN_MANAGED 用根 RECT 指定宽高；WI_INTRINSIC 从 WI_LAYOUT=1 的插件节点原始矩形扩展。Intrinsic 不计算完整嵌套、旋转包围盒，复杂布局自行测量后提交 PluginManaged。没有 Flex/Grid 约束求解器或无限外部画布保证。
+
+支持矩形、显隐、透明度、子节点缩放/旋转、圆角、背景/边框/文字颜色、字体、字号/字重、对齐、z、父节点、输入/阻塞开关、裁剪、value、最小/最大尺寸、锚点/边距/内边距。根不能旋转/缩放/阴影，子节点阴影只有实色偏移，无模糊。WI_EXPANDED 只作用于根。各属性参数范围由 scene_store.cpp 校验。
+
+z 在父子绘制上下文中排序，同 z 按 ID；不跨任意父层级重排所有像素。设置父节点不得形成环；删除父节点不替其他插件销毁子节点，但失去有效父链的子树不可见。
+
+输入
+
+listen 对目标注册；输入在 worker 串行执行，同目标最后注册者先处理，返回 1 终止该目标后续处理，0 未处理。已接入原生播放按钮在未处理时走默认操作。
+
+命中使用变换逆矩阵与祖先矩形裁剪；左键按下由宿主捕获，释放/失焦/失去捕获发结束或取消。键盘 Tab/Enter/Space 及字符事件可用。未提供任意系统消息、右键菜单替换、全局快捷键、IME 编辑器或任意 OLE 接收器；BLOCK_INPUT=0 允许原生路径继续，不表示向所有下层插件完整冒泡。
+
+绘制
+
+自有节点可提交矩形、椭圆、线、文字、三角形及 BEGIN/LINE/CUBIC/END 路径；END 决定颜色，stroke>0 描边，否则填充。CUBIC 的 x/y、width/height、x2/y2 是两个控制点和终点。bitmap 交付预乘 BGRA，宿主复制。draw/bitmap 和媒体绑定仅适用于自有节点；要替换宿主像素可隐藏原节点并覆盖自己的图元，不能从“set 可改别的 owner”推断“bitmap 可覆盖所有节点”。
+
+修改链、提交、撤销
+
+属性层记录 owner/target/property/value/priority/sequence；owner 由宿主 context 绑定。高 priority 优先，同优先级最新 set 优先；同 owner 同属性替换旧层。previous 仅诊断，不作为回档快照。
+
+clear 移除本 owner 指定属性贡献；remove 自有节点是真销毁，对宿主或其他插件节点是本 owner 的可撤销隐藏；reset 撤销本 owner 场景节点、属性、输入和绘图数据。reset 不是完整插件卸载，也不代替媒体 release 或旧资源 remove。commit 只发布本 owner 的暂存改动，不顺带发布其他插件未提交修改。
+
+禁用/卸载由宿主统一撤销该 owner，包括旧资源、媒体等。恢复以实时基线与剩余贡献重算；只保证正式 API 内的修改，无法恢复 DLL 自行写坏的内存。被销毁句柄不能继续使用。
+
+兼容边界
+
+检查 host size 再用 queryInterface。当前 scene/settings 查询要求完整表大小；媒体表允许已实现的旧前缀（直到 replaceSource 前）。不能泛称所有 scene 旧结构前缀都自动兼容。扩展接口版本与产品版本分开，新字段是否可用同时看返回码、size/version。错误值与结构以本版 SDK 为准。
+
+1.3.1alpha 接收前景
+
+文件中转接收是宿主临时优先状态；接收期间根尺寸/位置覆盖暂不接管，开放场景前景/插件输入暂停，根背景和透明度沿用正常规则。没有对应的专用 SDK flags 或接收事件，也不能由插件管理独立中转窗口。退出后按实时业务恢复，不修改用户音乐/消息显示选择。
+
+验证命令与构建路径统一见 主程序开发者文档（主程序开发者文档.txt），不再使用历史 c2/r1 EXE 名称。

@@ -1,0 +1,45 @@
+﻿WinIsland 1.3.2alpha 社区版
+构建标识：1.3.2alpha-open-runtime-20260918
+文档日期：2026-09-18；以本目录源码、SDK 和验证报告为准。
+
+本版解决的问题
+社区模组可以自己链接实现库，通过 winisland.community v1 注册服务，由宿主绑定提供者身份。其他模组可声明服务依赖并取得句柄，经宿主调用服务。宿主不需要为每个工具重新写一组专用接口。
+已有插件 ABI 0x00010002、清单 apiVersion=1、scene/settings/media v1 保持不变。产品版本号与服务接口版本独立。
+
+先看哪些文件
+1. 插件接口开放范围与限制.txt：哪些真的接通，哪些尚未接通。
+2. 插件系统开发者文档.txt：基础插件、清单、安装、设置和发布。
+3. 插件系统扩展开发者文档.txt：提供者/消费者与服务依赖。
+4. SDK接口参考.txt：全部公开 C ABI 原文、字段与线程说明。
+5. 异步任务与安全退出.txt：后台任务、第三方线程、停止与重启策略。
+6. 媒体资源与皮肤扩展.txt、流式媒体扩展接口.txt：图片、视频和PCM进入现有媒体流程。
+7. 开放场景API.txt、动画与插件脚本接口.txt：保留的绘制/输入/动画能力。
+8. 第三方依赖与打包.txt、数据目录与回退.txt：部署和回退。
+9. 示例与测试.txt、验证报告.txt：实际运行证据及缺口。
+10. 视图嵌入与GPU共享纹理.txt、插件文件拖放接口.txt、辅助进程与进程隔离.txt、宿主功能替换与数据来源.txt：新增open v1接口及其实际边界。
+11. AI交接文档.txt：修改位置、设计决策、后续接入方法。
+12. 01-本次开放能力使用指南.txt：直接运行示例。
+
+工程结构
+source/src：Win32/D2D/DWrite 主程序，C++20，原有 QuickJS-ng/GSAP、WIC/MF。
+settings-electron/src：Electron 设置界面。本次仅增加真实停止/重启状态字段，没有调整布局或动画。
+sdk：五个发布头文件；与 source/src 对应文件逐字节一致。
+community-examples：提供者/消费者/QOI/任务源码、MIT QOI 库、构建脚本及 .wimod。
+release/WinIsland-1.3.2alpha.exe：独立正式构建；自带运行组件压缩包。
+开发文档：全部当前开发资料，UTF-8 BOM TXT，记事本可直接打开。
+verification：本次隔离验证数据、测试报告和原版本只读哈希证据。
+
+线程和数据流
+主UI/render线程消费纯宿主快照；新视图回调在独立的宿主STA线程执行，不在主UI或loader上。
+ModLoader worker 串行执行旧回调及社区注册、发现、完成、事件回调。
+宿主后台 job 在线程中执行耗时工作，完成数据复制后回到 worker。
+媒体线程调用标记为 CONCURRENT 的解码服务；调用期间持有 DLL 使用计数。
+服务引用不暴露提供者函数地址，消费者只能使用宿主句柄 invoke。
+场景修改仍以 owner 分层，撤销时重算当前宿主状态及其他模组层。
+
+工程维护
+完整构建：powershell -File build-release.ps1 -BuildTools E:\WinIslandBuildTools
+示例构建：powershell -File community-examples/build.ps1 -BuildTools E:\WinIslandBuildTools
+原始 1.3.1alpha 从未作为写入、构建或运行测试目录。
+不要把本版测试包自动投放到日常 mods，也不要清空用户 settings/host-state。
+同进程 DLL 不是沙箱；内存破坏、死锁或不配合退出的插件仍可影响主程序。

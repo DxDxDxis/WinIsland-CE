@@ -1,0 +1,34 @@
+﻿WinIsland 1.3.2alpha 社区版
+构建标识：1.3.2alpha-open-runtime-20260918
+文档日期：2026-09-18；以本目录源码、SDK 和验证报告为准。
+
+保留的媒体接口
+winisland.media v1 的所有字段/顺序保持不变。PNG/JPEG/BMP/GIF 由 WIC，H.264/可选音轨由 MF/软件后端。能力表仍描述原生验证格式，不编造新增格式枚举。
+加载异步进行，media.load/loadFrom/chooseLocalFile 返回资源句柄并不代表解码已完成。读取 info/state 或订阅既有媒体事件。绑定自有场景节点并 commit 后，宿主渲染复制帧。
+播放/暂停/停止/seek/循环/速率/静音/音量/隐藏策略原样保留。
+
+社区图片解码接入
+source/src/media_runtime.cpp 的 Session.load：先尝试原生图像/视频，失败后调用 ExtensionDecoder。
+ModLoader 将它连接到 CommunityRuntime.decode，按服务能力 WI_SERVICE_IMAGE_DECODER 枚举就绪提供者。
+每个解码服务 interfaceVersion=1、thread=CONCURRENT，通用 invoke 收到方法 WI_IMAGE_PROBE=1 和 WI_IMAGE_DECODE=2。
+WiImageDecodeRequest：UTF-8 绝对路径、最多64字节文件头、maxEdge、host context/cancelled/frame。请求及路径/前缀仅本次调用有效。
+PROBE：识别则 OK，不识别返回 UNSUPPORTED。禁止在探测中提交像素。
+DECODE：后台读文件/解码，轮询取消，通过 frame 提交一次 top-down PBGRA；w/h 必须正值且不超过 maxEdge（宿主最大4096），bytes 必须 w*h*4。宿主在函数返回前复制。
+服务按接口版本、提供者 ID、服务 ID 确定探测顺序；选中解码器后失败直接报错，不在同次调用中悄悄更换实现。
+服务调用执行中禁用提供者：拒绝后续调用，cancelled 变真；active 归零前 DLL 保持加载。已有成功帧是宿主内存，不含 DLL 指针，提供者停止后仍可显示；新加载明确失败。
+IMAGE_DECODER协议只输出静态图；新增视频/PCM使用独立STREAM_DECODER协议，GPU共享表面走open视图接口，具体方法见各专章。未采用多个解码器并行竞速。
+
+可运行 QOI 示例
+community-qoi-decoder.wimod 静态集成 MIT QOI 库。原生宿主并不包含该算法。
+community-qoi-view.wimod 只用原有 media.load("assets/example.qoi")/bind/scene API，不直接调用 QOI 库，也不自行传入伪造截图。
+未启用解码模组：media error；启用解码模组后重新加载查看模组：8x8 QOI 像素进入宿主 MediaFrame，显示为绿色图块。
+QOI 示例限制源图16MP、输入128MiB；缩图采用最近邻，仅为清楚验证扩展链，不把它包装成高质量全格式媒体产品。
+库内部 qoi_decode 不能中途抢占，采用有界输入与调用前后取消；不宣称强制即时退出。
+
+自定义画面与皮肤
+现有 bitmap 最大2048x2048、累计64MiB；scene.draw 4096命令、文字/图形/路径，copy ownership；媒体帧最大4096边长受资源会话配额约束。
+几何单位、DPI、层次、裁剪、焦点、输入范围详见开放场景API.txt。
+新增图像格式由社区编写服务，无需每个格式再修改宿主。原生 settings 页面仍由宿主管理。
+
+本次扩展
+新增STREAM_DECODER实际链路见流式媒体扩展接口.txt；原静态图片/旧media v1不变。新增GPU纹理提交属于open视图接口，采用staging复制，不是原media GPU零拷贝。

@@ -1,0 +1,16 @@
+{
+  "id": "community-restart",
+  "name": "重启生效策略示例",
+  "author": "WinIsland community SDK examples",
+  "version": "1.0.0",
+  "apiVersion": 1,
+  "entry": "bin/community-restart.dll",
+  "gameVersion": ">=1.3.2alpha <2.0.0",
+  "providesServices": [
+    {
+      "id": "org.winisland.example.math",
+      "version": 1
+    }
+  ],
+  "lifecycle": "restart-required"
+}
